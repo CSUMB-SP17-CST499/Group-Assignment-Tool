@@ -1,1 +1,1 @@
-# assistive-permissions-manager
+# assistant-permissions-manager
