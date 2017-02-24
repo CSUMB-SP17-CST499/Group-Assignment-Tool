@@ -1,1 +1,0 @@
-# assistive-permissions-manager
