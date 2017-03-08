@@ -1,77 +1,77 @@
 /*@import url(http://fonts.googleapis.com/css?family=Roboto:400);*/
 
-/*.loginScreen {*/
-/*  background-color:#fff;*/
-/*  -webkit-font-smoothing: antialiased;*/
-/*  font: normal 14px Roboto,arial,sans-serif;*/
-/*}*/
+.loginScreen {
+  background-color:#fff;
+  -webkit-font-smoothing: antialiased;
+  font: normal 14px Roboto,arial,sans-serif;
+}
 
 /*.container {*/
 /*    padding: 105px;*/
 /*    position: fixed;*/
 /*}*/
 
-/*.form-login {*/
-/*    background-color: #EDEDED;*/
-/*    padding-top: 20px;*/
-/*    padding-bottom: 20px;*/
-/*    padding-left: 20px;*/
-/*    padding-right: 20px;*/
-/*    border-radius: 15px;*/
-/*    border-color:#d2d2d2;*/
-/*    border-width: 5px;*/
-/*    box-shadow:0 1px 0 #cfcfcf;*/
-/*}*/
+.form-login {
+    background-color: #EDEDED;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 15px;
+    border-color:#d2d2d2;
+    border-width: 5px;
+    box-shadow:0 1px 0 #cfcfcf;
+}
 
-/*h4 { */
-/* border:0 solid #fff; */
-/* border-bottom-width:1px;*/
-/* padding-bottom:10px;*/
-/* text-align: center;*/
-/*}*/
+h4 { 
+ border:0 solid #fff; 
+ border-bottom-width:1px;
+ padding-bottom:10px;
+ text-align: center;
+}
 
-/*.form-control {*/
-/*    border-radius: 10px;*/
-/*}*/
+.form-control {
+    border-radius: 10px;
+}
 
-/*.wrapper {*/
-/*    text-align: center;*/
-/*}*/
+.wrapper {
+    text-align: center;
+}
 
-/*.border{*/
-/*     border-style: solid;*/
-/*    border-width: 1px;*/
-/*}*/
-/*.spacer{*/
-/*    margin-left: 30px;*/
-/*}*/
+.border{
+     border-style: solid;
+    border-width: 1px;
+}
+.spacer{
+    margin-left: 30px;
+}
 
-/*.first-column {*/
-/*  width: 20%;*/
-/*  float: left;*/
-/*}*/
+.first-column {
+  width: 20%;
+  float: left;
+}
 
-/*.second-column {*/
-/*  width: 60%;*/
-/*  float: right;*/
-/*}*/
-/*#imaginary_container{*/
-/*}*/
-/*.stylish-input-group .input-group-addon{*/
-/*    background: white !important; */
-/*}*/
-/*.stylish-input-group .form-control{*/
-/*	border-right:0; */
-/*	box-shadow:0 0 0; */
-/*	border-color:#ccc;*/
-/*}*/
-/*.stylish-input-group button{*/
-/*    border:0;*/
-/*    background:transparent;*/
-/*}*/
-/*.selected{*/
-/*    font-weight: bold;*/
-/*}*/
+.second-column {
+  width: 60%;
+  float: right;
+}
+#imaginary_container{
+}
+.stylish-input-group .input-group-addon{
+    background: white !important; 
+}
+.stylish-input-group .form-control{
+	border-right:0; 
+	box-shadow:0 0 0; 
+	border-color:#ccc;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
+.selected{
+    font-weight: bold;
+}
 
 /*START OF MENUBAR*/
 ul {
