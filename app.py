@@ -5,19 +5,29 @@ app = flask.Flask(__name__)
 @app.route('/')
 def index():
 # If there is no userName, then route to loginScreen. Else, route to the main page.
-    return flask.render_template("LoginScreen.html")
+    return flask.render_template("index.html")
+    
+@app.route('/login')
+def login():
+# If there is no userName, then route to loginScreen. Else, route to the main page.
+    return flask.render_template("login.html")
 
-@app.route('/AddPermissions')
-def addPermissions():
-    return flask.render_template("AddPermissions.html")
+@app.route('/add')
+def addEmp():
+    return flask.render_template("add.html")
 
-@app.route('/Employeepermissions')
-def empPermissions():
-    return flask.render_template("Employeepermissions.html")
+@app.route('/employee')
+def empGroup():
+    return flask.render_template("employee.html")
 
-@app.route('/Menubar')
+@app.route('/menubar')
 def menuBar():
-    return flask.render_template("Menubar.html")
+    return flask.render_template("menubar.html")
+    
+    
+@app.route('/edits')
+def edits():
+    return flask.render_template("edits.html")
 
 
 app.run(
