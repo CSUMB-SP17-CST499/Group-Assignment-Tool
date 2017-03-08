@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">
+		   <!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <title>Add Employee </title>
+    </head>
+    <body>
+<div class="container" style="padding-top: 100px;">
+        <div class="row centered-form">
+        <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+        	<div class="panel panel-default">
+        		<div class="panel-heading">
+		    		<h3 align = "center" class="panel-title"> Add Employee</h3>
+		    		<p align = "center">Enter the Employee's information</p>
+		 			</div>
+		 			<div class="panel-body">
+		    		<form role="form">
+		    			<div class="row">
+		    				<div class="col-xs-6 col-sm-6 col-md-6">
+		    					<div class="form-group">
+		                <input type="text" name="first_name" id="first_name" class="form-control input-sm" placeholder="First Name">
+		    					</div>
+		    				</div>
+		    				<div class="col-xs-6 col-sm-6 col-md-6">
+		    					<div class="form-group">
+		    						<input type="text" name="last_name" id="last_name" class="form-control input-sm" placeholder="Last Name">
+		    					</div>
+		    				</div>
+		    			</div>
+
+		    			<div class="form-group">
+		    				<input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address">
+		    			</div>
+
+		    			<div class="row">
+		    				<div class="col-xs-6 col-sm-6 col-md-6">
+		    					<div class="form-group">
+		    						<input type="Job Field" name="Job Field" id="Job Field" class="form-control input-sm" placeholder="Job Field">
+		    					</div>
+		    				</div>
+		    				</div>
+		    			</div>
+		    			
+		    			<input href="/WebPageLayout/Employeepermissions/Employeepermissions.html" type="submit" value="Get Permissions" class="btn btn-info btn-block">
+		    			<input href="/WebPageLayout/Employeepermissions/Employeepermissions.html" type="submit" value="Cancel" class="btn btn-info btn-block">
+		    		
+			    		</form>
+			    	</div>
+	    		</div>
+    		</div>
+    	</div>
+    </div>
+    </body>
+</html>
