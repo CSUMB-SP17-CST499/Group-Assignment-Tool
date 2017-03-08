@@ -1,2 +1,2 @@
 # Ignore the python virtual env we use to develop
-env
+venv
