@@ -1,8 +1,5 @@
 #!/bin/bash
-cd ~/workspace/
 sudo apt-get install python3
-sudo pip install virtualenv
-virtualenv -p /usr/bin/python3 venv
-source venv/bin/activate
-
-sudo easy_install Flask
+sudo easy_install3 Flask
+sudo pip3 install flask-socketio
+npm install socket.io-client --save
