@@ -35,11 +35,20 @@ class LoginForm(Form):
 
 @app.route('/')
 def index():
+<<<<<<< HEAD
     slack_client = SlackClient('your test token here')
     slack_client.api_call("api.test")
     SLACK_TOKEN = os.environ.get('SLACK_TOKEN')
 
     slack_client = SlackClient(SLACK_TOKEN)
+=======
+    # from slackclient import SlackClient
+    # slack_client = SlackClient('your test token here')
+    # slack_client.api_call("api.test")
+    # SLACK_TOKEN = os.environ.get('SLACK_TOKEN')
+
+    # slack_client = SlackClient(SLACK_TOKEN)
+>>>>>>> e94134cbc10bc0a2733ea5ee6f149ff794cf02c1
 # If there is no userName, then route to loginScreen. Else, route to the main page.
     return flask.render_template("index.html")
     
@@ -79,8 +88,6 @@ def menuBar():
 @app.route('/edits')
 def edits():
     return flask.render_template("edits.html")
-
-
 
 
 app.run(
