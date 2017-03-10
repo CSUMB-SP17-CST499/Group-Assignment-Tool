@@ -1,9 +1,16 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto:400);
+@import url(http://fonts.googleapis.com/css?family=Roboto:400);
+
 
 .loginScreen {
   background-color:#fff;
   -webkit-font-smoothing: antialiased;
   font: normal 14px Roboto,arial,sans-serif;
+}
+
+
+.container {
+    padding: 105px;
+    position: fixed;
 }
 
 .form-login {
@@ -39,6 +46,33 @@ h4 {
 }
 .spacer{
     margin-left: 30px;
+}
+
+.first-column {
+  width: 20%;
+  float: left;
+}
+
+.second-column {
+  width: 60%;
+  float: right;
+}
+#imaginary_container{
+}
+.stylish-input-group .input-group-addon{
+    background: white !important; 
+}
+.stylish-input-group .form-control{
+	border-right:0; 
+	box-shadow:0 0 0; 
+	border-color:#ccc;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
+.selected{
+    font-weight: bold;
 }
 
 .first-column {

@@ -3,20 +3,29 @@
 {% block content %}
 <!-- TODO: Need to add loginScreen class to the body of this file -->
 <div class="container">
-  <div class="row">
-    <div class="col-md-offset-5 col-md-3">
-      <div class="form-login">
-        <h4>Group Assignment Tool</h4>
-        <input type="text" id="userName" class="form-control input-sm chat-input" placeholder="username" />
-        </br>
-        
-        <input type="text" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
-        </br>
-        
-        <div class="wrapper">
-          <span class="group-btn">     
-            <input class="btn btn-primary btn-md" type="submit" name="Login" value="Login">
-          </span>
+    <div class="row">
+        <div class="col-md-offset-5 col-md-3">
+            <div class="form-login">
+                <h4>Group Assignment Tool</h4>
+                <form action = "../loginDB" method = "POST">
+                        {{ Form.csrf_token }}
+                        {% if Form.csrf_token.errors %}
+                            <div class="warning">You have submitted an invalid CSRF token</div>
+                        {% endif %}
+                    <input type="text" id="userName" class="form-control input-sm chat-input" placeholder="username" />{{ Form.username}}
+                    </br>
+                    <input type="password" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />{{ Form.password}}
+                    </br>
+                        <div class="wrapper">
+                            <span class="group-btn">     
+                            <input class="btn btn-primary btn-md" type="submit"
+                                name="Login" value="Login">
+                            <input class="btn btn-primary btn-md" type="submit"
+                                name="Create Account" value="Create Account">
+                            </span>
+                        </div>
+                </form>
+            </div>
         </div>
       </div>
     </div>
