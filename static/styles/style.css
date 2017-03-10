@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 @import url(http://fonts.googleapis.com/css?family=Roboto:400);
+=======
+@import url(https://fonts.googleapis.com/css?family=Roboto:400);
+>>>>>>> 3a65759a83263203fccca3419938e1ce7941e5b6
 
 .loginScreen {
   background-color:#fff;
@@ -6,11 +10,14 @@
   font: normal 14px Roboto,arial,sans-serif;
 }
 
+<<<<<<< HEAD
 .container {
     padding: 105px;
     position: fixed;
 }
 
+=======
+>>>>>>> 3a65759a83263203fccca3419938e1ce7941e5b6
 .form-login {
     background-color: #EDEDED;
     padding-top: 20px;
@@ -45,6 +52,7 @@ h4 {
 .spacer{
     margin-left: 30px;
 }
+<<<<<<< HEAD
 
 .first-column {
   width: 20%;
@@ -72,34 +80,40 @@ h4 {
 .selected{
     font-weight: bold;
 }
+=======
+>>>>>>> 3a65759a83263203fccca3419938e1ce7941e5b6
 
-/*START OF MENUBAR*/
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: grey;
+.first-column {
+  width: 20%;
+  float: left;
 }
 
-li {
-    float: left;
+.second-column {
+  width: 60%;
+  float: right;
 }
 
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+.stylish-input-group .input-group-addon{
+    background: white !important; 
+}
+.stylish-input-group .form-control{
+	border-right:0; 
+	box-shadow:0 0 0; 
+	border-color:#ccc;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
+.selected{
+    font-weight: bold;
 }
 
 /* Change the link color to #111 (black) on hover */
-/*
 li a:hover {
     background-color: #111;
 }
-*/
+
 .active {
     background-color: #4CAF50;
 }

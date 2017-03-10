@@ -1,7 +1,8 @@
 import flask, os
-from flask import Flask, render_template, flash, request
+from flask import render_template, flash, request
 from flask_wtf import Form
-from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
+from wtforms import TextField, TextAreaField, validators, StringField, SubmitField
+from slackclient import SlackClient
 
 app = flask.Flask(__name__)
 
@@ -12,6 +13,11 @@ class ReusableForm(Form):
 
 @app.route('/')
 def index():
+    slack_client = SlackClient('your test token here')
+    slack_client.api_call("api.test")
+    SLACK_TOKEN = os.environ.get('SLACK_TOKEN')
+
+    slack_client = SlackClient(SLACK_TOKEN)
 # If there is no userName, then route to loginScreen. Else, route to the main page.
     return flask.render_template("index.html")
     
@@ -42,14 +48,15 @@ def addEmp():
 def empGroup():
     return flask.render_template("employee.html")
 
-@app.route('/menubar')
+@app.route('/base')
 def menuBar():
-    return flask.render_template("menubar.html")
-    
+    return flask.render_template("base.html")
     
 @app.route('/edits')
 def edits():
     return flask.render_template("edits.html")
+
+
 
 
 app.run(
