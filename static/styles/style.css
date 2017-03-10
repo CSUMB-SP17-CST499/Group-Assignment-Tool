@@ -1,8 +1,5 @@
-<<<<<<< HEAD
 @import url(http://fonts.googleapis.com/css?family=Roboto:400);
-=======
-@import url(https://fonts.googleapis.com/css?family=Roboto:400);
->>>>>>> 3a65759a83263203fccca3419938e1ce7941e5b6
+
 
 .loginScreen {
   background-color:#fff;
@@ -10,14 +7,12 @@
   font: normal 14px Roboto,arial,sans-serif;
 }
 
-<<<<<<< HEAD
+
 .container {
     padding: 105px;
     position: fixed;
 }
 
-=======
->>>>>>> 3a65759a83263203fccca3419938e1ce7941e5b6
 .form-login {
     background-color: #EDEDED;
     padding-top: 20px;
@@ -52,7 +47,6 @@ h4 {
 .spacer{
     margin-left: 30px;
 }
-<<<<<<< HEAD
 
 .first-column {
   width: 20%;
@@ -80,8 +74,6 @@ h4 {
 .selected{
     font-weight: bold;
 }
-=======
->>>>>>> 3a65759a83263203fccca3419938e1ce7941e5b6
 
 .first-column {
   width: 20%;
