@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %} Employees {% endblock %}
+{% block content %}
+  <div class = "col-sm-1" style=" padding-top:80px;">
+    <div class="btn-group-vertical">
+       <a href="#" class = "selected" class="btn-link">Employees</a>
+       <a href="#" class="btn-link">Roles</a>
+</div>
+  </div>
+ 
+      <!-- button group-->
+<div class="btn-group" role="group" aria-label="Basic example">
+  <div  class = "px-2">
+    <a href="/WebPageLayout/Addpermissions/AddPermissions.html" class="btn btn-default">Add</a>
+  <a href="/WebPageLayout/Addpermissions/AddPermissions.html" class="btn btn-default">Edit</a>
+  <a href="/WebPageLayout/Addpermissions/AddPermissions.html" class="btn btn-default">Delete</a>
+</div>
+
+  <div class="container" style="padding-right:40px; border-left: 2px solid #ccc;">
+    <div class="row">
+    <div class="col-sm-6" >
+  <h1>Employees</h1>
+  </div>
+  <div class="col-sm-6" >
+  <div id="imaginary_container">
+      <div class="input-group stylish-input-group">
+                    <input type="text" class="form-control"  placeholder="Search" >
+                    <span class="input-group-addon">
+                        <button type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>  
+                    </span>
+       </div>
+    </div>
+    </div>
+    </div>
+  <div class="row">
+    <div class="col-sm-1" >
+        <label for="checkbox"></label>
+         <input type="checkbox" value="select" id="Employeepermissions">
+         </label>
+    </div>
+    <div class="col-sm-4">
+      <p>Name</p>
+    </div>
+        <div class="col-sm-3" >
+      <p>Email</p>
+    </div>
+        <div class="col-sm-3" >
+      <p>Roles</p>
+    </div>
+    </div>
+  <div class="row">
+    <div class="col-sm-1" >
+        <label for="checkbox"></label>
+         <input type="checkbox" value="select" id="Employeepermissions">
+         </label>
+    </div>
+    <div class="col-sm-4">
+      <p>Stephan</p>
+    </div>
+        <div class="col-sm-3" >
+      <p>Sdubuke@csumb.edu</p>
+    </div>
+        <div class="col-sm-3" >
+      <p>Sofware</p>
+    </div>
+  </div>
+    <div class="row">
+    <div class="col-sm-1" >
+        <label for="checkbox"></label>
+         <input type="checkbox" value="select" id="Employeepermissions">
+         </label>
+    </div>
+    <div class="col-sm-4">
+      <p>Michel</p>
+    </div>
+        <div class="col-sm-3" >
+      <p>Sdubuke@csumb.edu</p>
+    </div>
+        <div class="col-sm-3" >
+      <p>Database</p>
+    </div>
+  </div>
+  </div>
+{% endblock %}
