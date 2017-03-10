@@ -1,15 +1,10 @@
-/*@import url(http://fonts.googleapis.com/css?family=Roboto:400);*/
+@import url(https://fonts.googleapis.com/css?family=Roboto:400);
 
 .loginScreen {
   background-color:#fff;
   -webkit-font-smoothing: antialiased;
   font: normal 14px Roboto,arial,sans-serif;
 }
-
-/*.container {*/
-/*    padding: 105px;*/
-/*    position: fixed;*/
-/*}*/
 
 .form-login {
     background-color: #EDEDED;
@@ -55,8 +50,7 @@ h4 {
   width: 60%;
   float: right;
 }
-#imaginary_container{
-}
+
 .stylish-input-group .input-group-addon{
     background: white !important; 
 }
@@ -73,33 +67,11 @@ h4 {
     font-weight: bold;
 }
 
-/*START OF MENUBAR*/
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: grey;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
 /* Change the link color to #111 (black) on hover */
-/*
 li a:hover {
     background-color: #111;
 }
-*/
+
 .active {
     background-color: #4CAF50;
 }

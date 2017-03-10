@@ -20,10 +20,9 @@ def addEmp():
 def empGroup():
     return flask.render_template("employee.html")
 
-@app.route('/menubar')
+@app.route('/base')
 def menuBar():
-    return flask.render_template("menubar.html")
-    
+    return flask.render_template("base.html")
     
 @app.route('/edits')
 def edits():
