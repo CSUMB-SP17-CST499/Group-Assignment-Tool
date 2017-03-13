@@ -2,6 +2,10 @@ import flask, os
 
 app = flask.Flask(__name__)
 
+@app.route('/base')
+def menuBar():
+    return flask.render_template("base.html")
+    
 @app.route('/')
 def index():
 # If there is no userName, then route to loginScreen. Else, route to the main page.
@@ -19,15 +23,10 @@ def addEmp():
 @app.route('/employee')
 def empGroup():
     return flask.render_template("employee.html")
-
-@app.route('/base')
-def menuBar():
-    return flask.render_template("base.html")
     
 @app.route('/edits')
 def edits():
     return flask.render_template("edits.html")
-
 
 app.run(
     port=int(os.getenv('PORT', 8080)),
