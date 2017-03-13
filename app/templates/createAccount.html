@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% block title %} Sign Up {% endblock %}
+{% block content %}
+ <div class="container">
+    <h1>Create Account</h1>
+    <div class="row">
+        <div class="col-md-offset-5 col-md-3">
+            <div class="form-login">
+                <h4>Group Assignment Tool</h4>
+                <form method = "POST">
+                    <input type ="text" id="firstname" class="form-control input-sm chat-input" placeholder="First Name" />
+                    </br>
+                    <input type ="text" id="lastname" class="form-control input-sm chat-input" placeholder="Last Name" />
+                    </br>
+                    <input type="text" id="email" class="form-control input-sm chat-input" placeholder="Email" />
+                    </br>
+                    <input type="text" id="username" class="form-control input-sm chat-input" placeholder="Username" />
+                    </br>
+                    <input type="password" id="userPassword" class="form-control input-sm chat-input" placeholder="Password" />
+                    </br>
+                   <div>Admin (Yes/No)
+                    <input type="checkbox" id="adimn" class="form-control input-sm chat-input" />
+                   </div>
+                    </br>
+                        <div class="wrapper">
+                            <span class="group-btn">     
+                            <input class="btn btn-primary btn-md" type="submit"
+                                name="Create Account" value="Create Account">
+                            </span>
+                        </div>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
