@@ -1,11 +1,17 @@
 import requests
 from apis import token
   
-def get_slack_groups():
-    """Creates a 'get'reques by passing the token as a parameter for authentication.
-       Returns a list containing Slack group names.
+def get_user_groups():
+    """Function creates a 'get'reques by passing the token as a parameter for authentication.
+
+    Args:
+        none
+
+    Returns:
+        Returns a list containing Slack group names.
+
     """
-    request = requests.get('https://slack.com/api/usergroups.list', params = {'token': token.get_slack_token() })
+    request = requests.get('https://slack.com/api/usergroups.list', params = {'token': token.get_slack_token()})
     data = request.json()
     names = []
     size = len(data)
