@@ -1,11 +1,13 @@
 // JavaScript File
-$(function() {
-    $('#Create Account').click(function() {
+$(document).ready( function() {
+    console.log("IS READY");
+    $('#Create_Account').click(function() {
  
+   // console.log("Click Function");
         $.ajax({
             url: '/createaccount',
-            data: $('form').serialize(),
-            type: 'POST',
+            data: $("form").serialize(),
+            method: 'POST',
             success: function(response) {
                 console.log(response);
             },
@@ -13,5 +15,5 @@ $(function() {
                 console.log(error);
             }
         });
-    });
+     });
 });

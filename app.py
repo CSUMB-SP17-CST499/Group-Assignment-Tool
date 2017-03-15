@@ -42,7 +42,7 @@ def createaccount():
         return json.dumps({'html':'<span>All fields good !!</span>'})
     else:
         return json.dumps({'html':'<span>Enter the required fields</span>'})
-    return()
+    return render_template("login.html")
     
 @app.route('/loginDB', methods=['GET', 'POST'])
 def loginBD():
