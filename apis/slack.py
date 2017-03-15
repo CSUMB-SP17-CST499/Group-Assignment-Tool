@@ -15,7 +15,7 @@ def get_user_groups():
     data = request.json()
     names = []
     size = len(data)
-    for i in range (0, 2):
+    for i in range (0, size):
        names.append(data['usergroups'][i]['name'])
     return names
     
