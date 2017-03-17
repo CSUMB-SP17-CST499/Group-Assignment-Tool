@@ -1,34 +1,58 @@
+<!DOCTYPE html>
 {% extends 'base.html' %}
 {% block content %}
-<!-- Container for the main project logo -->
-<div class="container">
-  <div class="text-center">
-    <!--<div class="col-md-12"></div>-->
-    <h2>Group Assingment Tool</h2>
-    <div class="row">
-      <div class=" col-md-12">
-          <a href="#"><img src="static/logos/Three.png" alt="inn_logo"></a>
-      </div>
-    </div>
-  </div>
-</div>
+<html>
+    <head>
+      
+        <!--<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/style.css') }}">-->
+                <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+           
+<!--<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">-->
 
+<!-- Latest compiled JavaScript -->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+         
+        <title>Home Page</title>
+        
+        <!--This include the Menubar HTML(as well as boostrap and jQuery)-->
+        
+        <script>
+            
+        </script>
+
+    </head>
+
+    <body>
+    
+        <div class="container">
+        <div class="text-center">
+            <!--<div class="col-md-12"></div>-->
+            <h2>Group Assingment Tool</h2>
+            <div class="row">
+                <div class=" col-md-12">
+                    <a href="#"><img src="/static/logos/Three.png" alt="inn_logo"></a>
+                </div>
+            </div>
+             </div>
+            </div>
 <!-- Container that holds the images that link to different parts of the web tool -->
 <div class="container">
   <div class="text-center">
     <div class="col-md-12">
       <div class="row">
         <div class="well col-md-4 img-link" style="margin: 0px">
-            <a href="/employee"><img src="#" alt="Employess"></a>
+            <a href="/employee"><img src="/static/logos/employees.jpg" height="50" width="200"></a>
         </div>
         <div class="well col-md-4 img-link" style="margin: 0px">
-            <a href="#"><img src="#" alt="Roles"></a>
+            <a href="#"><img src="/static/logos/roles.jpg" height="50" width="200"></a>
         </div>
-        <div class="well col-md-4 img-link" style="margin: 0px">
-            <a href="#"><img src="#" alt="Documentation"></a>
         </div>
-      </div>
-    </div>
-  </div>
-</div>
+        
+                 <div class="well col-md-4 img-link" style="margin: 0px">
+                    <a href="#"><img src="#" alt="Documentation"></a>
+                </div>
+    
+                </div>
+            </div>
+            </div>
 {% endblock %}

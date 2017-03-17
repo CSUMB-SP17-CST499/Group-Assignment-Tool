@@ -3,23 +3,30 @@
 {% block content %}
 <!-- TODO: Need to add loginScreen class to the body of this file -->
 <div class="container">
-  <div class="row">
-    <div class="col-md-offset-5 col-md-3">
-      <div class="form-login">
-        <h4>Group Assignment Tool</h4>
-        <input type="text" id="userName" class="form-control input-sm chat-input" placeholder="username" />
-        </br>
-        
-        <input type="text" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
-        </br>
-        
-        <div class="wrapper">
-          <span class="group-btn">     
-            <input class="btn btn-primary btn-md" type="submit" name="Login" value="Login">
-          </span>
+    <div class="row">
+        <div class="col-md-offset-5 col-md-3">
+            <div class="form-login">
+                <h4>Group Assignment Tool</h4>
+                <form action = "../loginDB" method = "POST">
+                    <input type = "text" id="userName" class="form-control input-sm chat-input" placeholder="username" />
+                    </br>
+                    <input type="password" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
+                    </br>
+                        <div class="wrapper">
+                            <span class="group-btn">     
+                            <input class="btn btn-primary btn-md" type="submit"
+                                name="Login" value="Login">
+                                <div class="btn btn-primary btn-md">
+                            <a href = "/showcreateaccount"
+                                style type="color/White;" name="Create Account" value="Create Account"> Create Account</a>
+                            </div>
+                            </span>
+                        </div>
+                        </div>
+                </form>
+            
         </div>
       </div>
     </div>
-  </div>
-</div>
+    </div>
 {% endblock %}
