@@ -12,6 +12,7 @@ app = flask.Flask(__name__)
 
 @app.route('/')
 def index():
+
     slack_client = SlackClient('your test token here')
     slack_client.api_call("api.test")
     SLACK_TOKEN = os.environ.get('SLACK_TOKEN')
