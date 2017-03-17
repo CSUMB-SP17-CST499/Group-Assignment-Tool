@@ -1,13 +1,19 @@
 import flask, os
 from flask import render_template, flash, request, json
+from flaskext.mysql import MySQL
 from flask_wtf import Form
 from wtforms import TextField, TextAreaField, validators, StringField, SubmitField, csrf
 from wtforms.validators import DataRequired
 from slackclient import SlackClient
 from hashlib import md5
 
-
+mysql = MySQL()
 app = flask.Flask(__name__)
+app.config['MYSQL_DATABASE_USER'] = 'thedirtyham'
+app.config['MYSQL_DATABASE_PASSWORD'] = 'PAnthony38'
+app.config['MYSQL_DATABASE_DB'] = 'groupAssignmentTool'
+app.config['MYSQL_DATABASE_HOST'] = 'localhost'
+mysql.init_app(app)
 
 
 @app.route('/')
@@ -35,31 +41,35 @@ def showcreateaccount():
 def createaccount():
     _firstname = request.form['firstname']
     _lastname = request.form['lastname']
+    # return json.dumps({'status':'OK','user':_firstname,'pass':_lastname});
     _email = request.form['email']
     username = request.form['username']
     _password = request.form['userPassword']
     if _firstname and _lastname and _email and username and _password:
+        cursor = mysql.connect().cursor()
+        cursor.execute("SELECT * from User where Username = ' " + username + " ' ");
+        data = cursor.fetchone()
+        if data is None:
+            cursor.callproc('sp_createUser',(_firstname, _lastname, _email, username, _password));
+        else:
+            return "Username already exists"
         return json.dumps({'html':'<span>All fields good !!</span>'})
     else:
         return json.dumps({'html':'<span>Enter the required fields</span>'})
     return render_template("login.html")
     
-@app.route('/loginDB', methods=['GET', 'POST'])
+@app.route('/loginDB', methods=['POST'])
 def loginBD():
-    # #form = LoginForm(request.form)
-    # return flask.render_template("login.html", title ="Login", form=form)
-    # # print (form.errors)
-    # if request.method == 'POST':
-    #     if request.form['submit'] == 'Login':
-    #         username=request.form['userName']
-    #         password=request.form['userPassword']
-    #         print (username, " ", password)
-    #         return flask.render_template("login.html", title ="Login", form=form)
-    #     # if form.validate():
-    #     #     flash('Thanks for registration ' + username)
-    #     # elif request.form['submit'] == 'Create Account':
-    #     #     return render_template('createaccount.html', form=form)
-    return flask.render_template("login.html")
+    username = request.form['userName']
+    password = request.form['userPassword']
+    cursor = mysql.connect().cursor()
+    cursor.execute("SELECT * from User where user_username = ' " + username + " ' and user_password = ' " + password + " ' ")
+    data = cursor.fetchone()
+    if data is None:
+     return "Username or Password is wrong"
+    else:
+     return flask.render_template("index.html")
+    return json.dumps({'status':'OK','user':username,'pass':password});
 
 @app.route('/add')
 def addEmp():
