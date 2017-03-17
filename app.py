@@ -1,4 +1,5 @@
 import flask, os
+
 from flask import render_template, flash, request, json
 from flaskext.mysql import MySQL
 from flask_wtf import Form
