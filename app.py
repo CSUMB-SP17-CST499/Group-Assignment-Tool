@@ -1,5 +1,5 @@
 import flask, os
-from slackclient import SlackClient
+#from slackclient import SlackClient
 
 app = flask.Flask(__name__)
 
