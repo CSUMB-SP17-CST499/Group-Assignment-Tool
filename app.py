@@ -1,11 +1,11 @@
 import flask, os
+
 from flask import render_template, flash, request, json
 from flask_wtf import Form
 from wtforms import TextField, TextAreaField, validators, StringField, SubmitField, csrf
 from wtforms.validators import DataRequired
 from slackclient import SlackClient
 from hashlib import md5
-
 
 app = flask.Flask(__name__)
 
