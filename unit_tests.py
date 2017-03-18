@@ -69,15 +69,6 @@ class testSlackFunctions(unittest.TestCase):
         print("Testing slack list: after adding user back:")
         print(updated_user_list)
         
-        # Hardcoding to add us back into the two groups.
-        # 
-        our_group = "U3YGBU742,U3YJT7PHS,U3Z7BDGKG,U4BM5H280"
-        slack.update_employees(our_group, 'S4GSUKDDJ')
-        slack.update_employees(our_group, 'S4GCVAMFS')
-        updated_user_list = slack.get_users(first_group_name)
-        print("Testing slack list: after adding user back:")
-        print(updated_user_list)
-        
     
     def test_create_group(self):
         slack.create_group()
