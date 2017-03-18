@@ -35,8 +35,9 @@ class testSlackFunctions(unittest.TestCase):
         print("These are group IDs")
         print(group_ids)
         groups = slack.get_user_groups()
-        first_group_id = groups[0]
-        user_ids = slack.get_users(first_group_id)
+        first_group_id = group_ids[0]
+        first_group_name = groups[0]
+        user_ids = slack.get_users(first_group_name)
         first_user_id = user_ids[0]
         print("This is the first group")
         print(first_group_id)
@@ -47,7 +48,7 @@ class testSlackFunctions(unittest.TestCase):
         print("Removing the first user from the first group....")
         user_ids.remove(first_user_id)
         slack.update_employees(user_ids, first_group_id)
-        updated_user_list = slack.get_users(first_group_id)
+        updated_user_list = slack.get_users(first_group_name)
         
             # THE LIST BEING PASSED IS NOT THE RESULTING LIST. FAILING TEST CASE
         self.assertEquals(user_ids, updated_user_list)

@@ -21,13 +21,13 @@ def get_user_groups():
     return names
     
 def get_user_group_ids():
-    """Function creates a 'get'reques by passing the token as a parameter for authentication.
+    """Function creates a 'get'request by passing the token as a parameter for authentication.
 
     Args:
         none
 
     Returns:
-        Returns a list containing Slack group names.
+        Returns a list containing Slack group ids.
 
     """
     request = requests.get('https://slack.com/api/usergroups.list', params = {'token': token.get_slack_token()})
@@ -88,7 +88,7 @@ def get_user_names(user_ids):
             
     return users_names
     
-def update_employees(user_ids, user_group):
+def update_employees(user_ids, user_group_id):
     """Function creates a 'get'reques, in order to obtain the group user's names, by passing the token as a parameter for authentication.
 
     Args:
@@ -101,7 +101,7 @@ def update_employees(user_ids, user_group):
     
     try:
         request = requests.get('https://slack.com/api/usergroups.users.update',
-        params = {'token': token.get_slack_token(), 'usergroup': user_ids, 'users': user_group})
+        params = {'token': token.get_slack_token(), 'usergroup': user_ids, 'users': user_group_id})
         data = request.json()
         
     except requests.exceptions.RequestException as e:
