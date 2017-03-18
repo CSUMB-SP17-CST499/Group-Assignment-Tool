@@ -65,6 +65,28 @@ def get_users(group):
         print(e)
     
     return users_names
+    
+def get_user_ids(group):
+    """Function creates a 'get'reques, in order to obtain the group user's names, by passing the token as a parameter for authentication and the
+        ids of the group members.
+
+    Args:
+        param1 (list): the name of the group
+
+    Returns:
+        Returns a list containing the names of the members in the Slack group specified.
+
+    """
+    user_ids = []
+    try:
+        request = requests.get('https://slack.com/api/usergroups.users.list', params = {'token': token.get_slack_token(), 'usergroup': group})
+        data = request.json()
+        user_ids = data['users']
+
+    except requests.exceptions.RequestException as e:
+        print(e)
+        
+    return user_ids
 
 def get_user_names(user_ids):
     """Function creates a 'get'reques, in order to obtain the group user's names, by passing the token as a parameter for authentication.
@@ -89,10 +111,11 @@ def get_user_names(user_ids):
     return users_names
     
 def update_employees(user_ids, user_group_id):
-    """Function creates a 'get'reques, in order to obtain the group user's names, by passing the token as a parameter for authentication.
+    """Function creates a 'get'request, in order to update the list of user in a user group, by passing the token as a parameter for authentication,
+        a list of userIDs, and the id of the user_group.
 
     Args:
-        param1 (:list:`str`)
+        param1 (:list:`str`, group)
 
     Returns:
         Returns a list containing the names of the members in the Slack group specified.
@@ -100,8 +123,7 @@ def update_employees(user_ids, user_group_id):
     """
     
     try:
-        request = requests.get('https://slack.com/api/usergroups.users.update',
-        params = {'token': token.get_slack_token(), 'usergroup': user_ids, 'users': user_group_id})
+        request = requests.get('https://slack.com/api/usergroups.users.update', params = {'token': token.get_slack_token(), 'usergroup': user_group_id, 'users': user_ids})
         data = request.json()
         
     except requests.exceptions.RequestException as e:
