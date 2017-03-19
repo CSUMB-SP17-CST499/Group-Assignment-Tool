@@ -12,7 +12,10 @@ def get_user_groups():
         Returns a list containing Slack group names.
 
     """
-    request = requests.get('https://slack.com/api/usergroups.list', params = {'token': token.get_slack_token()})
+    request = requests.get('https://slack.com/api/usergroups.list', 
+            params = {'token': token.get_slack_token() },
+            headers = {'Connection': 'close'} )
+            
     data = request.json()
     names = []
     size = len(data)
@@ -30,7 +33,10 @@ def get_user_group_ids():
         Returns a list containing Slack group ids.
 
     """
-    request = requests.get('https://slack.com/api/usergroups.list', params = {'token': token.get_slack_token()})
+    request = requests.get('https://slack.com/api/usergroups.list', 
+            params = {'token': token.get_slack_token() },
+            headers = {'Connection': 'close'} )
+            
     data = request.json()
     group_ids = []
     size = len(data)
@@ -51,7 +57,10 @@ def get_users(group):
     """
     users_names = []
     try:
-        request = requests.get('https://slack.com/api/usergroups.list', params = {'token': token.get_slack_token(), 'include_users': "true"})
+        request = requests.get('https://slack.com/api/usergroups.list', 
+                params = {'token': token.get_slack_token(), 'include_users': "true"},
+                headers = {'Connection': 'close'} )
+                
         data = request.json()
         names = []
         size = len(data)
@@ -79,7 +88,10 @@ def get_user_ids(group):
     """
     user_ids = []
     try:
-        request = requests.get('https://slack.com/api/usergroups.users.list', params = {'token': token.get_slack_token(), 'usergroup': group})
+        request = requests.get('https://slack.com/api/usergroups.users.list', 
+                params = {'token': token.get_slack_token(), 'usergroup': group},
+                headers = {'Connection': 'close'} )
+                
         data = request.json()
         user_ids = data['users']
 
@@ -101,7 +113,10 @@ def get_user_names(user_ids):
     users_names = []
     for id in user_ids: #doing an api reques per user
         try:
-            request = requests.get('https://slack.com/api/users.info', params = {'token': token.get_slack_token(), 'user': id})
+            request = requests.get('https://slack.com/api/users.info', 
+                    params = {'token': token.get_slack_token(), 'user': id},
+                    headers = {'Connection': 'close'} )
+                    
             data = request.json()
             users_names.append(data['user']['name'])
             
@@ -123,7 +138,10 @@ def update_employees(user_ids, user_group_id):
     """
     
     try:
-        request = requests.get('https://slack.com/api/usergroups.users.update', params = {'token': token.get_slack_token(), 'usergroup': user_group_id, 'users': user_ids})
+        request = requests.get('https://slack.com/api/usergroups.users.update', 
+                params = {'token': token.get_slack_token(), 'usergroup': user_group_id, 'users': user_ids},
+                headers = {'Connection': 'close'} )
+                
         data = request.json()
         
     except requests.exceptions.RequestException as e:
