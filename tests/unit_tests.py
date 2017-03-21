@@ -5,15 +5,18 @@ class testSlackFunctions(unittest.TestCase):
 
     def test_self(self):
         result = ''.split()
-        self.assertEquals(result, [])
+        self.assertEqual(result, [])
+        
         
     def test_get_user_groups(self):
         result = slack.get_user_groups()
         self.assertIsNotNone(result)
         
+        
     def test_get_user_group_id(self):
         result = slack.get_user_group_ids()
         self.assertIsNotNone(result)
+        
         
     def test_get_users(self):
         groups = slack.get_user_groups()
