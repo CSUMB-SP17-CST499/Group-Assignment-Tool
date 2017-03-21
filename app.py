@@ -7,6 +7,8 @@ from wtforms import TextField, TextAreaField, validators, StringField, SubmitFie
 from wtforms.validators import DataRequired
 from hashlib import md5
 
+from db.database import db_session, init_db
+
 
 mysql = MySQL()
 app = flask.Flask(__name__)
@@ -15,6 +17,9 @@ app.config['MYSQL_DATABASE_PASSWORD'] = 'PAnthony38'
 app.config['MYSQL_DATABASE_DB'] = 'groupAssignmentTool'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
+
+# Initialize the MySQL database
+init_db()
 
 
 @app.route('/')
@@ -83,6 +88,11 @@ def empGroup():
 @app.route('/edits')
 def edits():
     return flask.render_template("edits.html")
+
+
+@app.teardown_appcontext
+def shutdown_session(exception = None):
+    db_session.remove()
 
 
 if __name__ == '__main__':
