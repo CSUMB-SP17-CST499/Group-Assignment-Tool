@@ -3,11 +3,12 @@
 {% block content %}
 <!-- TODO: Need to add loginScreen class to the body of this file -->
 <div class="container">
+    <h1>Login</h1>
     <div class="row">
         <div class="col-md-offset-5 col-md-3">
             <div class="form-login">
                 <h4>Group Assignment Tool</h4>
-                <form action = "../loginDB" method = "POST">
+                <form id = "login" method = "POST">
                     <input type = "text" id="userName" class="form-control input-sm chat-input" placeholder="username" />
                     </br>
                     <input type="password" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
