@@ -5,8 +5,8 @@ from flaskext.mysql import MySQL
 from flask_wtf import Form
 from wtforms import TextField, TextAreaField, validators, StringField, SubmitField, csrf
 from wtforms.validators import DataRequired
-from slackclient import SlackClient
 from hashlib import md5
+
 
 mysql = MySQL()
 app = flask.Flask(__name__)
@@ -19,20 +19,15 @@ mysql.init_app(app)
 
 @app.route('/')
 def index():
-
-    slack_client = SlackClient('your test token here')
-    slack_client.api_call("api.test")
-    SLACK_TOKEN = os.environ.get('SLACK_TOKEN')
-
-    slack_client = SlackClient(SLACK_TOKEN)
-
-# If there is no userName, then route to loginScreen. Else, route to the main page.
+    # If there is no userName, then route to loginScreen. Else, route to the main page.
     return flask.render_template("index.html")
+    
     
 @app.route('/login')
 def login():
-# If there is no userName, then route to loginScreen. Else, route to the main page.
+    # If there is no userName, then route to loginScreen. Else, route to the main page.
     return flask.render_template("login.html")
+    
     
 @app.route('/showcreateaccount')
 def showcreateaccount():
@@ -60,6 +55,7 @@ def createaccount():
         return json.dumps({'html':'<span>Enter the required fields</span>'})
     return render_template("login.html")
     
+    
 @app.route('/loginDB', methods=['POST'])
 def loginBD():
     username = request.form['userName']
@@ -73,21 +69,25 @@ def loginBD():
      return flask.render_template("index.html")
     return json.dumps({'status':'OK','user':username,'pass':password});
 
+
 @app.route('/add')
 def addEmp():
     return flask.render_template("add.html")
 
+
 @app.route('/employee')
 def empGroup():
     return flask.render_template("employee.html")
+    
     
 @app.route('/edits')
 def edits():
     return flask.render_template("edits.html")
 
 
-app.run(
-    port=int(os.getenv('PORT', 8080)),
-    host=os.getenv('IP', '0.0.0.0'),
-    debug=True
-)
+if __name__ == '__main__':
+    app.run(
+        port=int(os.getenv('PORT', 8080)),
+        host=os.getenv('IP', '0.0.0.0'),
+        debug=True
+    )
