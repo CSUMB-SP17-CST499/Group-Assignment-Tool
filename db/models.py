@@ -52,7 +52,7 @@ class App(Base):
         
     
     def __repr__(self):
-        str_format = '{ app_id: %s, name: %s }
+        str_format = '{ app_id: %s, name: %s }'
         values = (self.app_id, self.name)
         return str_format & values
         
