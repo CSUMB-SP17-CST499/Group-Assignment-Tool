@@ -1,13 +1,15 @@
 import flask, os
 
-from flask import render_template, flash, request, json
+from flask import render_template, flash, request, json, make_response
 from flaskext.mysql import MySQL
 from flask_wtf import Form
 from wtforms import TextField, TextAreaField, validators, StringField, SubmitField, csrf
 from wtforms.validators import DataRequired
 from hashlib import md5
 
-from db.database import db_session, init_db
+from db.database import init_db, db_session
+from db import query
+
 
 
 mysql = MySQL()
@@ -18,9 +20,9 @@ app.config['MYSQL_DATABASE_DB'] = 'groupAssignmentTool'
 app.config['MYSQL_DATABASE_HOST'] = 'localhost'
 mysql.init_app(app)
 
-# Initialize the MySQL database
-init_db()
 
+# Initalize the database
+init_db()
 
 @app.route('/')
 def index():
@@ -41,27 +43,32 @@ def showcreateaccount():
     
 @app.route('/createaccount', methods=['POST'])
 def createaccount():
-    _firstname = request.form['firstname']
-    _lastname = request.form['lastname']
-    # return json.dumps({'status':'OK','user':_firstname,'pass':_lastname});
-    _email = request.form['email']
-    username = request.form['username']
-    _password = request.form['userPassword']
-    if _firstname and _lastname and _email and username and _password:
-        cursor = mysql.connect().cursor()
-        cursor.execute("SELECT * from User where Username = ' " + username + " ' ");
-        data = cursor.fetchone()
-        if data is None:
-            cursor.callproc('sp_createUser',(_firstname, _lastname, _email, username, _password));
+    
+    if request.method == 'POST':
+        data = request.get_json()
+
+        firstname = data.get('firstname')
+        lastname = data.get('lastname')
+        email = data.get('email')
+        username = data.get('username')
+        password = data.get('password')
+        is_admin = data.get('is_admin')
+        
+        if firstname and lastname and email and username and password:
+            if query.does_user_email_exist(email):
+                data = json.dumps({'message': 'The entered email is already in use.' +
+                        ' Please entere a different one.'})
+                return (data, 400)
+            
+            return (json.dumps({'message': 'Unidentified error'}), 500)
+            
         else:
-            return "Username already exists"
-        return json.dumps({'html':'<span>All fields good !!</span>'})
-    else:
-        return json.dumps({'html':'<span>Enter the required fields</span>'})
-    return render_template("login.html")
+            data = json.dumps({'message': 'There is a missing field. ' +
+                    'Please fill all required fields'})
+            return (data, 400)
+            
     
-    
-@app.route('/loginDB', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def loginBD():
     username = request.form['userName']
     password = request.form['userPassword']

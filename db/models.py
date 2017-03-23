@@ -1,13 +1,53 @@
 from sqlalchemy import Column, Integer, String
 from db.database import Base
 
+class User(Base):
+    """The model for the user table.ArithmeticError
+    
+    Attributes:
+        email: The user's email address. It is the primary key of the table
+            and will be used for logging in to the application.ArithmeticError
+        first_name: The first name of the user.
+        last_name: The last name of the user.
+        username: The username the user can use to refer to themself. This can
+            also be used for logging in.
+        password: The password the user uses to authenticate.
+        is_admin: A boolean value that used to identify whether the user is an
+            admin within the app.
+    
+    """
+    __tablename__ = 'user'
+    
+    email = Column(String(255), primary_key = True)
+    first_name = Column(String(255) )
+    last_name = Column(String(255) )
+    username = Column(String(255) )
+    password = Column(String(255) )
+    is_admin = Column(Integer )
+    
+    def __init__(self, email: str, first_name: str, last_name: str, 
+            username: str , password: str, is_admin: bool = False):
+                        
+        self.email = email
+        self.first_name = first_name
+        self.last_name = last_name
+        self.username = username
+        self.password = password
+        self.is_admin = is_admin
+        
+        
+    def __repr__(self):
+        str_format = '<User(email: %s, first_name: %s, last_name: %s)>'
+        values = (self.email, self.first_name, self.last_name)
+        return str_format % values
+
 
 class Employee(Base):
     """The model for the employee table.
     
     Attributes:
-        email: (str): The employee's email. It is used as the primary key for
-            the table, and it will be used for adding employees to gruops for
+        email (str): The employee's email. It is used as the primary key for
+            the table, and it will be used for adding employees to groups for
             the corresponding apps.
         first_name (str): The employee's first name.
         last_name (str): The employee's last name.
@@ -20,13 +60,15 @@ class Employee(Base):
     last_name = Column(String(255) )
     
     
-    def __init__(self, email = None, first_name = None, last_name = None):
+    def __init__(self, email: str, first_name: str, last_name: str):
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
+        self.username = username
+        
         
     def __repr__(self):
-        str_format = '{ email: %s, first_name: %s, last_name: %s }' 
+        str_format = '<Employee(email: %s, first_name: %s, last_name: %s)>' 
         values = (self.email, self.first_name, self.last_name)
         return str_format % values
         
@@ -52,7 +94,7 @@ class App(Base):
         
     
     def __repr__(self):
-        str_format = '{ app_id: %s, name: %s }'
+        str_format = '<App(app_id: %s, name: %s)>'
         values = (self.app_id, self.name)
         return str_format & values
         
@@ -81,7 +123,7 @@ class Role(Base):
         
     
     def __repr__(self):
-        str_format = '{ role_id: %s, name: %s, description: %s}'
+        str_format = '<Role(role_id: %s, name: %s, description: %s)>'
         values = (self.role_id, self.name, self.description)
         return str_format % values
 
@@ -110,6 +152,6 @@ class Group(Base):
     
     
     def __repr___(self):
-        str_format = '{ group_id: %s, name: %s, app_id: %s }'
+        str_format = '<Group(group_id: %s, name: %s, app_id: %s)>'
         values = (self.group_id, self.name, self.app_id)
         return str_format % values
