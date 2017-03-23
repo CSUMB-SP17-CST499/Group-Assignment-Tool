@@ -9,6 +9,8 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+    
+    <link rel="stylesheet" href="../static/styles/style.css">
 <title></title>
     
   </head>
@@ -52,6 +54,17 @@
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
+    
+    {% block alert %}
+      <div class="alert fade in bg-danger" id="alert-message"
+        {% if message %} style="display: block;"  
+        {% else %} style="display: none;"
+        {% endif %}>
+        
+        <button type="button" class="close">×</button>
+        <span id="message">{{ message }}</span>
+      </div>
+    {% endblock %}
     
     {% block content %}{{tok}}{% endblock %}
     

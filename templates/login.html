@@ -2,32 +2,37 @@
 {% block title %} Login {% endblock %}
 {% block content %}
 <!-- TODO: Need to add loginScreen class to the body of this file -->
+<script src="../static/Login.js"></script>
 <div class="container">
     <h1>Login</h1>
+    <hr>
     <div class="row">
         <div class="col-md-offset-5 col-md-3">
             <div class="form-login">
                 <h4>Group Assignment Tool</h4>
-                <form id = "login" method = "POST">
-                    <input type = "text" id="userName" class="form-control input-sm chat-input" placeholder="username" />
+                <form method = "POST" action="/login">
+                    <input type = "text" id="username" name="username"
+                        class="form-control input-sm chat-input" placeholder="username" />
                     </br>
-                    <input type="password" id="userPassword" class="form-control input-sm chat-input" placeholder="password" />
+                    <input type="password" id="password" name="password"
+                        class="form-control input-sm chat-input" placeholder="password" />
                     </br>
                         <div class="wrapper">
-                            <span class="group-btn">     
-                            <input class="btn btn-primary btn-md" type="submit"
-                                name="Login" value="Login">
-                                <div class="btn btn-primary btn-md">
-                            <a href = "/showcreateaccount"
-                                style type="color/White;" name="Create Account" value="Create Account"> Create Account</a>
-                            </div>
+                            <span class="group-btn">  
+                                <input class="btn btn-primary btn-md" type="submit"
+                                    id="login" value="Login" role="button">
+                                    
+                                <span class="btn btn-link btn-md" id="create_account">
+                                    <a href="/showcreateaccount">
+                                        Create Account
+                                    </a>
+                                </span>
                             </span>
                         </div>
                         </div>
                 </form>
-            
+            </div>
         </div>
-      </div>
     </div>
-    </div>
+</div>
 {% endblock %}

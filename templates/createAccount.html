@@ -3,8 +3,9 @@
 {% block title %} Sign Up {% endblock %}
 {% block content %}
 <script src="../static/CreateAccount.js"></script>
- <div class="container">
+<div class="container">
     <h1>Create Account</h1>
+    <hr>
     <div class="row">
         <div class="col-md-offset-5 col-md-3">
             <div class="form-login">
@@ -18,23 +19,23 @@
                     </br>
                     <input type="text" id="username" class="form-control input-sm chat-input" placeholder="Username" />
                     </br>
-                    <input type="password" id="userPassword" class="form-control input-sm chat-input" placeholder="Password" />
+                    <input type="password" id="password" class="form-control input-sm chat-input" placeholder="Password" />
                     </br>
                    <div>Admin (Yes/No)
-                    <input type="checkbox" id="adimn" class="form-control input-sm chat-input" />
+                    <input type="checkbox" id="is_admin" class="form-control input-sm chat-input" />
                    </div>
                     </br>
                         <div class="wrapper">
                             <span class="group-btn">     
                             <button class="btn btn-primary btn-md" type ="button"
-                                id="Create_Account" value="Create Account">Create Account</button>
+                                id="Create_Account" value="Create Account">
+                                Create Account
+                            </button>
                             </span>
                         </div>
                 </form>
             </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 {% endblock %}

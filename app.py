@@ -30,12 +30,6 @@ def index():
     return flask.render_template("index.html")
     
     
-@app.route('/login')
-def login():
-    # If there is no userName, then route to loginScreen. Else, route to the main page.
-    return flask.render_template("login.html")
-    
-    
 @app.route('/showcreateaccount')
 def showcreateaccount():
     return render_template("createAccount.html")
@@ -56,30 +50,36 @@ def createaccount():
         
         if firstname and lastname and email and username and password:
             if query.does_user_email_exist(email):
-                data = json.dumps({'message': 'The entered email is already in use.' +
+                resp = json.dumps({'message': 'The entered email is already in use.' +
                         ' Please entere a different one.'})
-                return (data, 400)
+                return (resp, 400)
             
-            return (json.dumps({'message': 'Unidentified error'}), 500)
+            resp = json.dumps({'message': 'Unkown error. Please contact support.'})
+            return (resp, 500)
             
         else:
-            data = json.dumps({'message': 'There is a missing field. ' +
+            resp = json.dumps({'message': 'There is a missing field. ' +
                     'Please fill all required fields'})
-            return (data, 400)
+            return (resp, 400)
             
     
-@app.route('/login', methods=['POST'])
-def loginBD():
-    username = request.form['userName']
-    password = request.form['userPassword']
-    cursor = mysql.connect().cursor()
-    cursor.execute("SELECT * from User where user_username = ' " + username + " ' and user_password = ' " + password + " ' ")
-    data = cursor.fetchone()
-    if data is None:
-     return "Username or Password is wrong"
-    else:
-     return flask.render_template("index.html")
-    return json.dumps({'status':'OK','user':username,'pass':password});
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    error = None
+
+    if request.method == 'POST':        
+        username = request.form['username']
+        password = request.form['password']
+        # cursor = mysql.connect().cursor()
+        # cursor.execute("SELECT * from User where user_username = ' " + username + " ' and user_password = ' " + password + " ' ")
+        # data = cursor.fetchone()
+        
+        if False:
+            error = 'Unkown error. Please contact support.'
+        else:
+            flask.redirect('/')
+
+    return flask.render_template('login.html', message = error)
 
 
 @app.route('/add')
