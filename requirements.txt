@@ -1,0 +1,9 @@
+flask-login
+flask-openid
+flask-mail
+flask-socketio
+Jinja2
+WTForms
+flask-whooshalchemy
+flask-mysql
+slackclient==1.0.0

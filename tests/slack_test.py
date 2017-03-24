@@ -33,8 +33,8 @@ class testSlackFunctions(unittest.TestCase):
         group_names = slack.get_user_groups()
         first_group_name = group_names[0]
         group_ids = slack.get_user_group_ids()
-        print("These are group IDs")
-        print(group_ids)
+
+
         groups = slack.get_user_groups()
         first_group_id = group_ids[0]
         
