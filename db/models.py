@@ -88,15 +88,15 @@ class App(Base):
     name = Column(String(255) )
     
     
-    def __init__(self, app_id, name):
+    def __init__(self, app_id: int, name: str, token: str = ""):
         self.app_id = app_id
         self.name = name
-        
+        self.token = token
     
     def __repr__(self):
         str_format = '<App(app_id: %s, name: %s)>'
         values = (self.app_id, self.name)
-        return str_format & values
+        return str_format % values
         
         
 class Role(Base):
