@@ -1,25 +1,13 @@
 import flask, os
 
 from flask import render_template, flash, request, json, make_response
-from flaskext.mysql import MySQL
-from flask_wtf import Form
-from wtforms import TextField, TextAreaField, validators, StringField, SubmitField, csrf
-from wtforms.validators import DataRequired
 from hashlib import md5
 
 from db.database import init_db, db_session
 from db import query
 
 
-
-mysql = MySQL()
 app = flask.Flask(__name__)
-app.config['MYSQL_DATABASE_USER'] = 'thedirtyham'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'PAnthony38'
-app.config['MYSQL_DATABASE_DB'] = 'groupAssignmentTool'
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-mysql.init_app(app)
-
 
 # Initalize the database
 init_db()
@@ -70,9 +58,6 @@ def login():
     if request.method == 'POST':        
         username = request.form['username']
         password = request.form['password']
-        # cursor = mysql.connect().cursor()
-        # cursor.execute("SELECT * from User where user_username = ' " + username + " ' and user_password = ' " + password + " ' ")
-        # data = cursor.fetchone()
         
         if False:
             error = 'Unkown error. Please contact support.'
