@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Column, Integer, String, create_engine, engine
 from db.database import Base
 from sqlalchemy.orm import sessionmaker
 import models
@@ -9,32 +9,21 @@ import models
 
 class employee_to_role(Base):
     """"""
-    __tablename__ = 'employee'
+    __tablename__ = 'employee_role'
     
     email = Column(String(255), primary_key = True)
-    first_name = Column(String(255) )
-    last_name = Column(String(255) )
+    role_id = Column(Integer, primary_key = True)
  
     #----------------------------------------------------------------------
-    def __init__(self, id, url, title, rev_host, visit_count,
-                 hidden, typed, favicon_id, frecency, last_visit_date):
+    def __init__(self, email, role_id):
         """"""
-        self.id = id
-        self.url = url
-        self.title = title
-        self.rev_host = rev_host
-        self.visit_count = visit_count
-        self.hidden = hidden
-        self.typed = typed
-        self.favicon_id = favicon_id
-        self.frecency = frecency
-        self.last_visit_date = last_visit_date
+        self.email = email
+        self.role_id = role_id
  
     #----------------------------------------------------------------------
     def __repr__(self):
         """"""
-        return "<Places - '%s': '%s' - '%s'>" % (self.id, self.title,
-                                                 self.url)
+        return "<'%s': '%s'>" % (self.email, self.role_id)
  
 #----------------------------------------------------------------------
 def loadSession():
@@ -46,5 +35,5 @@ def loadSession():
  
 if __name__ == "__main__":
     session = loadSession()
-    res = session.query(Places).all()
-    print res[1].title
+    res = session.query(employee_to_role).all()
+    print res[0].email
