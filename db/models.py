@@ -1,5 +1,12 @@
 from sqlalchemy import Column, Integer, String
 from db.database import Base
+from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.ext.declarative import declarative_base
+
+employee_role = Table('employee_role', Base.metadata,
+    Column('email', String(255), ForeignKey('employee.email')),
+    Column('role_id', Integer, ForeignKey('role.name'))
+)
 
 class User(Base):
     """The model for the user table.ArithmeticError
@@ -59,6 +66,10 @@ class Employee(Base):
     first_name = Column(String(255) )
     last_name = Column(String(255) )
     
+    children = relationship(
+        "Role",
+        secondary=employee_to_role,
+        back_populates="parents")
     
     def __init__(self, email: str, first_name: str, last_name: str):
         self.email = email
@@ -85,7 +96,6 @@ class App(Base):
     
     app_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
-    
     
     def __init__(self, app_id: int, name: str, token: str = ""):
         self.app_id = app_id
@@ -114,6 +124,10 @@ class Role(Base):
     name = Column(String(255), unique = True )
     description = Column(String(1000) )
     
+    parents = relationship(
+        "Employee",
+        secondary=employee_role,
+        back_populates="employee")
     
     def __init__(self, role_id, name, description):
         self.role_id = role_id
