@@ -8,6 +8,11 @@ employee_role = Table('employee_role', Base.metadata,
     Column('role_id', Integer, ForeignKey('role.name'))
 )
 
+role_group = Table('role_group', Base.metadata,
+    Column('group_id', String(255), ForeignKey('group.group_id')),
+    Column('role_id', Integer, ForeignKey('role.name'))
+)
+
 class User(Base):
     """The model for the user table.ArithmeticError
     
@@ -128,6 +133,11 @@ class Role(Base):
         "Employee",
         secondary=employee_role,
         back_populates="employee")
+        
+    roleParents = relationship(
+        "Employee",
+        secondary=role_group,
+        back_populates="group")
     
     def __init__(self, role_id, name, description):
         self.role_id = role_id
@@ -157,6 +167,10 @@ class Group(Base):
     name = Column(String(255) )
     app_id = Column(Integer)
     
+    children = relationship(
+        "Role",
+        secondary=role_group,
+        back_populates="parents")
     
     def __init__(self, group_id, name, app_id):
         self.group_id = group_id
