@@ -186,7 +186,7 @@ class RoleToGroup(Base):
     __tablename__ = 'role_group'
 
     group_id = Column('group_id', Integer, ForeignKey('group.group_id'), primary_key = True)
-    role_id = Column('role_id', Integer, ForeignKey('role.name'), primary_key = True)
+    role_id = Column('role_id', Integer, ForeignKey('role.role_id'), primary_key = True)
     
     def __init__(self, email, role_id):
         self.group_id = group_id
@@ -202,17 +202,17 @@ class AppToGroup(Base):
     
     Attributes:
         app_id: (str): Foreign key, from the app table.
-        role_id (int): Foreign key, from the roles table.
+        group_id (int): Foreign key, from the group table.
     
     """
     __tablename__ = 'app_group'
 
     app_id = Column('app_id', Integer, ForeignKey('app.app_id'), primary_key = True)
-    role_id = Column('role_id', Integer, ForeignKey('role.name'), primary_key = True)
+    group_id = Column('group_id', Integer, ForeignKey('group.group_id'), primary_key = True)
     
     def __init__(self, app_id, role_id):
         self.app_id = app_id
-        self.role_id = role_id
+        self.group_id = group_id
     
     
     def __repr___(self):
