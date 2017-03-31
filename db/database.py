@@ -20,11 +20,9 @@ Todo:
 params = get_uri_params()
 uri = create_engine_uri(user = params[0], password = params[1], db = params[2])
 engine = create_engine(uri, convert_unicode=True)
-db_session = scoped_session(sessionmaker(autocommit=False,
-                                         autoflush=False,
-                                         bind=engine))
+SessionFactory = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+Session = scoped_session(SessionFactory)
 Base = declarative_base()
-Base.query = db_session.query_property()
 
 
 def init_db():
@@ -45,7 +43,7 @@ def get_all_instances(model):
     Returns:
         Returns a list of items from the database of the type model is.
     """
-    session = db_session()
+    session = Session()
     return session.query(model).all()
     
 
@@ -65,8 +63,8 @@ def get_instance_by_field(model, field, value):
         Returns an instance of the model if there is a match in the 
         database, otherwise returns None.
     """
-    session = db_session()
-    return db_session.query(model).filter(field == value).one()
+    session = Session()
+    return session.query(model).filter(field == value).one()
     
 
 def get_instances_by_field(model, field, value):
@@ -81,7 +79,7 @@ def get_instances_by_field(model, field, value):
         Returns a list of instances of type model if there is at least one
         match in the database, otherwise returns None.
     """
-    session = db_session()
+    session = Session()
     return session.query(model).filter(field == value).all()
     
 
@@ -109,7 +107,7 @@ def update_instance(instance):
         otherwise returns false.
     """
     is_updated = False
-    session = db_session()
+    session = Session()
     try:
         session.add(instance)
         session.commit()
@@ -136,7 +134,7 @@ def remove_instance_by_field(model, field, value):
         given field in the database, otherwise returns false.
     """
     is_deleted = False
-    session = db_session()
+    session = Session()
     try:
         result = session.query(model).filter(field == value).delete()
         
