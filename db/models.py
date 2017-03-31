@@ -144,17 +144,15 @@ class Group(Base):
 
     group_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
-    app_id = Column(Integer)
     
-    def __init__(self, group_id, name, app_id):
+    def __init__(self, group_id, name):
         self.group_id = group_id
         self.name = name
-        self.app_id = app_id
     
     
     def __repr___(self):
-        str_format = '<Group(group_id: %s, name: %s, app_id: %s)>'
-        values = (self.group_id, self.name, self.app_id)
+        str_format = '<Group(group_id: %s, name: %s)>'
+        values = (self.group_id, self.name)
         return str_format % values
         
 

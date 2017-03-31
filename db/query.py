@@ -318,7 +318,6 @@ def remove_group(group_id: int) -> bool:
     finally:
         return False
 
-# START
 def get_employee_roles(email: str) -> List[EmployeeToRole]:
     """Returns a list of roles with the given email. 
     
@@ -331,4 +330,8 @@ def get_employee_roles(email: str) -> List[EmployeeToRole]:
     return db_session.query(EmployeeToRole).filter(EmployeeToRole.email == email).all()
     
 def get_all_employees_with_roles() -> List[EmployeeToRole]:
-    return db_session.query(Employee.email, Role).filter(Employee.email == EmployeeToRole.email).filter(Role.role_id == EmployeeToRole.role_id).all()
+    return db_session.query(Employee, Role).filter(Employee.email == EmployeeToRole.email).filter(Role.role_id == EmployeeToRole.role_id).all()
+    
+def get_all_groups_with_roles() -> List[RoleToGroup]:
+    return db_session.query(Group, Role).filter(Group.group_id == RoleToGroup.group_id).filter(Role.role_id == RoleToGroup.role_id).all()
+
