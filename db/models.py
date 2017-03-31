@@ -3,11 +3,6 @@ from db.database import Base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
-employee_role = Table('employee_role', Base.metadata,
-    Column('email', String(255), ForeignKey('employee.email')),
-    Column('role_id', Integer, ForeignKey('role.name'))
-)
-
 role_group = Table('role_group', Base.metadata,
     Column('group_id', String(255), ForeignKey('group.group_id')),
     Column('role_id', Integer, ForeignKey('role.name'))
@@ -71,10 +66,6 @@ class Employee(Base):
     first_name = Column(String(255) )
     last_name = Column(String(255) )
     
-    children = relationship(
-        "Role",
-        secondary=employee_role)
-    
     def __init__(self, email: str, first_name: str, last_name: str):
         self.email = email
         self.first_name = first_name
@@ -128,14 +119,6 @@ class Role(Base):
     name = Column(String(255), unique = True )
     description = Column(String(1000) )
     
-    parents = relationship(
-        "Employee",
-        secondary=employee_role)
-        
-    roleParents = relationship(
-        "Group",
-        secondary=role_group)
-    
     def __init__(self, role_id, name, description):
         self.role_id = role_id
         self.name = name
@@ -149,7 +132,7 @@ class Role(Base):
 
 
 class Group(Base):
-    """The model for the employee table.
+    """The model for the group table.
     
     Attributes:
         group_id: (int): The primary key of the group table.
@@ -164,10 +147,6 @@ class Group(Base):
     name = Column(String(255) )
     app_id = Column(Integer)
     
-    children = relationship(
-        "Role",
-        secondary=role_group)
-    
     def __init__(self, group_id, name, app_id):
         self.group_id = group_id
         self.name = name
@@ -180,3 +159,25 @@ class Group(Base):
         return str_format % values
         
 
+class EmployeeToRole(Base):
+    """The model for the group table.
+    
+    Attributes:
+        email: (str): Foreign key, from the employee table.
+        role_id (int): Foreign key, from the roles table.
+    
+    """
+    __tablename__ = 'employee_to_role'
+
+    Column('email', String(255), ForeignKey('employee.email'), primary_key = True)
+    Column('role_id', Integer, ForeignKey('role.name'), primary_key = True)
+    
+    def __init__(self, email, role_id):
+        self.email = email
+        self.role_id = role_id
+    
+    
+    def __repr___(self):
+        str_format = '<EmployeeToRole(email: %s, role_id: %d)>'
+        values = (self.email, self.role_id)
+        return str_format % values
