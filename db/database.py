@@ -14,6 +14,7 @@ Attributes
 Todo:
     * Complete the docstring documentation for this module.
     * Update type annotations to match PEP 484 - https://www.python.org/dev/peps/pep-0484/
+    * Update instance by id
 """
 
 params = get_uri_params()
@@ -44,9 +45,10 @@ def get_all_instances(model):
     Returns:
         Returns a list of items from the database of the type model is.
     """
-    return db_session.query(model).all()
+    session = db_session()
+    return session.query(model).all()
     
-    
+
 def get_instance_by_field(model, field, value):
     """Returns an instance of a model where its field matches the given value.
         
@@ -63,6 +65,7 @@ def get_instance_by_field(model, field, value):
         Returns an instance of the model if there is a match in the 
         database, otherwise returns None.
     """
+    session = db_session()
     return db_session.query(model).filter(field == value).one()
     
 
@@ -78,7 +81,8 @@ def get_instances_by_field(model, field, value):
         Returns a list of instances of type model if there is at least one
         match in the database, otherwise returns None.
     """
-    return db_session.query(model).filter(field == value).all()
+    session = db_session()
+    return session.query(model).filter(field == value).all()
     
 
 def add_instance(instance):
@@ -105,12 +109,15 @@ def update_instance(instance):
         otherwise returns false.
     """
     is_updated = False
+    session = db_session()
     try:
-        db_session.add(instance)
-        db_session.commit()
+        session.add(instance)
+        session.commit()
+
         is_updated = True
-    except:
+    except Exception as e:
         # Todo: Log the error (Find specific errors that can happen)
+        print(e)
         pass
     
     return is_updated
@@ -129,11 +136,12 @@ def remove_instance_by_field(model, field, value):
         given field in the database, otherwise returns false.
     """
     is_deleted = False
+    session = db_session()
     try:
-        result = db_session.query(model).filter(field == value).delete()
+        result = session.query(model).filter(field == value).delete()
         
         if result == 1:
-            db_session.commit()
+            session.commit()
             is_deleted = True
             # Todo: Give the objects removed from the database a transient state
             #       So they can be added in the future if needed
@@ -143,4 +151,3 @@ def remove_instance_by_field(model, field, value):
         pass
             
     return is_deleted
-    
