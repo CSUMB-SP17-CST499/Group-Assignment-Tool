@@ -1,6 +1,8 @@
 from typing import List
-from db.database import init_db, db_session
 from db.models import User, Employee, App, Role, Group, EmployeeToRole, RoleToGroup, AppToGroup
+from db.database import get_all_instances, get_instance_by_field,\
+        get_instances_by_field, add_instance, update_instance,\
+        remove_instance_by_field
 
 
 """
@@ -11,9 +13,8 @@ from db.models import User, Employee, App, Role, Group, EmployeeToRole, RoleToGr
     Todo: Handle errors for try statements.
     
     Todo: Add try statements to the select queries.
+    
 """
-
-
 def does_user_email_exist(email: str) -> bool:
     """Returns whether a user email exists in the database.
     
@@ -28,7 +29,7 @@ def does_user_email_exist(email: str) -> bool:
 
 def get_all_apps() -> List[App]:
     """Returns a list of all apps"""
-    return db_session.query(App).all()
+    return get_all_instances(App)
     
 
 def get_app_by_id(app_id: int):
@@ -41,7 +42,7 @@ def get_app_by_id(app_id: int):
         Returns an App object with the given id if it exists, otherwise
         returns None.
     """
-    return db_session.query(App).filter(App.app_id == app_id).first()
+    return get_instance_by_field(App, App.app_id, app_id)
 
 
 def add_app(app: App) -> bool:
@@ -54,7 +55,7 @@ def add_app(app: App) -> bool:
         Returns true if the database transaction succeeded, 
         otherwise returns false.
     """
-    return update_app(app)
+    return add_instance(app)
 
 
 def update_app(app: App) -> bool:
@@ -67,15 +68,7 @@ def update_app(app: App) -> bool:
         Returns true if the database transaction succeeded, 
         otherwise returns false.
     """
-    try:
-        db_session.add(app)
-        db_session.commit()
-        return True
-    except:
-        # Todo: Log the error (Find specific errors that can happen)
-        pass
-    finally:
-        return False
+    return update_instance(app)
 
 
 def remove_app(app_id: int) -> bool:
@@ -87,16 +80,8 @@ def remove_app(app_id: int) -> bool:
     Returns:
         Returns true if an app is removed, false otherwise.
     """
-    try:
-        result = db_session.query(App).filter(App.app_id == app_id).delete()
-        db_session.commit()
-        
-        if result == 1:
-            return True
-            
-    finally:
-        return False
-   
+    return remove_instance_by_field(App, App.app_id, app_id)
+    
 
 def get_all_employees() -> List[Employee]:
     """Returns a list of all employees.
@@ -104,7 +89,7 @@ def get_all_employees() -> List[Employee]:
     Returns:
         Returns a list of Employee objects.
     """
-    return db_session.query(Employee).all()
+    return get_all_instances(Employee)
 
 
 def get_employee_by_email(email: str) -> Employee:
@@ -116,7 +101,7 @@ def get_employee_by_email(email: str) -> Employee:
     Returns:
         Returns an employee if an employee has the email, otherwise returns None.
     """
-    return db_session.query(Employee).filter(Employee.email == email).first()
+    return get_instance_by_field(Employee, Employee.email, email)
 
 
 def add_employee(employee: Employee) -> bool:
@@ -129,7 +114,7 @@ def add_employee(employee: Employee) -> bool:
         Returns true if the database transaction succeeded, 
         otherwise returns false.
     """
-    return update_employee(employee)
+    return add_instance(employee)
 
 
 def update_employee(employee: Employee) -> bool:
@@ -142,13 +127,7 @@ def update_employee(employee: Employee) -> bool:
         Returns true if the database transaction succeeded, 
         otherwise returns false.
     """
-    try:
-        db_session.add(employee)
-        db_session.commit()
-        return True
-    
-    finally:
-        return False
+    return update_instance(employee)
 
 
 def remove_employee(email: str) -> bool:
@@ -160,15 +139,7 @@ def remove_employee(email: str) -> bool:
     Returns:
         Returns true if an employee is removed, otherwise returns false.
     """
-    try:
-        result = db_session.query(Employee).filter(Employee.email == email).delete()
-        db_session.commit()
-        
-        if result == 1:
-            return True
-            
-    finally:
-        return False
+    return remove_instance_by_field(Employee, Employee.email, email)
 
 
 def get_all_roles() -> List[Role]:
@@ -177,7 +148,7 @@ def get_all_roles() -> List[Role]:
     Returns:
         Returns a list of Role objects.
     """
-    return db_session.query(Role).all()
+    return get_all_instances(Role)
 
 
 def get_role_by_id(role_id: int) -> Role:
@@ -190,7 +161,7 @@ def get_role_by_id(role_id: int) -> Role:
         Returns a role with the given role_id,
         otherwise returns None.
     """
-    return db_session.query(Role).filter(Role.role_id == role_id).first()
+    return get_instance_by_field(Role, Role.role_id, role_id)
 
 
 def add_role(role: Role) -> bool:
@@ -203,7 +174,7 @@ def add_role(role: Role) -> bool:
         Returns true if the database transaction succeeded, 
         otherwise returns false.
     """
-    update_role(role)
+    return add_instance(role)
 
 
 def update_role(role: Role) -> bool:
@@ -216,13 +187,7 @@ def update_role(role: Role) -> bool:
         Returns true if the database transaction succeeded, 
         otherwise returns false.
     """
-    try:
-        db_session.add(role)
-        db_session.commit()
-        return True
-    
-    finally:
-        return False
+    return update_instance(role)
 
 
 def remove_role(role_id: int) -> bool:
@@ -234,15 +199,7 @@ def remove_role(role_id: int) -> bool:
     Returns:
         Returns true if a role is removed, otherwise returns false.
     """
-    try:
-        result = db_session.query(Role).filter(Role.role_id == role_id).delete()
-        db_session.commit()
-        
-        if result == 1:
-            return True
-            
-    finally:
-        return False
+    return remove_instance_by_field(Role, Role.role_id, role_id)
 
 
 def get_all_groups() -> List[Group]:
@@ -251,7 +208,7 @@ def get_all_groups() -> List[Group]:
     Returns:
         Returns a list of Group objects.
     """
-    return db_session.query(Group).all()
+    return get_all_instances(Group)
 
 
 def get_group_by_id(group_id: int) -> Group:
@@ -264,7 +221,7 @@ def get_group_by_id(group_id: int) -> Group:
         Returns a group with the given role_id,
         otherwise returns None.
     """
-    return db_session.query(Group).filter(Group.group_id == group_id).first()
+    return get_instance_by_field(Group, Group.group_id, group_id)
 
 
 def add_group(group: Group) -> bool:
@@ -277,7 +234,7 @@ def add_group(group: Group) -> bool:
         Returns true if the database transaction succeeded, 
         otherwise returns false.
     """
-    update_group(group)
+    return add_instance(group)
 
 
 def update_group(group: Group) -> bool:
@@ -290,13 +247,7 @@ def update_group(group: Group) -> bool:
         Returns true if the database transaction succeeded, 
         otherwise returns false.
     """
-    try:
-        db_sessoin.add(group)
-        db_session.commit()
-        return True
-    
-    finally:
-        return False
+    return update_instance(group)
 
 
 def remove_group(group_id: int) -> bool:
@@ -308,15 +259,8 @@ def remove_group(group_id: int) -> bool:
     Returns:
         Returns true if a group is removed, otherwise returns false.
     """
-    try:
-        result = db_session.query(Group).filter(Group.group_id == group_id).delete()
-        db_session.commit()
-        
-        if result == 1:
-            return True
-            
-    finally:
-        return False
+    return remove_instance_by_field(Group, Group.group_id, group_id)
+    
 
 def get_employee_roles(email: str) -> List[EmployeeToRole]:
     """Returns a list of roles with the given email. 
@@ -329,11 +273,15 @@ def get_employee_roles(email: str) -> List[EmployeeToRole]:
     """
     return db_session.query(EmployeeToRole).filter(EmployeeToRole.email == email).all()
     
+    
 def get_all_employees_with_roles() -> List[EmployeeToRole]:
     return db_session.query(Employee, Role).filter(Employee.email == EmployeeToRole.email).filter(Role.role_id == EmployeeToRole.role_id).all()
+    
     
 def get_all_groups_with_roles() -> List[RoleToGroup]:
     return db_session.query(Group, Role).filter(Group.group_id == RoleToGroup.group_id).filter(Role.role_id == RoleToGroup.role_id).all()
 
+  
 def get_all_apps_with_groups() -> List[AppToGroup]:
     return db_session.query(App, Group).filter(Group.group_id == AppToGroup.group_id).filter(App.app_id == AppToGroup.app_id).all()
+  
