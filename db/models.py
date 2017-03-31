@@ -144,7 +144,7 @@ class Group(Base):
     app_id = Column(Integer)
     
     
-    def __init__(self, group_id, name, app_id):
+    def __init__(self, group_id, name, app_id: int = None):
         self.group_id = group_id
         self.name = name
         self.app_id = app_id

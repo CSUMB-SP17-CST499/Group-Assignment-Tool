@@ -175,3 +175,29 @@ def get_user_list():
         print(e)
     
     return data
+    
+def get_user_groups_list():
+    """Function creates a 'get'request, in order to get all the information from the groups in the Slack channel,
+    by passing the token as a parameter for authentication.
+
+    Args:
+        none
+
+    Returns:
+        Returns a dictionary containing the information of all groups in the slack channel.
+
+    """
+    data = []
+    
+    try:
+        request = requests.get('https://slack.com/api/usergroups.list', 
+                params = {'token': token.get_slack_token()},
+                headers = {'Connection': 'close'} )
+                
+        data = request.json()
+    
+    except requests.exceptions.RequestException as e:
+        print(e)
+    
+    return data
+    
