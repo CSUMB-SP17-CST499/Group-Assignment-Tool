@@ -2,6 +2,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from db.database import Base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
+import json
 
 class User(Base):
     """The model for the user table.ArithmeticError
@@ -83,6 +84,8 @@ class App(Base):
     """
     __tablename__ = 'app'
     
+    
+    
     app_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
     
@@ -96,6 +99,9 @@ class App(Base):
         values = (self.app_id, self.name)
         return str_format % values
         
+    def toJSON(self):
+        return json.dumps(self, default = lambda obj: obj.__dict__,
+                sort_keys = True, indent = 4)
         
 class Role(Base):
     """The model for the role table.
