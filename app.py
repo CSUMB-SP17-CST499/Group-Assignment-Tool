@@ -55,14 +55,16 @@ def createaccount():
 def login():
     error = None
 
-    if request.method == 'POST':        
+    if request.method == 'POST': 
+        #check the database code
         username = request.form['username']
         password = request.form['password']
+        registered_user = db_session.query(User).filter_by(username=username,password=password).first()
         
         if False:
             error = 'Unkown error. Please contact support.'
         else:
-            flask.redirect('/')
+            flask.redirect(index())
 
     return flask.render_template('login.html', message = error)
 
