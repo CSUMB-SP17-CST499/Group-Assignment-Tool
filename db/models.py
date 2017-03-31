@@ -3,11 +3,6 @@ from db.database import Base
 from sqlalchemy.orm import sessionmaker, relationship
 from sqlalchemy.ext.declarative import declarative_base
 
-role_group = Table('role_group', Base.metadata,
-    Column('group_id', String(255), ForeignKey('group.group_id')),
-    Column('role_id', Integer, ForeignKey('role.name'))
-)
-
 class User(Base):
     """The model for the user table.ArithmeticError
     
@@ -158,7 +153,7 @@ class Group(Base):
         
 
 class EmployeeToRole(Base):
-    """The model for the group table.
+    """The model for the employee_role table.
     
     Attributes:
         email: (str): Foreign key, from the employee table.
@@ -178,4 +173,49 @@ class EmployeeToRole(Base):
     def __repr___(self):
         str_format = '<EmployeeToRole(email: %s, role_id: %d)>'
         values = (self.email, self.role_id)
+        return str_format % values
+        
+class RoleToGroup(Base):
+    """The model for the role_group table.
+    
+    Attributes:
+        group_id: (str): Foreign key, from the group_id table.
+        role_id (int): Foreign key, from the roles table.
+    
+    """
+    __tablename__ = 'role_group'
+
+    group_id = Column('group_id', Integer, ForeignKey('group.group_id'), primary_key = True)
+    role_id = Column('role_id', Integer, ForeignKey('role.name'), primary_key = True)
+    
+    def __init__(self, email, role_id):
+        self.group_id = group_id
+        self.role_id = role_id
+    
+    def __repr___(self):
+        str_format = '<RoleToGroup(group_id: %d, role_id: %d)>'
+        values = (self.group_id, self.role_id)
+        return str_format % values
+        
+class AppToGroup(Base):
+    """The model for the app_group table.
+    
+    Attributes:
+        app_id: (str): Foreign key, from the app table.
+        role_id (int): Foreign key, from the roles table.
+    
+    """
+    __tablename__ = 'app_group'
+
+    app_id = Column('app_id', Integer, ForeignKey('app.app_id'), primary_key = True)
+    role_id = Column('role_id', Integer, ForeignKey('role.name'), primary_key = True)
+    
+    def __init__(self, app_id, role_id):
+        self.app_id = app_id
+        self.role_id = role_id
+    
+    
+    def __repr___(self):
+        str_format = '<AppToGroup(group_id: %d, app_id: %d)>'
+        values = (self.group_id, self.app_id)
         return str_format % values
