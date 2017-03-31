@@ -73,8 +73,7 @@ class Employee(Base):
     
     children = relationship(
         "Role",
-        secondary=employee_to_role,
-        back_populates="parents")
+        secondary=employee_role)
     
     def __init__(self, email: str, first_name: str, last_name: str):
         self.email = email
@@ -131,13 +130,11 @@ class Role(Base):
     
     parents = relationship(
         "Employee",
-        secondary=employee_role,
-        back_populates="employee")
+        secondary=employee_role)
         
     roleParents = relationship(
-        "Employee",
-        secondary=role_group,
-        back_populates="group")
+        "Group",
+        secondary=role_group)
     
     def __init__(self, role_id, name, description):
         self.role_id = role_id
@@ -169,8 +166,7 @@ class Group(Base):
     
     children = relationship(
         "Role",
-        secondary=role_group,
-        back_populates="parents")
+        secondary=role_group)
     
     def __init__(self, group_id, name, app_id):
         self.group_id = group_id
@@ -182,3 +178,5 @@ class Group(Base):
         str_format = '<Group(group_id: %s, name: %s, app_id: %s)>'
         values = (self.group_id, self.name, self.app_id)
         return str_format % values
+        
+
