@@ -152,8 +152,8 @@ def update_employees(user_ids, user_group_id):
     
 
 def get_user_list():
-    """Function creates a 'get'request, in order to get all the information from the users in the slack channel,
-    by passing the token as a parameter for authentication,
+    """Function creates a 'get'request, in order to get all the information from the users in the Slack channel,
+    by passing the token as a parameter for authentication.
 
     Args:
         none
