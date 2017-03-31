@@ -337,3 +337,17 @@ def get_all_groups_with_roles() -> List[RoleToGroup]:
 
 def get_all_apps_with_groups() -> List[AppToGroup]:
     return db_session.query(App, Group).filter(Group.group_id == AppToGroup.group_id).filter(App.app_id == AppToGroup.app_id).all()
+
+def json_empl_w_rol():
+    listOfEmpls = get_all_employees_with_roles()
+    dictionary = {}
+    print(listOfEmpls[0])
+    # for x in listOfEmpls:
+        
+    
+# json.dumps({'employees': [
+# 	{'email': 'elgandara@csumb.edu', 'first_name': 'Eliasar'}, 
+# 	{'email': 'sal@csumb.edu', 'first_name': 'Sal'}
+# 	]}
+# )
+
