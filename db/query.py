@@ -12,8 +12,6 @@ from db.models import User, Employee, App, Role, Group
     
     Todo: Add try statements to the select queries.
 """
-
-
 def does_user_email_exist(email: str) -> bool:
     """Returns whether a user email exists in the database.
     
@@ -67,15 +65,15 @@ def update_app(app: App) -> bool:
         Returns true if the database transaction succeeded, 
         otherwise returns false.
     """
+    is_updated = False
     try:
         db_session.add(app)
-        db_session.commit()
-        return True
+        is_updated = True
     except:
         # Todo: Log the error (Find specific errors that can happen)
         pass
-    finally:
-        return False
+    
+    return is_updated
 
 
 def remove_app(app_id: int) -> bool:
@@ -87,16 +85,15 @@ def remove_app(app_id: int) -> bool:
     Returns:
         Returns true if an app is removed, false otherwise.
     """
+    is_deleted = False
     try:
         result = db_session.query(App).filter(App.app_id == app_id).delete()
-        db_session.commit()
         
         if result == 1:
-            return True
+            is_deleted True
             
-    finally:
-        return False
-   
+    return is_deleted
+    
 
 def get_all_employees() -> List[Employee]:
     """Returns a list of all employees.
