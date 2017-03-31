@@ -72,10 +72,5 @@ class testSlackFunctions(unittest.TestCase):
         print("Testing slack list: after adding user back:")
         print(updated_user_list)
         
-    
-    def test_create_group(self):
-        slack.create_group()
-
-
 if __name__ == '__main__':
     unittest.main()
