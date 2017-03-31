@@ -335,3 +335,5 @@ def get_all_employees_with_roles() -> List[EmployeeToRole]:
 def get_all_groups_with_roles() -> List[RoleToGroup]:
     return db_session.query(Group, Role).filter(Group.group_id == RoleToGroup.group_id).filter(Role.role_id == RoleToGroup.role_id).all()
 
+def get_all_apps_with_groups() -> List[AppToGroup]:
+    return db_session.query(App, Group).filter(Group.group_id == AppToGroup.group_id).filter(App.app_id == AppToGroup.app_id).all()
