@@ -341,8 +341,7 @@ def get_all_apps_with_groups() -> List[AppToGroup]:
 def json_empl_w_rol():
     listOfEmpls = get_all_employees_with_roles()
     dictionary = {}
-    print(listOfEmpls[0])
-    # for x in listOfEmpls:
+    for x in listOfEmpls:
         
     
 # json.dumps({'employees': [
