@@ -1,6 +1,5 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
 from db.database import Base
-import json
 
 class User(Base):
     """The model for the user table.ArithmeticError
@@ -42,6 +41,9 @@ class User(Base):
         values = (self.email, self.first_name, self.last_name)
         return str_format % values
 
+    def toJSON(self):
+        return _get_model_json()
+        
 
 class Employee(Base):
     """The model for the employee table.
@@ -71,6 +73,9 @@ class Employee(Base):
         values = (self.email, self.first_name, self.last_name)
         return str_format % values
         
+    def toJSON(self):
+        return self._get_model_json()
+        
 
 class App(Base):
     """The model for the app table.
@@ -82,8 +87,6 @@ class App(Base):
     
     """
     __tablename__ = 'app'
-    
-    
     
     app_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
@@ -97,6 +100,10 @@ class App(Base):
         str_format = '<App(app_id: %s, name: %s)>'
         values = (self.app_id, self.name)
         return str_format % values
+        
+    def toJSON(self):
+        return self._get_model_json(['token'])
+        
         
 class Role(Base):
     """The model for the role table.
@@ -123,6 +130,9 @@ class Role(Base):
         str_format = '<Role(role_id: %s, name: %s, description: %s)>'
         values = (self.role_id, self.name, self.description)
         return str_format % values
+        
+    def toJSON(self):
+        return self._get_model_json()
 
 
 class Group(Base):
@@ -150,6 +160,9 @@ class Group(Base):
         values = (self.group_id, self.name)
         return str_format % values
         
+    def toJSON(self):
+        return self._get_model_json()
+        
 
 class EmployeeToRole(Base):
     """The model for the employee_role table.
@@ -173,6 +186,10 @@ class EmployeeToRole(Base):
         str_format = '<EmployeeToRole(email: %s, role_id: %d)>'
         values = (self.email, self.role_id)
         return str_format % values
+    
+    def toJSON(self):
+        return _get_model_json()
+
         
 class RoleToGroup(Base):
     """The model for the role_group table.
@@ -195,6 +212,10 @@ class RoleToGroup(Base):
         str_format = '<RoleToGroup(group_id: %d, role_id: %d)>'
         values = (self.group_id, self.role_id)
         return str_format % values
+    
+    def toJSON(self):
+        return self._get_model_json()    
+
         
 class AppToGroup(Base):
     """The model for the app_group table.
@@ -218,3 +239,7 @@ class AppToGroup(Base):
         str_format = '<AppToGroup(group_id: %d, app_id: %d)>'
         values = (self.group_id, self.app_id)
         return str_format % values
+        
+    def toJSON(self):
+        return self._get_model_json()
+        

@@ -1,4 +1,5 @@
 import os
+import json
 
 """
 Todo:
@@ -25,3 +26,14 @@ def create_engine_uri(user, password, db, host = 'localhost'):
             Defaults to localhost.
     """
     return 'mysql+pymysql://%s:%s@%s/%s' % (user, password, host, db)
+    
+def _get_model_json(model, exclude = []):
+    model_dict = dict(model.__dict__)
+    if '_sa_instance_state' in model_dict:
+        del model_dict['_sa_instance_state']
+        
+    for key in exclude:
+        if key in model_dict:
+            del model_dict[key]
+        
+    return json.dumps(model_dict, sort_keys = True)

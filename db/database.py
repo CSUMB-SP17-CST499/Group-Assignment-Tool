@@ -1,4 +1,4 @@
-from db.helpers import create_engine_uri, get_uri_params
+from db.helpers import create_engine_uri, get_uri_params, _get_model_json
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -24,6 +24,7 @@ db_session = scoped_session(sessionmaker(autocommit=False,
                                          bind=engine))
 Base = declarative_base()
 Base.query = db_session.query_property()
+Base._get_model_json = _get_model_json
 
 
 def init_db():
