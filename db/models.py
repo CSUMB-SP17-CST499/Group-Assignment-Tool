@@ -71,7 +71,6 @@ class Employee(Base):
         self.first_name = first_name
         self.last_name = last_name
 
-        
     def __repr__(self):
         str_format = '<Employee(email: %s, first_name: %s, last_name: %s)>' 
         values = (self.email, self.first_name, self.last_name)
@@ -123,7 +122,6 @@ class Role(Base):
         self.role_id = role_id
         self.name = name
         self.description = description
-        
     
     def __repr__(self):
         str_format = '<Role(role_id: %s, name: %s, description: %s)>'
@@ -167,10 +165,10 @@ class EmployeeToRole(Base):
         role_id (int): Foreign key, from the roles table.
     
     """
-    __tablename__ = 'employee_to_role'
+    __tablename__ = 'employee_role'
 
-    Column('email', String(255), ForeignKey('employee.email'), primary_key = True)
-    Column('role_id', Integer, ForeignKey('role.name'), primary_key = True)
+    email = Column(String(255), ForeignKey('employee.email'), primary_key = True)
+    role_id = Column(Integer, ForeignKey('role.name'), primary_key = True)
     
     def __init__(self, email, role_id):
         self.email = email
