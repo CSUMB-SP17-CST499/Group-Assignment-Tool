@@ -7,6 +7,8 @@ from db.database import init_db, db_session
 from db import query
 
 
+temp = query.get_all_employees()
+
 app = flask.Flask(__name__)
 
 # Initalize the database
