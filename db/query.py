@@ -1,6 +1,6 @@
 from typing import List
 from db.database import init_db, db_session
-from db.models import User, Employee, App, Role, Group
+from db.models import User, Employee, App, Role, Group, EmployeeToRole, RoleToGroup, AppToGroup
 
 
 """
@@ -317,3 +317,23 @@ def remove_group(group_id: int) -> bool:
             
     finally:
         return False
+
+def get_employee_roles(email: str) -> List[EmployeeToRole]:
+    """Returns a list of roles with the given email. 
+    
+    Args:
+        email: An employee's email.
+    
+    Returns:
+        Returns a list of roles if an employee has the email, otherwise returns None.
+    """
+    return db_session.query(EmployeeToRole).filter(EmployeeToRole.email == email).all()
+    
+def get_all_employees_with_roles() -> List[EmployeeToRole]:
+    return db_session.query(Employee, Role).filter(Employee.email == EmployeeToRole.email).filter(Role.role_id == EmployeeToRole.role_id).all()
+    
+def get_all_groups_with_roles() -> List[RoleToGroup]:
+    return db_session.query(Group, Role).filter(Group.group_id == RoleToGroup.group_id).filter(Role.role_id == RoleToGroup.role_id).all()
+
+def get_all_apps_with_groups() -> List[AppToGroup]:
+    return db_session.query(App, Group).filter(Group.group_id == AppToGroup.group_id).filter(App.app_id == AppToGroup.app_id).all()

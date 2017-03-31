@@ -1,7 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, ForeignKey
 from db.database import Base
-from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy.ext.declarative import declarative_base
+import json
 
 class User(Base):
     """The model for the user table.ArithmeticError
@@ -84,6 +83,8 @@ class App(Base):
     """
     __tablename__ = 'app'
     
+    
+    
     app_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
     
@@ -96,7 +97,6 @@ class App(Base):
         str_format = '<App(app_id: %s, name: %s)>'
         values = (self.app_id, self.name)
         return str_format % values
-        
         
 class Role(Base):
     """The model for the role table.
@@ -139,17 +139,15 @@ class Group(Base):
 
     group_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
-    app_id = Column(Integer)
     
-    def __init__(self, group_id, name, app_id):
+    def __init__(self, group_id, name):
         self.group_id = group_id
         self.name = name
-        self.app_id = app_id
     
     
     def __repr___(self):
-        str_format = '<Group(group_id: %s, name: %s, app_id: %s)>'
-        values = (self.group_id, self.name, self.app_id)
+        str_format = '<Group(group_id: %s, name: %s)>'
+        values = (self.group_id, self.name)
         return str_format % values
         
 
