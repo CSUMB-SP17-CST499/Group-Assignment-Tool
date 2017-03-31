@@ -1,5 +1,6 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 from db.database import Base
+import json
 
 class User(Base):
     """The model for the user table.ArithmeticError
@@ -59,13 +60,11 @@ class Employee(Base):
     first_name = Column(String(255) )
     last_name = Column(String(255) )
     
-    
     def __init__(self, email: str, first_name: str, last_name: str):
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
-        self.username = username
-        
+
         
     def __repr__(self):
         str_format = '<Employee(email: %s, first_name: %s, last_name: %s)>' 
@@ -84,9 +83,10 @@ class App(Base):
     """
     __tablename__ = 'app'
     
+    
+    
     app_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
-    
     
     def __init__(self, app_id: int, name: str, token: str = ""):
         self.app_id = app_id
@@ -97,7 +97,6 @@ class App(Base):
         str_format = '<App(app_id: %s, name: %s)>'
         values = (self.app_id, self.name)
         return str_format % values
-        
         
 class Role(Base):
     """The model for the role table.
@@ -115,12 +114,10 @@ class Role(Base):
     name = Column(String(255), unique = True )
     description = Column(String(1000) )
     
-    
     def __init__(self, role_id, name, description):
         self.role_id = role_id
         self.name = name
         self.description = description
-        
     
     def __repr__(self):
         str_format = '<Role(role_id: %s, name: %s, description: %s)>'
@@ -129,7 +126,7 @@ class Role(Base):
 
 
 class Group(Base):
-    """The model for the employee table.
+    """The model for the group table.
     
     Attributes:
         group_id: (int): The primary key of the group table.
@@ -142,16 +139,82 @@ class Group(Base):
 
     group_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
-    app_id = Column(Integer)
     
-    
-    def __init__(self, group_id, name, app_id):
+    def __init__(self, group_id, name):
         self.group_id = group_id
         self.name = name
-        self.app_id = app_id
     
     
     def __repr___(self):
-        str_format = '<Group(group_id: %s, name: %s, app_id: %s)>'
-        values = (self.group_id, self.name, self.app_id)
+        str_format = '<Group(group_id: %s, name: %s)>'
+        values = (self.group_id, self.name)
+        return str_format % values
+        
+
+class EmployeeToRole(Base):
+    """The model for the employee_role table.
+    
+    Attributes:
+        email: (str): Foreign key, from the employee table.
+        role_id (int): Foreign key, from the roles table.
+    
+    """
+    __tablename__ = 'employee_role'
+
+    email = Column(String(255), ForeignKey('employee.email'), primary_key = True)
+    role_id = Column(Integer, ForeignKey('role.name'), primary_key = True)
+    
+    def __init__(self, email, role_id):
+        self.email = email
+        self.role_id = role_id
+    
+    
+    def __repr___(self):
+        str_format = '<EmployeeToRole(email: %s, role_id: %d)>'
+        values = (self.email, self.role_id)
+        return str_format % values
+        
+class RoleToGroup(Base):
+    """The model for the role_group table.
+    
+    Attributes:
+        group_id: (str): Foreign key, from the group_id table.
+        role_id (int): Foreign key, from the roles table.
+    
+    """
+    __tablename__ = 'role_group'
+
+    group_id = Column('group_id', Integer, ForeignKey('group.group_id'), primary_key = True)
+    role_id = Column('role_id', Integer, ForeignKey('role.role_id'), primary_key = True)
+    
+    def __init__(self, email, role_id):
+        self.group_id = group_id
+        self.role_id = role_id
+    
+    def __repr___(self):
+        str_format = '<RoleToGroup(group_id: %d, role_id: %d)>'
+        values = (self.group_id, self.role_id)
+        return str_format % values
+        
+class AppToGroup(Base):
+    """The model for the app_group table.
+    
+    Attributes:
+        app_id: (str): Foreign key, from the app table.
+        group_id (int): Foreign key, from the group table.
+    
+    """
+    __tablename__ = 'app_group'
+
+    app_id = Column('app_id', Integer, ForeignKey('app.app_id'), primary_key = True)
+    group_id = Column('group_id', Integer, ForeignKey('group.group_id'), primary_key = True)
+    
+    def __init__(self, app_id, role_id):
+        self.app_id = app_id
+        self.group_id = group_id
+    
+    
+    def __repr___(self):
+        str_format = '<AppToGroup(group_id: %d, app_id: %d)>'
+        values = (self.group_id, self.app_id)
         return str_format % values
