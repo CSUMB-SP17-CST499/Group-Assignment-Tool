@@ -148,6 +148,30 @@ def update_employees(user_ids, user_group_id):
         print(e)
             
     return data
+    
+    
 
-def create_group():
-    pass
+def get_user_list():
+    """Function creates a 'get'request, in order to get all the information from the users in the slack channel,
+    by passing the token as a parameter for authentication,
+
+    Args:
+        none
+
+    Returns:
+        Returns a dictionary containing the information of all users in the slack channel.
+
+    """
+    data = []
+    
+    try:
+        request = requests.get('https://slack.com/api/users.list', 
+                params = {'token': token.get_slack_token()},
+                headers = {'Connection': 'close'} )
+                
+        data = request.json()
+    
+    except requests.exceptions.RequestException as e:
+        print(e)
+    
+    return data
