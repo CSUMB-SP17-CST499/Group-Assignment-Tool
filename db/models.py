@@ -137,11 +137,15 @@ class Group(Base):
 
     group_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
+    app_id = Column(Integer, ForeignKey('group.app_id'))
+    app_group_id = Column(String(255) )
     
 
-    def __init__(self, group_id, name):
+    def __init__(self, group_id, name, app_id, app_group_id):
         self.group_id = group_id
         self.name = name
+        self.app_id = app_id
+        self.app_group_id = app_group_id
     
     
     def __repr___(self):

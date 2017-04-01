@@ -1,6 +1,7 @@
 from apis import slack
 from synchronization import utils
 from db import query
+from db.models import Group
 
 
 def sync_slack_users():
@@ -68,7 +69,6 @@ def sync_slack_groups():
     for api_id in api_ids:
         if api_id not in db_ids:
             missing_ids.append(api_id)
-    ###
     group_ids = []
     group_amt = len(data["usergroups"])
         
@@ -78,15 +78,8 @@ def sync_slack_groups():
             if "id" in group:
                 if group["id"] == id:
                     if "name" in group:
-               
                         name = group["name"]
-                        group_obj = query.Group(id, name)
-                        print (group_obj.group_id,group_obj.name)
-                        print (query.update_group(group_obj) )
+                        group_obj = Group(None, name, 1, group["id"])
                         query.update_group(group_obj)
-                        print ("Test2")
     
-    
-    return missing_ids
-
     
