@@ -35,8 +35,7 @@ class User(Base):
         self.username = username
         self.password = password
         self.is_admin = is_admin
-        
-        
+           
     def __repr__(self):
         str_format = '<User(email: %s, first_name: %s, last_name: %s)>'
         values = (self.email, self.first_name, self.last_name)
@@ -64,8 +63,7 @@ class Employee(Base):
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
-
-        
+  
     def __repr__(self):
         str_format = '<Employee(email: %s, first_name: %s, last_name: %s)>' 
         values = (self.email, self.first_name, self.last_name)
