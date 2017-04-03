@@ -1,4 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship, backref
+from sqlalchemy.ext.associationproxy import association_proxy
 from db.database import Base
 import json
 
@@ -27,16 +29,6 @@ class Model():
                 del model_dict[key]
 
         return model_dict
-
-
-    def get_json(self, exclude = []):
-        """Returns json representing the model.
-
-        Args:
-            exclude: A list containing the key value pairs to exlude. The key
-            value pairs are the variable names and values of the model instance.
-        """
-        return json.dumps(self.get_dict(exclude))
 
 
 class User(Base, Model):
@@ -97,6 +89,8 @@ class Employee(Base, Model):
     first_name = Column(String(255) )
     last_name = Column(String(255) )
 
+    roles = association_proxy('employee_roles', 'role')
+
 
     def __init__(self, email: str, first_name: str, last_name: str):
         self.email = email
@@ -140,11 +134,6 @@ class App(Base, Model):
     def get_dict(self, exclude = []):
         exclude.append('token')
         return super(App, self).get_dict(exclude)
-
-
-    def get_json(self, exclude = []):
-        exclude.append('token')
-        return super(App, self).get_json(exclude)
 
 
 class Role(Base, Model):
@@ -213,8 +202,16 @@ class EmployeeToRole(Base, Model):
     __tablename__ = 'employee_role'
 
     email = Column(String(255), ForeignKey('employee.email'), primary_key = True)
-    role_id = Column(Integer, ForeignKey('role.name'), primary_key = True)
+    role_id = Column(Integer, ForeignKey('role.role_id'), primary_key = True)
 
+    # Bidirectional attribute of to employee/employee_roles
+    employee = relationship(Employee,
+                backref = backref('employee_roles',
+                          cascade = 'all, delete-orphan')
+            )
+
+    # Reference to the Role object
+    role = relationship('Role')
 
     def __init__(self, email, role_id):
         self.email = email
