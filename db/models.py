@@ -2,7 +2,8 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.associationproxy import association_proxy
 from db.database import Base
-import json
+from db.helpers import delete_keys, get_common_pairs
+
 
 class Model():
 
@@ -10,8 +11,8 @@ class Model():
         """Returns a dictionary with the member variables of a database model.
 
         Only works on the first level of the model's dictionary object. If there
-        is a dictionary, then it would not be possible to exclude single keys value
-        pairs from the inner dictionary.
+        is an inner dictionary, then it would not be possible to exclude single 
+        keys value pairs from the inner dictionary.
 
         Args:
             exclude: A list containing the key value pairs to exlude. The key
@@ -21,15 +22,12 @@ class Model():
             Returns a dictionary with the instances member variables as key
             value pairs if any exist.
         """
-        exclude.append('_sa_instance_state') # From SQLAlchemy Base class
-        model_dict = dict(self.__dict__)
-
-        for key in exclude:
-            if key in model_dict:
-                del model_dict[key]
+        model_dict = {}
+        d = dict(self.__dict__)
+        model_dict.update(get_common_pairs(d) )
+        delete_keys(model_dict, exclude)
 
         return model_dict
-
 
 class User(Base, Model):
     """The model for the user table.
@@ -70,6 +68,11 @@ class User(Base, Model):
         str_format = '<User(email: %s, first_name: %s, last_name: %s)>'
         values = (self.email, self.first_name, self.last_name)
         return str_format % values
+        
+        
+    def get_dict(self, exclude):
+        user_dict = super(User, self).get_dict()
+        
 
 
 class Employee(Base, Model):
@@ -102,7 +105,15 @@ class Employee(Base, Model):
         str_format = '<Employee(email: %s, first_name: %s, last_name: %s)>'
         values = (self.email, self.first_name, self.last_name)
         return str_format % values
-
+    
+    
+    def get_dict(self, exclude = []):
+        employee_dict = super(Employee, self).get_dict(exclude)
+        roles = [role.get_dict() for role in self.roles]
+        employee_dict.update([('roles', roles)])
+        
+        return employee_dict
+    
 
 class App(Base, Model):
     """The model for the app table.
@@ -131,7 +142,7 @@ class App(Base, Model):
         return str_format % values
 
 
-    def get_dict(self, exclude = []):
+    def get_dict(self, exclude):
         exclude.append('token')
         return super(App, self).get_dict(exclude)
 
@@ -151,6 +162,8 @@ class Role(Base, Model):
     role_id = Column(Integer, primary_key = True)
     name = Column(String(255), unique = True )
     description = Column(String(1000) )
+    
+    groups = association_proxy('role_groups', 'group')
 
 
     def __init__(self, role_id, name, description):
@@ -163,7 +176,7 @@ class Role(Base, Model):
         str_format = '<Role(role_id: %s, name: %s, description: %s)>'
         values = (self.role_id, self.name, self.description)
         return str_format % values
-
+    
 
 class Group(Base, Model):
     """The model for the group table.
@@ -179,6 +192,7 @@ class Group(Base, Model):
 
     group_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
+
 
     def __init__(self, group_id, name):
         self.group_id = group_id
@@ -204,14 +218,13 @@ class EmployeeToRole(Base, Model):
     email = Column(String(255), ForeignKey('employee.email'), primary_key = True)
     role_id = Column(Integer, ForeignKey('role.role_id'), primary_key = True)
 
-    # Bidirectional attribute of to employee/employee_roles
     employee = relationship(Employee,
                 backref = backref('employee_roles',
                           cascade = 'all, delete-orphan')
             )
-
-    # Reference to the Role object
+            
     role = relationship('Role')
+
 
     def __init__(self, email, role_id):
         self.email = email
@@ -230,12 +243,18 @@ class RoleToGroup(Base, Model):
     Attributes:
         group_id: (str): Foreign key, from the group_id table.
         role_id (int): Foreign key, from the roles table.
-
     """
     __tablename__ = 'role_group'
 
     group_id = Column('group_id', Integer, ForeignKey('group.group_id'), primary_key = True)
     role_id = Column('role_id', Integer, ForeignKey('role.role_id'), primary_key = True)
+
+    role = relationship(Role,
+                backref = backref('role_groups',
+                          cascade = 'all, delete-orphan')
+            )
+
+    group = relationship('Group')
 
 
     def __init__(self, email, role_id):
@@ -261,7 +280,7 @@ class AppToGroup(Base, Model):
 
     app_id = Column('app_id', Integer, ForeignKey('app.app_id'), primary_key = True)
     group_id = Column('group_id', Integer, ForeignKey('group.group_id'), primary_key = True)
-
+    
 
     def __init__(self, app_id, role_id):
         self.app_id = app_id
