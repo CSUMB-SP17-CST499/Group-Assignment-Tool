@@ -70,8 +70,7 @@ def sync_slack_groups():
         if api_id not in db_ids:
             missing_ids.append(api_id)
     group_ids = []
-    group_amt = len(data["usergroups"])
-        
+    
     for group in data["usergroups"]:
         name = ""
         for id in missing_ids:
