@@ -11,12 +11,12 @@ def sync_slack_users():
         none
 
     Returns:
-        Retus a list containing all the emails in the slack Team.
+        none
 
     """
     
     data = slack.get_user_list()
-    api_emails = utils.get_salck_api_emails(data)
+    api_emails = utils.get_slack_api_emails(data)
     db_emails = []
     missing_users = []
     
@@ -54,17 +54,17 @@ def sync_slack_groups():
         none
 
     Returns:
-        Retus a list containing all the group_ids in the slack Team.
+        none
 
     """
     data = slack.get_user_groups_list()
-    api_ids = utils.get_salck_api_group_id(data)
+    api_ids = utils.get_slack_api_group_id(data)
     db_ids = []
     missing_ids = []
     
     
     for db_id in query.get_all_groups():
-        db_ids.append(db_id.group_id)
+        db_ids.append(db_id.app_group_id)
         
     for api_id in api_ids:
         if api_id not in db_ids:
@@ -81,5 +81,6 @@ def sync_slack_groups():
                         name = group["name"]
                         group_obj = Group(None, name, 1, group["id"])
                         query.update_group(group_obj)
+    
     
     
