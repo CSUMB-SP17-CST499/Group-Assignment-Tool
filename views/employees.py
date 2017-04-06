@@ -15,6 +15,7 @@ def employee_uri():
         return (response, 404)
     
     employee_email = args.get('email')
+    
     if request.method == 'GET':
         try:
             employee = query.get_employee_by_email(employee_email)
@@ -28,3 +29,33 @@ def employee_uri():
         except Exception as e:
             response = create_error('unexpected_error', e)
             return (response, 500)
+            
+    elif request.method == 'PUT':
+        try:
+            first_name = args.get('first_name')
+            last_name = args.get('last_name')
+            
+            # Update the employee with the provided info
+            if employee_email:
+                employee = query.get_role_by_id(employee_email)
+                if employee:       
+                    if query.does_user_email_exist(employee):
+                        response = create_error('email_taken')
+                        return (response, 400)
+
+                    if first_name:
+                        employee.first_name = first_name
+                    if description:
+                        employee.last_name = last_name
+                    
+                    is_updated = query.update_employee(employee)
+                    if is_updated:
+                        return (get_json('employee', employee), 200)
+                            
+                    response = create_error('unexpected_error')
+                    return (response, 500)
+                else:
+                    response = create_error('employee_not_found')
+                    return (response, 404)
+                    
+                
