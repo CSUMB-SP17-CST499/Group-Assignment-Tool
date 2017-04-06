@@ -37,7 +37,7 @@ def employee_uri():
             
             # Update the employee with the provided info
             if employee_email:
-                employee = query.get_role_by_id(employee_email)
+                employee = query.get_employee_by_email(employee_email)
                 if employee:       
                     if query.does_user_email_exist(employee):
                         response = create_error('email_taken')
@@ -58,4 +58,15 @@ def employee_uri():
                     response = create_error('employee_not_found')
                     return (response, 404)
                     
-                
+            else:
+                # Check for required arguments
+                if first_name and last_name:
+                    employee = Employee(email=email,
+                        first_name=first_name, 
+                        last_name=last_name )
+                    query.add_employee(employee)
+                    response = get_json('employee', employee)
+                    return (response, 200)
+                else:
+                    response = create_error('missing_arguments')
+                    return (response, 400)
