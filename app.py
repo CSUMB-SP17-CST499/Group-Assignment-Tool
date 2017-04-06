@@ -3,8 +3,9 @@ import flask, os
 from flask import render_template, flash, request, json, make_response
 from hashlib import md5
 
-from db.database import init_db, Session
-from db import query
+from db.database import init_db, Session 
+from db import query, hashPassword, models
+from db.models import User
 
 app = flask.Flask(__name__)
 
@@ -27,7 +28,7 @@ def createaccount():
 
     if request.method == 'POST':
         data = request.get_json()
-
+        
         firstname = data.get('firstname')
         lastname = data.get('lastname')
         email = data.get('email')
@@ -36,14 +37,20 @@ def createaccount():
         is_admin = data.get('is_admin')
 
         if firstname and lastname and email and username and password:
+            
             if query.does_user_email_exist(email):
                 resp = json.dumps({'message': 'The entered email is already in use.' +
                         ' Please entere a different one.'})
                 return (resp, 400)
-
-            resp = json.dumps({'message': 'Unkown error. Please contact support.'})
-            return (resp, 500)
-
+                
+            else: 
+                #creates a password hash to store in the database 
+                hashpassword = hashPassword(password)
+                hashpassword.set_password(password)
+                user = User(firstname, lastname, email, username, hashpassword, is_admin)
+                query.add_user(user)
+                flask.redirect('/login')
+          
         else:
             resp = json.dumps({'message': 'There is a missing field. ' +
                     'Please fill all required fields'})
@@ -55,9 +62,15 @@ def login():
     error = None
 
     if request.method == 'POST':
+        
         username = request.form['username']
         password = request.form['password']
-
+        
+        if username and password:
+            if query.is_usermane_correct(username):
+                if query.is_password_correct(password):
+                    return (resp, 400)
+                    
         if False:
             error = 'Unkown error. Please contact support.'
         else:

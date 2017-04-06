@@ -23,7 +23,42 @@ def does_user_email_exist(email: str) -> bool:
     """
     session = Session()
     return session.query(User).filter_by(email = email).first() != None
+    
+def add_user(user: User) -> bool:
+    """Adds a User to the user table.
 
+    Args:
+        user: An object containing an user's information.
+
+    Returns:
+        Returns true if the database transaction succeeded,
+        otherwise returns false.
+    """
+    return add_instance(user)
+    
+def is_usermane_correct(username: str) ->bool:
+    """Returns whether a user email exists in the database.
+
+    Args:
+        email: An email that may belong to a user.
+
+    Returns:
+        Returns true if the email exists, false otherwise.
+    """
+    session = Session()
+    return session.query(User).filter_by(username = username).first() != None
+
+def is_password_correct(password: str) ->bool:
+    """Returns whether a user email exists in the database.
+
+    Args:
+        email: An email that may belong to a user.
+
+    Returns:
+        Returns true if the email exists, false otherwise.
+    """
+    session = Session()
+    return session.query(User).filter_by(password = password).first() != None
 
 def get_all_apps() -> List[App]:
     """Returns a list of all apps"""
