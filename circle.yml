@@ -4,4 +4,4 @@ machine:
 test:
     override:
         - python -m tests.slack_test
-        
+        - python -m tests.query_test
