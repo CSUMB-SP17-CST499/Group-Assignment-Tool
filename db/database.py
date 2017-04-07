@@ -37,6 +37,11 @@ def init_db():
     Base.metadata.create_all(bind=engine)
 
 
+def is_instance_modified(instance):
+    session = Session()
+    return instance in session.dirty
+
+
 def get_all_instances(model):
     """Returns all rows for the specified model.
 
@@ -44,10 +49,16 @@ def get_all_instances(model):
         model: The type of model from the database that should be queried from.
 
     Returns:
-        Returns a list of items from the database of the type model is.
+        Returns a list of items from the database of the same type as model.
     """
     session = Session()
-    return session.query(model).all()
+    results = None
+    try:
+        results = session.query(model).all()
+    except Exception as e:
+        print(e)
+    
+    return results
 
 
 def get_instance_by_field(model, field, value):
@@ -67,9 +78,14 @@ def get_instance_by_field(model, field, value):
         database, otherwise returns None.
     """
     session = Session()
-    return session.query(model).filter(field == value).one()
-
-
+    result = None
+    try:
+        result = session.query(model).filter(field == value).one()
+    except Exception as e:
+        print(e)
+    
+    return result
+    
 def get_instances_by_field(model, field, value):
     """Returns all instances of a model where its field matches the given value.
 
@@ -83,7 +99,13 @@ def get_instances_by_field(model, field, value):
         match in the database, otherwise returns None.
     """
     session = Session()
-    return session.query(model).filter(field == value).all()
+    results = None
+    try:
+        results = session.query(model).filter(field == value).all()
+    except Exception as e:
+        print(e)
+    
+    return results
 
 
 def add_instance(instance):
