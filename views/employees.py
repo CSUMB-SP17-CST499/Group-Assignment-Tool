@@ -95,7 +95,7 @@ def employee_uri():
     
     
 @employees.route('/api/employees', methods = ['GET'])
-def employee_uri():
+def employees_uri():
     if request.method == 'GET':
         try:
             employees = query.get_all_employees()
