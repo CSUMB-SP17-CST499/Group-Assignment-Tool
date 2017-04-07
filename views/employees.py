@@ -39,13 +39,13 @@ def employee_uri():
             if email:
                 employee = query.get_employee_by_email(email)
                 if employee:       
-                    if query.does_user_email_exist(employee):
+                    if query.does_user_email_exist(employee.email):
                         response = create_error('email_taken')
                         return (response, 400)
 
                     if first_name:
                         employee.first_name = first_name
-                    if description:
+                    if last_name:
                         employee.last_name = last_name
                     
                     is_updated = query.update_employee(employee)
