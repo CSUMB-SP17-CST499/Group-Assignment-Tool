@@ -70,7 +70,12 @@ def employee_uri():
                 else:
                     response = create_error('missing_arguments')
                     return (response, 400)
-                    
+
+        except Exception as e:
+            print(e)
+            response = create_error('unexpected_error', e)
+            return (response, 500)
+            
     elif request.method == 'DELETE':
         employee = query.get_employee_by_email(email)
         try:
@@ -89,7 +94,7 @@ def employee_uri():
             return (response, 500)
     
     
-@employees.route('/api/employee', methods = ['GET'])
+@employees.route('/api/employees', methods = ['GET'])
 def employee_uri():
     if request.method == 'GET':
         try:
