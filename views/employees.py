@@ -14,11 +14,11 @@ def employee_uri():
         response = create_error('missing_argument')
         return (response, 404)
     
-    email = args.get('email')
+    empl_id = args.get('empl_id')
     
     if request.method == 'GET':
         try:
-            employee = query.get_employee_by_email(email)
+            employee = query.get_employee_by_empl_id(empl_id)
             
             if employee:
                 return get_json('employee', employee)
@@ -32,12 +32,13 @@ def employee_uri():
             
     elif request.method == 'PUT':
         try:
+            email = args.get('email')
             first_name = args.get('first_name')
             last_name = args.get('last_name')
             
             # Update the employee with the provided info
-            if email:
-                employee = query.get_employee_by_email(email)
+            if empl_id:
+                employee = query.get_employee_by_empl_id(empl_id)
                 if employee:       
                     if query.does_user_email_exist(employee.email):
                         response = create_error('email_taken')
@@ -60,13 +61,16 @@ def employee_uri():
                     
             else:
                 # Check for required arguments
-                if first_name and last_name:
-                    employee = Employee(email=email,
+                if first_name and last_name and not query.does_user_email_exist(employee.email):
+                    employee = Employee(None, email=email,
                         first_name=first_name, 
                         last_name=last_name )
                     query.add_employee(employee)
                     response = get_json('employee', employee)
                     return (response, 200)
+                elif query.does_user_email_exist(employee.email):
+                    response = create_error('email_taken')
+                    return (response, 400)
                 else:
                     response = create_error('missing_arguments')
                     return (response, 400)
@@ -77,10 +81,10 @@ def employee_uri():
             return (response, 500)
             
     elif request.method == 'DELETE':
-        employee = query.get_employee_by_email(email)
+        employee = query.get_employee_by_empl_id(empl_id)
         try:
             if employee:
-                is_deleted = query.remove_role(email)
+                is_deleted = query.remove_employee(email)
                 if is_deleted:
                     return (json.dumps({}), 200)
                 
