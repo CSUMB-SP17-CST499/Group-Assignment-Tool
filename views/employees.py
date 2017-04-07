@@ -14,11 +14,11 @@ def employee_uri():
         response = create_error('missing_argument')
         return (response, 404)
     
-    employee_email = args.get('email')
+    email = args.get('email')
     
     if request.method == 'GET':
         try:
-            employee = query.get_employee_by_email(employee_email)
+            employee = query.get_employee_by_email(email)
             
             if employee:
                 return get_json('employee', employee)
@@ -36,8 +36,8 @@ def employee_uri():
             last_name = args.get('last_name')
             
             # Update the employee with the provided info
-            if employee_email:
-                employee = query.get_employee_by_email(employee_email)
+            if email:
+                employee = query.get_employee_by_email(email)
                 if employee:       
                     if query.does_user_email_exist(employee):
                         response = create_error('email_taken')
@@ -70,3 +70,21 @@ def employee_uri():
                 else:
                     response = create_error('missing_arguments')
                     return (response, 400)
+                    
+    elif request.method == 'DELETE':
+        employee = query.get_employee_by_email(email)
+        try:
+            if employee:
+                is_deleted = query.remove_role(email)
+                if is_deleted:
+                    return (json.dumps({}), 200)
+                
+                response = create_error('unexpected_error')
+                return (response, 500)
+            else:
+                response = create_error('email_not_found')
+                return (response, 404)
+        except Exception as e:
+            response = create_error('unexpected_error', e)
+            return (response, 500)
+    
