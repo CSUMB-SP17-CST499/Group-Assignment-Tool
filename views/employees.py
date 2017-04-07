@@ -88,3 +88,16 @@ def employee_uri():
             response = create_error('unexpected_error', e)
             return (response, 500)
     
+    
+@employees.route('/api/employee', methods = ['GET'])
+def employee_uri():
+    if request.method == 'GET':
+        try:
+            employees = query.get_all_employees()
+            return get_json('employees', employees)
+            
+        except Exception as e:
+            print(e)
+            response = create_error('unexpected_error', e)
+            return (response, 500)
+            
