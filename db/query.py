@@ -112,6 +112,17 @@ def get_employee_by_email(email: str) -> Employee:
         Returns an employee if an employee has the email, otherwise returns None.
     """
     return get_instance_by_field(Employee, Employee.email, email)
+    
+def get_employee_by_empl_id(empl_id: int) -> Employee:
+    """Returns an employee with the given email.
+
+    Args:
+        email: An employee's email.
+
+    Returns:
+        Returns an employee if an employee has the email, otherwise returns None.
+    """
+    return get_instance_by_field(Employee, Employee.empl_id, empl_id)
 
 
 def add_employee(employee: Employee) -> bool:
