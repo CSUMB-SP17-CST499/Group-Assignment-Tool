@@ -87,12 +87,12 @@ def login():
 
 @app.route('/add')
 def addEmp():
-    data = request.get_json()
+    # data = request.get_json()
         
-    firstname = data.get('firstname')
-    lastname = data.get('lastname')
-    email = data.get('email')
-    role = data.get('role')
+    # firstname = data.get('firstname')
+    # lastname = data.get('lastname')
+    # email = data.get('email')
+    # role = data.get('role')
     return flask.render_template("add.html")
 
 
