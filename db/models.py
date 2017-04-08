@@ -201,10 +201,10 @@ class Group(Base, Model):
     def __init__(self, group_id, name, app_id, app_group_id):
         self.group_id = group_id
         self.name = name
-        self.app_id = app_id
-        self.app_group_id = app_group_id
-    
-    def __repr___(self):
+
+
+    def __repr__(self):
+
         str_format = '<Group(group_id: %s, name: %s)>'
         values = (self.group_id, self.name)
         return str_format % values
