@@ -1,34 +1,27 @@
 // JavaScript File
-// Todo: Disable button click while processing a request
-// Todo: Make only one alert message visible at a time,
-//      stack the alert messages with a number, 
-//      and display messages as close button is pressed
-
 $(document).ready( function() {
     
     $('.alert .close').on('click', function(e) {
         $(this).parent().hide();
     });
     
-    $('#Create_Account').click(function() {
+    $('#create_user').click(function() {
     
-        var firstname = $('#firstname').val();
-        var lastname = $('#lastname').val();
+        var firstname = $('#first_name').val();
+        var lastname = $('#last_name').val();
         var email = $('#email').val();
-        var username = $('#username').val();
-        var password = $('#password').val();
+        var role = $('#Role').val();
         
         data = {
             'firstname': firstname, 
             'lastname': lastname,
             'email': email, 
-            'username': username, 
-            'password': password
+            'role': role
         }
                 
         $.ajax({
-            url: '/createaccount',
-            method: 'POST',
+            url: '/api/employee',
+            method: 'PUT',
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function(response) {

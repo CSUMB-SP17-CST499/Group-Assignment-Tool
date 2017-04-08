@@ -23,6 +23,7 @@ def does_user_email_exist(email: str) -> bool:
     """
     session = Session()
     return session.query(User).filter_by(email = email).first() != None
+
     
 def add_user(user: User) -> bool:
     """Adds a User to the user table.
@@ -61,14 +62,7 @@ def is_password_correct(password: str) ->bool:
     return session.query(User).filter_by(password = password).first() != None
 
 def does_role_name_exist(name: str) -> bool:
-    """Returns whether a name exists in the role table. 
-    
-    Role names should be unique, so that it does not get confusing which role 
-    has which configurations. 
-=======
->>>>>>> 9273e7fd358525ca8e18c37e3f40a1311ee8ccce
-    
-def does_role_name_exist(name: str) -> bool:
+
     """Returns whether a rolel exists in the database.
 
     Args:
