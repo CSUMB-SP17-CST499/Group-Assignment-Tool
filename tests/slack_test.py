@@ -25,15 +25,22 @@ class testSlackFunctions(unittest.TestCase):
             self.assertIsNotNone(result)
             
             
-    def test_get_user_names(self):
-        pass
+    def test_get_user_ids(self):
+        aGroup = slack.get_user_group_ids()
+        userIDs = slack.get_user_ids(aGroup[0])
+        self.assertIsNotNone(userIDs)
 
+    def test_get_user_names(self):
+        aGroup = slack.get_user_group_ids()
+        userIDs = slack.get_user_ids(aGroup[0])
+        userNames = slack.get_user_names(userIDs)
+        self.assertIsNotNone(userNames)
+            
             
     def test_update_employees(self):
         group_names = slack.get_user_groups()
         first_group_name = group_names[0]
         group_ids = slack.get_user_group_ids()
-
 
         groups = slack.get_user_groups()
         first_group_id = group_ids[0]
@@ -53,6 +60,7 @@ class testSlackFunctions(unittest.TestCase):
         print(user_ids)
         
         updated_user_list = slack.get_users(first_group_name)
+        before = updated_user_list
         print("Testing slack list: before remove:")
         print(updated_user_list)
         
@@ -71,6 +79,17 @@ class testSlackFunctions(unittest.TestCase):
         updated_user_list = slack.get_users(first_group_name)
         print("Testing slack list: after adding user back:")
         print(updated_user_list)
+        
+        self.assertEqual(before, updated_user_list)
+        
+    def test_get_user_list(self):
+        userList = slack.get_user_list()
+        self.assertIsNotNone(userList)
+        
+    def test_get_user_groups_list(self):
+        userGroupsList = slack.get_user_groups_list()
+        self.assertIsNotNone(userGroupsList)
+        print(userGroupsList)
         
 if __name__ == '__main__':
     unittest.main()

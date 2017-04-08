@@ -88,6 +88,7 @@ class Employee(Base, Model):
     """
     __tablename__ = 'employee'
 
+    empl_id = Column(Integer)
     email = Column(String(255), primary_key = True)
     first_name = Column(String(255) )
     last_name = Column(String(255) )
@@ -95,15 +96,16 @@ class Employee(Base, Model):
     roles = association_proxy('employee_roles', 'role')
 
 
-    def __init__(self, email: str, first_name: str, last_name: str):
+    def __init__(self, empl_id: int ,email: str, first_name: str, last_name: str):
+        self.empl_id = empl_id
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
 
 
     def __repr__(self):
-        str_format = '<Employee(email: %s, first_name: %s, last_name: %s)>'
-        values = (self.email, self.first_name, self.last_name)
+        str_format = '<Employee(empl_id: %d, email: %s, first_name: %s, last_name: %s)>'
+        values = (self.empl_id, self.email, self.first_name, self.last_name)
         return str_format % values
     
     
@@ -192,14 +194,17 @@ class Group(Base, Model):
 
     group_id = Column(Integer, primary_key = True)
     name = Column(String(255) )
+    app_id = Column(Integer, ForeignKey('group.app_id'))
+    app_group_id = Column(String(255) )
+    
 
-
-    def __init__(self, group_id, name):
+    def __init__(self, group_id, name, app_id, app_group_id):
         self.group_id = group_id
         self.name = name
 
 
     def __repr__(self):
+
         str_format = '<Group(group_id: %s, name: %s)>'
         values = (self.group_id, self.name)
         return str_format % values
