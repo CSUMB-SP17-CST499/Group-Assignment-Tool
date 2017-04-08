@@ -12,17 +12,15 @@ from db.database import get_all_instances, get_instance_by_field,\
         This relates to how many items should be displayed at a time in the
         pages that allow users to view lists of items.
 """
+
 def does_user_email_exist(email: str) -> bool:
     """Returns whether a user email exists in the database.
-
     Args:
         email: An email that may belong to a user.
-
     Returns:
         Returns true if the email exists, false otherwise.
     """
-    session = Session()
-    return session.query(User).filter_by(email = email).first() != None
+    return get_instance_by_field(User, User.email, email) is not None
 
     
 def add_user(user: User) -> bool:
@@ -36,6 +34,17 @@ def add_user(user: User) -> bool:
         otherwise returns false.
     """
     return add_instance(user)
+    
+    
+def does_employee_email_exist(email: str) -> bool:
+    """Returns whether a user email exists in the database.
+    Args:
+        email: An email that may belong to a user.
+    Returns:
+        Returns true if the email exists, false otherwise.
+    """
+    return get_instance_by_field(Employee, Employee.email, email) is not None
+
     
 def is_usermane_correct(username: str) ->bool:
     """Returns whether a user email exists in the database.
@@ -71,8 +80,7 @@ def does_role_name_exist(name: str) -> bool:
     Returns:
         Returns true if the name exists, false otherwise.
     """
-    session = Session()
-    return session.query(Role).filter_by(name = name).first() != None
+    return get_instance_by_field(Role, Role.name, name) is not None
 
 
 
@@ -91,7 +99,7 @@ def get_app_by_id(app_id: int):
         Returns an App object with the given id if it exists, otherwise
         returns None.
     """
-    return get_instance_by_field(App, App.app_id, app_id)
+    return get_instance_by_field(App, App.id, app_id)
 
 
 def add_app(app: App) -> bool:
@@ -129,7 +137,7 @@ def remove_app(app_id: int) -> bool:
     Returns:
         Returns true if an app is removed, false otherwise.
     """
-    return remove_instance_by_field(App, App.app_id, app_id)
+    return remove_instance_by_field(App, App.id, app_id)
 
 
 def get_all_employees() -> List[Employee]:
@@ -152,16 +160,17 @@ def get_employee_by_email(email: str) -> Employee:
     """
     return get_instance_by_field(Employee, Employee.email, email)
     
-def get_employee_by_empl_id(empl_id: int) -> Employee:
+    
+def get_employee_by_id(employee_id: int) -> Employee:
     """Returns an employee with the given email.
 
     Args:
-        email: An employee's email.
+        employee_id: An employee's id.
 
     Returns:
         Returns an employee if an employee has the email, otherwise returns None.
     """
-    return get_instance_by_field(Employee, Employee.empl_id, empl_id)
+    return get_instance_by_field(Employee, Employee.id, employee_id)
 
 
 def add_employee(employee: Employee) -> bool:
@@ -190,7 +199,7 @@ def update_employee(employee: Employee) -> bool:
     return update_instance(employee)
 
 
-def remove_employee(email: str) -> bool:
+def remove_employee_by_id(employee_id: str) -> bool:
     """Removes an employee from the employee table.
 
     Args:
@@ -199,7 +208,7 @@ def remove_employee(email: str) -> bool:
     Returns:
         Returns true if an employee is removed, otherwise returns false.
     """
-    return remove_instance_by_field(Employee, Employee.email, email)
+    return remove_instance_by_field(Employee, Employee.id, employee_id)
 
 
 def get_all_roles() -> List[Role]:
@@ -221,7 +230,7 @@ def get_role_by_id(role_id: int) -> Role:
         Returns a role with the given role_id,
         otherwise returns None.
     """
-    return get_instance_by_field(Role, Role.role_id, role_id)
+    return get_instance_by_field(Role, Role.id, role_id)
 
 
 def add_role(role: Role) -> bool:
@@ -259,7 +268,7 @@ def remove_role(role_id: int) -> bool:
     Returns:
         Returns true if a role is removed, otherwise returns false.
     """
-    return remove_instance_by_field(Role, Role.role_id, role_id)
+    return remove_instance_by_field(Role, Role.id, role_id)
 
 
 def get_all_groups() -> List[Group]:
@@ -281,7 +290,7 @@ def get_group_by_id(group_id: int) -> Group:
         Returns a group with the given role_id,
         otherwise returns None.
     """
-    return get_instance_by_field(Group, Group.group_id, group_id)
+    return get_instance_by_field(Group, Group.id, group_id)
 
 
 def add_group(group: Group) -> bool:
@@ -319,7 +328,7 @@ def remove_group(group_id: int) -> bool:
     Returns:
         Returns true if a group is removed, otherwise returns false.
     """
-    return remove_instance_by_field(Group, Group.group_id, group_id)
+    return remove_instance_by_field(Group, Group.id, group_id)
 
 
 def get_employee_roles(email: str) -> List[EmployeeToRole]:
@@ -336,15 +345,30 @@ def get_employee_roles(email: str) -> List[EmployeeToRole]:
 
 
 def get_all_employees_with_roles() -> List[EmployeeToRole]:
+    """Query to find all the roles each employee has.
+
+    Returns:
+        Returns a list of employee email, and the associated roles.
+    """
     session = Session()
-    return session.query(Employee, Role).filter(Employee.email == EmployeeToRole.email).filter(Role.role_id == EmployeeToRole.role_id).all()
+    return session.query(Employee, Role).filter(Employee.email == EmployeeToRole.email).filter(Role.id == EmployeeToRole.id).all()
 
 
 def get_all_groups_with_roles() -> List[RoleToGroup]:
+    """Query to find all groups and their assigned roles.
+
+    Returns:
+        Returns a list of groups and their assigned roles.
+    """
     session = Session()
-    return session.query(Group, Role).filter(Group.group_id == RoleToGroup.group_id).filter(Role.role_id == RoleToGroup.role_id).all()
+    return session.query(Group, Role).filter(Group.id == RoleToGroup.group_id).filter(Role.id == RoleToGroup.role_id).all()
 
 
 def get_all_apps_with_groups() -> List[AppToGroup]:
+    """Query to find all groups and which apps they use.
+
+    Returns:
+        Returns a list of groups and which apps they use.
+    """
     session = Session()
-    return session.query(App, Group).filter(Group.group_id == AppToGroup.group_id).filter(App.app_id == AppToGroup.app_id).all()
+    return session.query(App, Group).filter(Group.id == AppToGroup.group_id).filter(App.id == AppToGroup.app_id).all()
