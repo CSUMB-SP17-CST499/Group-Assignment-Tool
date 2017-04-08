@@ -3,6 +3,7 @@
 
 
 $(document).ready(function(){
+    //Initialize globals
     var json = [];
     var table = $('#employees-table')[0]; // Get table from html
     var tableRows = 0;
@@ -41,8 +42,8 @@ $(document).ready(function(){
                 var role_names = getEmployeeRoles(employee);
                 
 
-                table.rows[index + 1].cells[1].innerHTML = employee[index]['first_name'] + " " + employee[index]['last_name'];//name
-                table.rows[index + 1].cells[2].innerHTML = employee[index]['email'];//email
+                table.rows[index + 1].cells[1].innerHTML = employee['first_name'] + " " + employee['last_name'];//name
+                table.rows[index + 1].cells[2].innerHTML = employee['email'];//email
                 table.rows[index + 1].cells[3].innerHTML = role_names;//Role
             }
         }
