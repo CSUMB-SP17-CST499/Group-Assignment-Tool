@@ -55,6 +55,7 @@ def get_all_instances(model):
     results = None
     try:
         results = session.query(model).all()
+        session.refresh(results)
     except Exception as e:
         print(e)
     
@@ -136,7 +137,8 @@ def update_instance(instance):
     try:
         session.add(instance)
         session.commit()
-
+        session.refresh(instance)
+        
         is_updated = True
     except Exception as e:
         # Todo: Log the error (Find specific errors that can happen)
