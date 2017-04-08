@@ -42,9 +42,7 @@ def does_role_name_exist(name: str) -> bool:
     Returns:
         Returns true if the name exists, false otherwise.
     """
-    session = Session()
-    return session.query(Role).filter_by(Role.name = name).first() != None
-
+    return get_instance_by_field(Role, Role.name, name) is not None
 
 
 def get_all_apps() -> List[App]:
