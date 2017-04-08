@@ -34,7 +34,6 @@ def does_user_email_exist(email: str) -> bool:
     Returns:
         Returns true if the email exists, false otherwise.
     """
-
     session = Session()
     return session.query(User).filter_by(email = email).first() != None
     
@@ -73,8 +72,6 @@ def is_password_correct(password: str) ->bool:
     """
     session = Session()
     return session.query(User).filter_by(password = password).first() != None
-
-    return get_instance_by_field(User, User.email, email) is not None
 
 def does_role_name_exist(name: str) -> bool:
     """Returns whether a name exists in the role table. 

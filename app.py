@@ -72,12 +72,13 @@ def login():
         if username and password:
             if query.is_usermane_correct(username):
                 if query.is_password_correct(password):
-                    return (resp, 400)
-                    
+                    resp = json.dumps({'message': 'You have logd in'})
+                    return flask.redirect('/')
         if False:
             error = 'Unkown error. Please contact support.'
         else:
-            flask.redirect('/')
+             resp = json.dumps({'message': 'you have not entereted the correct details'})
+             return (resp, 400)
 
     return flask.render_template('login.html', message = error)
 
