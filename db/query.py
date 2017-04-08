@@ -4,7 +4,7 @@ from db.models import User, Employee, App, Role, Group,\
         EmployeeToRole, RoleToGroup, AppToGroup
 from db.database import get_all_instances, get_instance_by_field,\
         get_instances_by_field, add_instance, update_instance,\
-        remove_instance_by_field, is_instance_modified
+        remove_instance_by_field
 
 
 """
@@ -12,19 +12,6 @@ from db.database import get_all_instances, get_instance_by_field,\
         This relates to how many items should be displayed at a time in the
         pages that allow users to view lists of items.
 """
-
-def is_model_modified(model) -> bool:
-    """Returns whether a model object is modified and in the scoped session. 
-    
-    Args:
-        model: An instance of the Model class. 
-        
-    Returns:
-        Returns true if the model is in the scoped sessions dirty set, 
-        otherwise returns false.
-    """
-    return is_instance_modified(model)
-
 def does_user_email_exist(email: str) -> bool:
     """Returns whether a user email exists in the database.
 
@@ -34,21 +21,21 @@ def does_user_email_exist(email: str) -> bool:
     Returns:
         Returns true if the email exists, false otherwise.
     """
-    return get_instance_by_field(User, User.email, email) is not None
-
+    session = Session()
+    return session.query(User).filter_by(email = email).first() != None
+    
 def does_role_name_exist(name: str) -> bool:
-    """Returns whether a name exists in the role table. 
-    
-    Role names should be unique, so that it does not get confusing which role 
-    has which configurations. 
-    
+    """Returns whether a rolel exists in the database.
+
     Args:
-        name: The name that may belong to a role. 
-        
+        name: A name that may belong to a role.
+
     Returns:
-        Returns true if a role has the given name, otherwise returns false. 
+        Returns true if the name exists, false otherwise.
     """
-    return get_instance_by_field(Role, Role.name, name) is not None
+    session = Session()
+    return session.query(Role).filter_by(name = name).first() != None
+
 
 def get_all_apps() -> List[App]:
     """Returns a list of all apps"""
@@ -125,6 +112,17 @@ def get_employee_by_email(email: str) -> Employee:
         Returns an employee if an employee has the email, otherwise returns None.
     """
     return get_instance_by_field(Employee, Employee.email, email)
+    
+def get_employee_by_empl_id(empl_id: int) -> Employee:
+    """Returns an employee with the given email.
+
+    Args:
+        email: An employee's email.
+
+    Returns:
+        Returns an employee if an employee has the email, otherwise returns None.
+    """
+    return get_instance_by_field(Employee, Employee.empl_id, empl_id)
 
 
 def add_employee(employee: Employee) -> bool:
