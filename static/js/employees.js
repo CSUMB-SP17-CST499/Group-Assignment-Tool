@@ -3,12 +3,38 @@
 
 
 $(document).ready(function(){
+    
+    
 
-    var employees_json = '{"employees": [{"roles": [{"role_id": 11111, "name": "kunf_fu_master", "description": "kung fu fighting"},{"role_id": 11112, "name": "sal_thekunf_fu_master", "description": "sal is kung fu fighting"}], "first_name": "Eliasar", "email": "elgandara@csumb.edu", "last_name": "Gandara"}, {"roles": [{"role_id": 22222, "name": "gym_teacher", "description": "teach gym"}], "first_name": "fake", "email": "fakeemail@fake.edu", "last_name": "person"}]}'
-    var json = JSON.parse(employees_json);
+    // var employees_json = '{"employees": [{"roles": [{"role_id": 11111, "name": "kunf_fu_master", "description": "kung fu fighting"},{"role_id": 11112, "name": "sal_thekunf_fu_master", "description": "sal is kung fu fighting"}], "first_name": "Eliasar", "email": "elgandara@csumb.edu", "last_name": "Gandara"}, {"roles": [{"role_id": 22222, "name": "gym_teacher", "description": "teach gym"}], "first_name": "fake", "email": "fakeemail@fake.edu", "last_name": "person"}]}'
+    var json = "";
+
+    
+    $.ajax({
+        url: '/api/employees',
+        method: 'GET',
+        contentType: 'application/json',
+        success: function(response) {
+            console.log(response);
+            json = response;
+        },
+        error: function(error) {
+            try {
+                json = JSON.parse(error.responseText);
+                if (json.message) {
+                    $('#message').html(json.message);
+                    $('#alert-message')[0].classList.add('alert-danger');
+                    $('#alert-message').show();
+                }
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+    });
+
     var table = $('#employees-table')[0]; // Get table from html
-    var tableRows = (json.employees.length >= 10) ? 10 : json.employees.length;
-    console.log(tableRows);
+    var tableRows = (json.length >= 10) ? 10 : json.length;
 
     loadTable(table, tableRows);
     displayEmployees(table, json)
