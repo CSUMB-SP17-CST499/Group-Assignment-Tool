@@ -22,6 +22,7 @@ def employee_uri():
 
             if employee:
                 return get_json('employee', employee, excludes)
+
             else:
                 response = create_error('employee_not_found')
                 return (response, 404)
@@ -45,6 +46,7 @@ def employee_uri():
                         response = create_error('invalid_email')
                         return (response, 400)
                     elif employee.email != email and query.does_employee_email_exist(email):
+
                         response = create_error('email_taken')
                         return (response, 400)
 
@@ -56,6 +58,7 @@ def employee_uri():
                         employee.email = email
                     if roles:
                         pass # Todo: Handle updated roles
+
                     
                     is_updated = query.update_employee(employee)
                     if is_updated:
@@ -66,12 +69,12 @@ def employee_uri():
                 else:
                     response = create_error('employee_not_found')
                     return (response, 404)
+
             # Insert a new employee if the right conditions are met 
             else:
                 if query.does_employee_email_exist(email):
                     response = create_error('email_taken')
-                    return (response, 400)
-                    
+                    return (response, 400)         
                 elif email:
                     employee = Employee(None, 
                         email=email,
@@ -81,7 +84,6 @@ def employee_uri():
 
                     response = get_json('employee', employee, excludes)
                     return (response, 200)
-                
                 else:
                     response = create_error('missing_arguments')
                     return (response, 400)

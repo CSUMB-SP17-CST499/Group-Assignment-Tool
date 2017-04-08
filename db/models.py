@@ -85,7 +85,6 @@ class Employee(Base, Model):
     email = Column('email', String(255), primary_key = True)
     first_name = Column('first_name', String(255) )
     last_name = Column('last_name', String(255) )
-
     roles = association_proxy('employee_roles', 'role')
 
 
