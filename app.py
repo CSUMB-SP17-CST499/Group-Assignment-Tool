@@ -3,11 +3,14 @@ import flask, os
 from flask import render_template, flash, request, json, make_response
 from hashlib import md5
 
+from views.roles import roles
 from db.database import init_db, Session 
 from db import query, hashPassword, models
 from db.models import User
 
+
 app = flask.Flask(__name__)
+app.register_blueprint(roles)
 
 # Initalize the database
 init_db()
