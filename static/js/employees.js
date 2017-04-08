@@ -4,14 +4,17 @@
 
 $(document).ready(function(){
     var json = "";
-
+    var table = $('#employees-table')[0]; // Get table from html
+    var tableRows = (json.length >= 10) ? 10 : json.length;
+    loadTable(table, tableRows);
+    
     $.ajax({
         url: '/api/employees',
         method: 'GET',
-        contentType: 'application/json',
+        contentType: 'json',
         success: function(response) {
-            console.log(response);
-            json = response;
+            json = JSON.parse(response);
+            displayEmployees(table, json);
         },
         error: function(error) {
             try {
@@ -27,17 +30,11 @@ $(document).ready(function(){
             }
         }
     });
-
-    var table = $('#employees-table')[0]; // Get table from html
-    var tableRows = (json.length >= 10) ? 10 : json.length;
-
-    loadTable(table, tableRows);
-    displayEmployees(table, json)
     
     function displayEmployees(table, json) {
-        if (json['employees']) {
-            var employees = json['employees'];
-
+        if (json) {
+            var employees = json;
+            console.log(employees);
             for (var index = 0; index < employees.length; index++) {
                 var employee = employees[index];
                 
