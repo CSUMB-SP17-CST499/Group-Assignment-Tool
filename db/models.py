@@ -2,32 +2,27 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship, backref
 from sqlalchemy.ext.associationproxy import association_proxy
 from db.database import Base
-from db.helpers import delete_keys, get_common_pairs
+from db.helpers import filter_dictionary
 
 
 class Model():
 
-    def get_dict(self, exclude = []):
+    def get_dict(self, excludes = []):
         """Returns a dictionary with the member variables of a database model.
 
-        Only works on the first level of the model's dictionary object. If there
-        is an inner dictionary, then it would not be possible to exclude single 
-        keys value pairs from the inner dictionary.
+        Exluding only works on the first level of the model's dictionary object. 
+        If there is an inner dictionary, it is not currently be possible to 
+        excludes single keys value pairs from the inner dictionary.
 
         Args:
-            exclude: A list containing the key value pairs to exlude. The key
+            excludes: A list containing the key value pairs to exlude. The key
                 value pairs are the variable names and values of the model instance.
 
         Returns:
             Returns a dictionary with the instances member variables as key
             value pairs if any exist.
         """
-        model_dict = {}
-        d = dict(self.__dict__)
-        model_dict.update(get_common_pairs(d) )
-        delete_keys(model_dict, exclude)
-
-        return model_dict
+        return filter_dictionary(dict(self.__dict__), excludes )
 
 class User(Base, Model):
     """The model for the user table.
@@ -70,49 +65,49 @@ class User(Base, Model):
         return str_format % values
         
         
-    def get_dict(self, exclude):
-        user_dict = super(User, self).get_dict()
-        
+    def get_dict(self, excludes):
+        user_dict = super().get_dict(excludes)
 
 
 class Employee(Base, Model):
     """The model for the employee table.
 
     Attributes:
-        email (str): The employee's email. It is used as the primary key for
-            the table, and it will be used for adding employees to groups for
-            the corresponding apps.
-        first_name (str): The employee's first name.
-        last_name (str): The employee's last name.
+        id: The employee's id. It serves as a primary key.
+        email: The employee's email.
+        first_name: The employee's first name.
+        last_name: The employee's last name.
 
     """
     __tablename__ = 'employee'
 
-    empl_id = Column(Integer)
-    email = Column(String(255), primary_key = True)
-    first_name = Column(String(255) )
-    last_name = Column(String(255) )
+    id = Column('empl_id', Integer)
+    email = Column('email', String(255), primary_key = True)
+    first_name = Column('first_name', String(255) )
+    last_name = Column('last_name', String(255) )
 
     roles = association_proxy('employee_roles', 'role')
 
 
-    def __init__(self, empl_id: int ,email: str, first_name: str, last_name: str):
-        self.empl_id = empl_id
+    def __init__(self, id: int ,email: str, first_name: str, last_name: str):
+        self.id = id
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
 
 
     def __repr__(self):
-        str_format = '<Employee(empl_id: %d, email: %s, first_name: %s, last_name: %s)>'
-        values = (self.empl_id, self.email, self.first_name, self.last_name)
+        str_format = '<Employee(id: %d, email: %s, first_name: %s, last_name: %s)>'
+        values = (self.id, self.email, self.first_name, self.last_name)
         return str_format % values
     
     
-    def get_dict(self, exclude = []):
-        employee_dict = super(Employee, self).get_dict(exclude)
-        roles = [role.get_dict() for role in self.roles]
-        employee_dict.update([('roles', roles)])
+    def get_dict(self, excludes = []):
+        employee_dict = super().get_dict(excludes)
+        
+        if 'roles' not in excludes:
+            roles = [role.get_dict() for role in self.roles]
+            employee_dict.update([('roles', roles)])
         
         return employee_dict
     
@@ -121,39 +116,39 @@ class App(Base, Model):
     """The model for the app table.
 
     Attributes:
-        app_id (int): The primary key of the app table.
+        id (int): The primary key of the app table.
         name (str): The name of the app. It is used to distinguish which
             application groups belong to, since group names may be repeated.
 
     """
     __tablename__ = 'app'
 
-    app_id = Column(Integer, primary_key = True)
-    name = Column(String(255) )
+    id = Column('app_id', Integer, primary_key = True)
+    name = Column('name', String(255) )
 
 
-    def __init__(self, app_id: int, name: str, token: str = ""):
-        self.app_id = app_id
+    def __init__(self, id: int, name: str, token: str = ""):
+        self.id = id
         self.name = name
         self.token = token
 
 
     def __repr__(self):
-        str_format = '<App(app_id: %s, name: %s)>'
-        values = (self.app_id, self.name)
+        str_format = '<App(id: %s, name: %s)>'
+        values = (self.id, self.name)
         return str_format % values
 
 
-    def get_dict(self, exclude):
-        exclude.append('token')
-        return super(App, self).get_dict(exclude)
+    def get_dict(self, excludes):
+        excludes.append('token')
+        return super().get_dict(excludes)
 
 
 class Role(Base, Model):
     """The model for the role table.
 
     Attributes:
-        role_id (int): The primary key of the role table.
+        id (int): The primary key of the role table.
         name (str): The name of the role. Roles must have unique names to
             make them easy to tell them apart.
         description (str): A description of the role.
@@ -161,22 +156,22 @@ class Role(Base, Model):
     """
     __tablename__ = 'role'
 
-    role_id = Column(Integer, primary_key = True)
-    name = Column(String(255), unique = True )
-    description = Column(String(1000) )
+    id = Column('role_id', Integer, primary_key = True)
+    name = Column('name', String(255), unique = True )
+    description = Column('description', String(1000) )
     
     groups = association_proxy('role_groups', 'group')
 
 
-    def __init__(self, role_id, name, description):
-        self.role_id = role_id
+    def __init__(self, id, name, description):
+        self.id = id
         self.name = name
         self.description = description
 
 
     def __repr__(self):
-        str_format = '<Role(role_id: %s, name: %s, description: %s)>'
-        values = (self.role_id, self.name, self.description)
+        str_format = '<Role(id: %s, name: %s, description: %s)>'
+        values = (self.id, self.name, self.description)
         return str_format % values
     
 
@@ -192,21 +187,19 @@ class Group(Base, Model):
     """
     __tablename__ = 'group'
 
-    group_id = Column(Integer, primary_key = True)
-    name = Column(String(255) )
-    app_id = Column(Integer, ForeignKey('group.app_id'))
-    app_group_id = Column(String(255) )
+    id = Column('group_id', Integer, primary_key = True)
+    name = Column('name', String(255) )
+    app_group_id = Column('app_group_id', String(255) )
     
 
-    def __init__(self, group_id, name, app_id, app_group_id):
-        self.group_id = group_id
+    def __init__(self, group_id, name, app_group_id):
+        self.id = id
         self.name = name
-        self.app_id = app_id
         self.app_group_id = app_group_id
     
-    def __repr___(self):
-        str_format = '<Group(group_id: %s, name: %s)>'
-        values = (self.group_id, self.name)
+    def __repr__(self):
+        str_format = '<Group(id: %s, name: %s)>'
+        values = (self.id, self.name)
         return str_format % values
 
 
@@ -226,9 +219,9 @@ class EmployeeToRole(Base, Model):
     employee = relationship(Employee,
                 backref = backref('employee_roles',
                           cascade = 'all, delete-orphan')
-            )
+                )
             
-    role = relationship('Role')
+    role = relationship('Role', lazy='subquery')
 
 
     def __init__(self, email, role_id):
@@ -262,7 +255,7 @@ class RoleToGroup(Base, Model):
     group = relationship('Group')
 
 
-    def __init__(self, email, role_id):
+    def __init__(self, group_id, role_id):
         self.group_id = group_id
         self.role_id = role_id
 
@@ -287,7 +280,7 @@ class AppToGroup(Base, Model):
     group_id = Column('group_id', Integer, ForeignKey('group.group_id'), primary_key = True)
     
 
-    def __init__(self, app_id, role_id):
+    def __init__(self, app_id, group_id):
         self.app_id = app_id
         self.group_id = group_id
 
