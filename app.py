@@ -68,8 +68,10 @@ def login():
 
     if request.method == 'POST':
         
+
         username = request.form['username']
         password = request.form['password']
+        # registered_user = db_session.query(User).filter_by(username=username,password=password).first()
         
         if username and password:
             if query.is_usermane_correct(username):
@@ -79,8 +81,11 @@ def login():
         if False:
             error = 'Unkown error. Please contact support.'
         else:
-             resp = json.dumps({'message': 'you have not entereted the correct details'})
-             return (resp, 400)
+            resp = json.dumps({'message': 'you have not entereted the correct details'})
+            return (resp, 400)
+
+            flask.redirect('/')
+
 
     return flask.render_template('login.html', message = error)
 
