@@ -1,6 +1,8 @@
 // JavaScript File
 
-
+$("#delete-employee").click(function(){
+    
+});
 
 $(document).ready(function(){
     //Initialize globals
@@ -70,7 +72,7 @@ $(document).ready(function(){
         var row = 0; 
         
        
-        inner_table = "<thead><tr><th> <input id='all-checkbox' type='checkbox' name= '' /> Select All </th><th>Name</th><th>Email</th><th>Roles</th></tr></thead>"
+        inner_table = "<thead><tr><th> <input id='all-checkbox' type='checkbox' name='' /> Select All </th><th>Name</th><th>Email</th><th>Roles</th></tr></thead>"
         inner_table += "<tbody>"
         for (; row < tableRows; row++){
             
