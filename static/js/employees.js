@@ -43,14 +43,7 @@ $("#delete-employee").on('click', function(e){
         method: 'DELETE',
         data: personToDelete_ID,
         success: function(response) {
-            json = (JSON.parse(response))['employees'];
-            tableRows = Object.keys(json).length;
-            
-            for(x = 0; x < tableRows; x++){
-                if(json[x]['email'] == personToDelete){
-                    personToDelete_ID = json[x]['id']
-                }
-            }
+            // CONTINUE HERE?!
         },
         error: function(error) {
             try {
