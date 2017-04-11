@@ -105,7 +105,10 @@ def addEmp():
 def empGroup():
     return flask.render_template("employee.html")
 
-
+@app.route('/roles')
+def rolesGroup():
+    return flask.render_template("roles.html")
+    
 @app.route('/edits')
 def edits():
     return flask.render_template("edits.html")

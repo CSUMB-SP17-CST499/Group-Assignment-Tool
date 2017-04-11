@@ -2,20 +2,19 @@ $(document).ready(function(){
 
     //Initialize globals
     var json = [];
-    var table = $('#employees-table')[0]; // Get table from html
+    var table = $('#roles-table')[0]; // Get table from html
     var tableRows = 0;
-    loadTable(table, tableRows,4);
-
+    loadTable(table, tableRows,3);
     
     $.ajax({
-        url: '/api/employees',
+        url: '/api/roles',
         method: 'GET',
         contentType: 'json',
         success: function(response) {
-            json = (JSON.parse(response))['employees'];
+            json = (JSON.parse(response))['roles'];
             tableRows = Object.keys(json).length;
-            loadTable(table, tableRows,4);
-            displayEmployees(table, json);
+            loadTable(table, tableRows,3);
+            displayRoles(table, json);
         },
         error: function(error) {
             try {
@@ -32,33 +31,27 @@ $(document).ready(function(){
         }
     });
     
-    function displayEmployees(table, employees) {
-        if (employees) {
-            console.log(Object.keys(employees).length);
-            for (var index = 0; index < employees.length; index++) {
-                var employee = employees[index];
+    // var roles_json = '{"roles": [{"name": "kunf_fu_master", "description": "kung fu fighting", "id": 11111}, {"name": "gym_teacher", "description": "teach gym", "id": 22222}]}'
+    // var roles = JSON.parse(roles_json)["roles"];
+    
+    // displayRoles(table, roles);
+    
+    function displayRoles(table, roles) {
+        if (roles) {
+            
+            for (var index = 0; index < roles.length; index++) {
                 
-                var role_names = getEmployeeRoles(employee);
+                var role = roles[index];
                 
-
-                table.rows[index + 1].cells[1].innerHTML = employee['first_name'] + " " + employee['last_name'];//name
-                table.rows[index + 1].cells[2].innerHTML = employee['email'];//email
-                table.rows[index + 1].cells[3].innerHTML = role_names;//Role
+                console.log(role["name"])
+                table.rows[index + 1].cells[1].innerHTML = role["name"]//name
+                table.rows[index + 1].cells[2].innerHTML = role['description'];//description
+                
             }
-        }
-    }
-    
-    function getEmployeeRoles(employee) {
-        var roles = employee["roles"];
-        var role_names = [];
-        
-        for(var index = 0;  index < roles.length; index++){
-            
-        role_names.push(roles[index]["name"])
+         
+               
             
         }
-        return role_names
-    
     }
     
     $('#all-checkbox').on('click', function(e) {
