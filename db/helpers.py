@@ -44,7 +44,7 @@ def delete_keys(d: dict, keys: List[str]):
             del d[key]
             
             
-def get_common_pairs(d: dict):
+def filter_dictionary(d: dict, excludes = []) -> dict:
     """Returns a list of key value pairs from common value types.
     
     Args:
@@ -54,8 +54,23 @@ def get_common_pairs(d: dict):
         Returns a list of tuples if there are values of the
         common data types.
     """
-    pairs = []
+    new_dict = {}
     for key in d.keys():
-        if isinstance(d[key], (int, bool, str) ):
-            pairs.append( (key, d[key]) )
-    return pairs
+        val = d[key]
+        if is_common_type(val) and val not in excludes:
+            new_dict.update([(key, val)])
+
+    return new_dict
+    
+    
+def is_common_type(value) -> bool:
+    """Returns whether a value is a common python object type 
+    
+    Args:
+        value: A python object.
+        
+    Returns: 
+        Returns true if the value is a common python data type. 
+        e.g. int, bool, str
+    """
+    return isinstance(value, (int, bool, str) )

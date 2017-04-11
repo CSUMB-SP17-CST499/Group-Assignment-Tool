@@ -1,49 +1,58 @@
-// JavaScript File
-
-
-
 $(document).ready(function(){
 
-    var employees_json = '{"employees": [{"roles": [{"role_id": 11111, "name": "kunf_fu_master", "description": "kung fu fighting"},{"role_id": 11112, "name": "sal_thekunf_fu_master", "description": "sal is kung fu fighting"}], "first_name": "Eliasar", "email": "elgandara@csumb.edu", "last_name": "Gandara"}, {"roles": [{"role_id": 22222, "name": "gym_teacher", "description": "teach gym"}], "first_name": "fake", "email": "fakeemail@fake.edu", "last_name": "person"}]}'
-    var json = JSON.parse(employees_json);
+    //Initialize globals
+    var json = [];
     var table = $('#roles-table')[0]; // Get table from html
-    var tableRows = (json.employees.length >= 10) ? 10 : json.employees.length;
-    console.log(tableRows);
-
+    var tableRows = 0;
+    loadTable(table, tableRows,3);
     
-    displayEmployees(table, json)
-    
-    function displayEmployees(table, json) {
-        if (json['employees']) {
-            var employees = json['employees'];
-
-            for (var index = 0; index < employees.length; index++) {
-                var employee = employees[index];
-                
-                var role_names = getEmployeeRoles(employee);
-                
-
-                table.rows[index + 1].cells[1].innerHTML = employee['first_name'] + " " + employee['last_name'];//name
-                table.rows[index + 1].cells[2].innerHTML = employee['email'];//email
-                table.rows[index + 1].cells[3].innerHTML = role_names;//Role
+    $.ajax({
+        url: '/api/roles',
+        method: 'GET',
+        contentType: 'json',
+        success: function(response) {
+            json = (JSON.parse(response))['roles'];
+            tableRows = Object.keys(json).length;
+            loadTable(table, tableRows,3);
+            displayRoles(table, json);
+        },
+        error: function(error) {
+            try {
+                json = JSON.parse(error.responseText);
+                if (json.message) {
+                    $('#message').html(json.message);
+                    $('#alert-message')[0].classList.add('alert-danger');
+                    $('#alert-message').show();
+                }
+            }
+            catch (e) {
+                console.log(e);
             }
         }
-    }
+    });
     
-    function getEmployeeRoles(employee) {
-        var roles = employee["roles"];
-        var role_names = [];
-        
-        for(var index = 0;  index < roles.length; index++){
+    // var roles_json = '{"roles": [{"name": "kunf_fu_master", "description": "kung fu fighting", "id": 11111}, {"name": "gym_teacher", "description": "teach gym", "id": 22222}]}'
+    // var roles = JSON.parse(roles_json)["roles"];
+    
+    // displayRoles(table, roles);
+    
+    function displayRoles(table, roles) {
+        if (roles) {
             
-        role_names.push(roles[index]["name"])
+            for (var index = 0; index < roles.length; index++) {
+                
+                var role = roles[index];
+                
+                console.log(role["name"])
+                table.rows[index + 1].cells[1].innerHTML = role["name"]//name
+                table.rows[index + 1].cells[2].innerHTML = role['description'];//description
+                
+            }
+         
+               
             
         }
-        return role_names
-    
     }
-  
-    
     
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
@@ -61,13 +70,5 @@ $(document).ready(function(){
                 }
          }
         }
-        
-        
     });
-    
-    
-    
-    
-    
-    
 });

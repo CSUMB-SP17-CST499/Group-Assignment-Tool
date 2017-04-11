@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title %} Add Employee {% endblock %}
 {% block content %}
+<script src="../static/AddUser.js"></script>
 <div class="container" style="padding-top: 100px;">
   <div class="row centered-form">
   	<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
@@ -31,12 +32,12 @@
 	    			<div class="row">
 	    				<div class="col-xs-6 col-sm-6 col-md-6">
 	    					<div class="form-group">
-	    						<input type="Job Field" name="Job Field" id="Job Field" class="form-control input-sm" placeholder="Job Field">
+	    						<input type="Job Field" name="Role" id="Role" class="form-control input-sm" placeholder="Role">
 	    					</div>
 	    				</div>
 	    			</div>
 	    			
-	    			<input href="/WebPageLayout/Employeepermissions/Employeepermissions.html" type="submit" value="Get Permissions" class="btn btn-info btn-block">
+	    			<input type="button" id= "create_user" value="Get Assignments" class="btn btn-info btn-block">
 	    			<input href="/WebPageLayout/Employeepermissions/Employeepermissions.html" type="submit" value="Cancel" class="btn btn-info btn-block">
 		    	</form>
 		    </div>

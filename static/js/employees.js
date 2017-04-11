@@ -1,22 +1,40 @@
-// JavaScript File
-
-
-
 $(document).ready(function(){
 
-    var employees_json = '{"employees": [{"roles": [{"role_id": 11111, "name": "kunf_fu_master", "description": "kung fu fighting"},{"role_id": 11112, "name": "sal_thekunf_fu_master", "description": "sal is kung fu fighting"}], "first_name": "Eliasar", "email": "elgandara@csumb.edu", "last_name": "Gandara"}, {"roles": [{"role_id": 22222, "name": "gym_teacher", "description": "teach gym"}], "first_name": "fake", "email": "fakeemail@fake.edu", "last_name": "person"}]}'
-    var json = JSON.parse(employees_json);
+    //Initialize globals
+    var json = [];
     var table = $('#employees-table')[0]; // Get table from html
-    var tableRows = (json.employees.length >= 10) ? 10 : json.employees.length;
-    console.log(tableRows);
+    var tableRows = 0;
+    loadTable(table, tableRows,4);
 
     
-    displayEmployees(table, json)
+    $.ajax({
+        url: '/api/employees',
+        method: 'GET',
+        contentType: 'json',
+        success: function(response) {
+            json = (JSON.parse(response))['employees'];
+            tableRows = Object.keys(json).length;
+            loadTable(table, tableRows,4);
+            displayEmployees(table, json);
+        },
+        error: function(error) {
+            try {
+                json = JSON.parse(error.responseText);
+                if (json.message) {
+                    $('#message').html(json.message);
+                    $('#alert-message')[0].classList.add('alert-danger');
+                    $('#alert-message').show();
+                }
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+    });
     
-    function displayEmployees(table, json) {
-        if (json['employees']) {
-            var employees = json['employees'];
-
+    function displayEmployees(table, employees) {
+        if (employees) {
+            console.log(Object.keys(employees).length);
             for (var index = 0; index < employees.length; index++) {
                 var employee = employees[index];
                 
@@ -42,8 +60,6 @@ $(document).ready(function(){
         return role_names
     
     }
-  
-    
     
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
@@ -61,13 +77,5 @@ $(document).ready(function(){
                 }
          }
         }
-        
-        
     });
-    
-    
-    
-    
-    
-    
 });
