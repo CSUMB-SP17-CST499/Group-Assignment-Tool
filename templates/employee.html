@@ -1,39 +1,26 @@
 {% extends 'base.html' %}
 {% block title %} Employees {% endblock %}
 {% block content %}
-  <div class = "col-sm-1" style=" padding-top:80px;">
-    <div class="btn-group-vertical">
+<div class = "col-sm-1" style=" padding-top:80px;">
+  <div class="btn-group-vertical">
        <a href="#" class = "selected" class="btn-link">Employees</a>
        <a href="#" class="btn-link">Roles</a>
-</div>
   </div>
+</div>
  
       <!-- button group-->
 <div class="btn-group" role="group" aria-label="Basic example">
+  <input type="text" class="form"  placeholder="employee_email@gmail.com" />
   <div  class = "px-2">
     <a href="/#" class="btn btn-default">Add</a>
-  <a href="#" class="btn btn-default">Edit</a>
-  <a href="#" class="btn btn-default" id="delete-employee">Delete</a>
+    <a href="#" class="btn btn-default">Edit</a>
+    <a href="#" class="btn btn-default" id="delete-employee">Delete</a>
+  </div>
 </div>
 
-  <div class="container" style="padding-right:40px; border-left: 2px solid #ccc;">
-    <div class="row">
-    <div class="col-sm-6" >
-  <h1>Employees</h1>
+  <div class="container row col-sm-6" style="padding-right:40px; border-left: 2px solid #ccc;">
+    <h1>Employees</h1>
   </div>
-  <div class="col-sm-6" >
-  <div id="imaginary_container">
-      <div class="input-group stylish-input-group">
-                    <input type="text" class="form-control"  placeholder="Search" >
-                    <span class="input-group-addon">
-                        <button type="submit">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </button>  
-                    </span>
-       </div>
-    </div>
-    </div>
-    </div>
   
     
     
@@ -43,10 +30,5 @@
         <!-- Generating table for user information --> 
        <table class="table table-striped table-bordered table-hover" id="employees-table"></table> 
     </div>
-    
-    
-    
-  
-  </div>
   
 {% endblock %}
