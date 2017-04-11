@@ -18,7 +18,7 @@ $(document).ready( function() {
             'last_name': lastname,
             'email': email, 
             'role': role
-        }
+        };
                 
         $.ajax({
             url: '/api/employee',
