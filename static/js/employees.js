@@ -6,7 +6,7 @@ $("#delete-employee").on('click', function(e){
     var personToDelete = $("#employeeToDelete").val();
     var personToDelete_ID = null;
 
-    
+    // Lookup employee to get their ID
     $.ajax({
         url: '/api/employees',
         method: 'GET',
@@ -36,8 +36,36 @@ $("#delete-employee").on('click', function(e){
         }
     });
     
+    // If the ID is found, delete the user.
     if(personToDelete_ID != null){
-        
+    $.ajax({
+        url: '/api/employee',
+        method: 'DELETE',
+        data: personToDelete_ID,
+        success: function(response) {
+            json = (JSON.parse(response))['employees'];
+            tableRows = Object.keys(json).length;
+            
+            for(x = 0; x < tableRows; x++){
+                if(json[x]['email'] == personToDelete){
+                    personToDelete_ID = json[x]['id']
+                }
+            }
+        },
+        error: function(error) {
+            try {
+                json = JSON.parse(error.responseText);
+                if (json.message) {
+                    $('#message').html(json.message);
+                    $('#alert-message')[0].classList.add('alert-danger');
+                    $('#alert-message').show();
+                }
+            }
+            catch (e) {
+                console.log(e);
+            }
+        }
+    });
     }
 });
 
