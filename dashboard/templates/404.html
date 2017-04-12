@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+{% block title %} 404 - the page does not exist {% endblock %}
+
+{% block stylesheets %}
+{{super()}}
+<link rel="stylesheet" href="../dashboard/static/styles/404.css">
+{% endblock %}
+
+{% block content %}
+<div class="clearfix"></div>
+<div id='main-body'>
+    <h1 class='enormous-font'>404</h1>
+    <div class='big-font'>
+        The requested page does not exist...
+    </div>
+    <hr>
+    <div class='big-font'>
+        You can return to the <a href='/' class='underline'>home page</a>.
+    </div>
+</div>
+{% endblock %}

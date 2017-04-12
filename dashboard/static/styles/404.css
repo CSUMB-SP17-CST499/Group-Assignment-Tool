@@ -1,0 +1,53 @@
+a:link {
+    color: #1f3759;
+    text-decoration: none;
+}
+
+a:active {
+    color: #1f3759;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #9fb7d9;
+    text-decoration: none;
+}
+
+a:visited {
+    color: #1f3759;
+    text-decoration: none;
+}
+
+.bree-font {
+   font-family: 'Bree Serif', serif;
+}
+
+body {
+   font-family: 'Source Sans Pro', 'Roboto', sans-serif;
+   background: #FFFFFF;
+   color: #1f3759;
+}
+
+a.underline, .underline {
+   text-decoration: underline;
+}
+
+#main-body {
+   text-align: center;
+}
+
+.enormous-font {
+   font-size: 10em;
+   margin-bottom: 0em;
+}
+
+.big-font {
+   font-size: 2em;
+}
+
+hr {
+   width: 25%;
+   height: 1px;
+   background: #1f3759;
+   border: 0px;
+}

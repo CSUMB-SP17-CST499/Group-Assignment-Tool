@@ -5,6 +5,7 @@ from hashlib import md5
 
 from views.roles import roles
 from views.employees import employees
+from dashboard.views import dashboard
 from db.database import init_db, Session 
 from db import query, hashPassword, models
 from db.models import User
@@ -13,6 +14,7 @@ from db.models import User
 app = flask.Flask(__name__)
 app.register_blueprint(roles)
 app.register_blueprint(employees)
+app.register_blueprint(dashboard)
 
 # Initalize the database
 init_db()
@@ -89,25 +91,6 @@ def login():
 
     return flask.render_template('login.html', message = error)
 
-
-@app.route('/add')
-def addEmp():
-    # data = request.get_json()
-        
-    # firstname = data.get('firstname')
-    # lastname = data.get('lastname')
-    # email = data.get('email')
-    # role = data.get('role')
-    return flask.render_template("add.html")
-
-
-@app.route('/employee')
-def empGroup():
-    return flask.render_template("employee.html")
-
-@app.route('/roles')
-def rolesGroup():
-    return flask.render_template("roles.html")
     
 @app.route('/edits')
 def edits():
