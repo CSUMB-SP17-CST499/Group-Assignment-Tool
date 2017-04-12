@@ -1,5 +1,11 @@
 {% extends 'layout.html' %}
 {% block title %} Employees {% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="../dashboard/static/js/table.js"></script>
+<script type="text/javascript" src="../dashboard/static/js/employees.js"></script>
+{% endblock %}
+
 {% block content %}
   <div class = "col-sm-1" style=" padding-top:80px;">
     <div class="btn-group-vertical">
@@ -37,10 +43,6 @@
   
     
     <div id = "page_name" name = "employees-table"></div>
-    <script type="text/javascript" src="../static/js/table.js"></script>
-    <script type="text/javascript" src="../static/js/employees.js"></script>
-    
-   
 
     <div class="table table-striped">
         <!-- Generating table for user information --> 

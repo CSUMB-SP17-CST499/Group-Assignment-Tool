@@ -1,14 +1,20 @@
 {% extends 'layout.html' %}
 {% block title %} Roles {% endblock %}
+
+{% block scripts %} 
+<script type="text/javascript" src="../dashboard/static/js/table.js"></script>
+<script type="text/javascript" src="../dashboard/static/js/Roles.js"></script>
+{% endblock %}
+
 {% block content %}
-  <div class = "col-sm-1" style=" padding-top:80px;">
-    <div class="btn-group-vertical">
-       <a href="#"  class="btn-link">Employees</a>
-       <a href="#" class = "selected" class="btn-link">Roles</a>
-</div>
+<div class = "col-sm-1" style=" padding-top:80px;">
+  <div class="btn-group-vertical">
+    <a href="#"  class="btn-link">Employees</a>
+    <a href="#" class = "selected" class="btn-link">Roles</a>
   </div>
+</div>
  
-      <!-- button group-->
+<!-- button group-->
 <div class="btn-group" role="group" aria-label="Basic example">
   <div  class = "px-2">
     <a href="/#" class="btn btn-default">Add</a>
@@ -36,9 +42,6 @@
     </div>
   
     <div id = "page_name" name = "roles-table"></div>
-    <script type="text/javascript" src="../static/js/table.js"></script>
-    <script type="text/javascript" src="../static/js/Roles.js"></script>
-    
     
     <div class="table table-striped">
         <!-- Generating table for user information --> 
@@ -46,10 +49,5 @@
          <thead><tr><th> <input id='all-checkbox' type='checkbox' name= '' /> Select All </th><th>Name</th><th>Decription</th></tr></thead>
        </table> 
     </div>
-    
-    
-    
-  
   </div>
-  
 {% endblock %}
