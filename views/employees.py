@@ -40,7 +40,7 @@ def employee_uri():
             email = args.get('email')
             first_name = args.get('first_name')
             last_name = args.get('last_name')
-            roles = args.get('roles')
+            role_ids = args.get('roles')
             
             # Update the employee with the provided info
             if empl_id:
