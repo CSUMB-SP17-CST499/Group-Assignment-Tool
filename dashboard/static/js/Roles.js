@@ -54,6 +54,23 @@ $(document).ready(function(){
         }
     }
     
+        function displayRolesByName(roles) {
+        if (roles) {
+            
+            for (var index = 0; index < roles.length; index++) {
+                
+                var role = roles[index];
+                
+                console.log(role["name"]);
+                table.rows[index + 1].cells[1].innerHTML = role["name"];//name
+                
+            }
+         
+               
+            
+        }
+    }
+    
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
         if (this.checked) {

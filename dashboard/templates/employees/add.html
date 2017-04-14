@@ -2,7 +2,8 @@
 {% block title %} Add Employee {% endblock %}
 
 {% block scripts %}
-<script src="../dashboard/static/js/AddUser.js"></script>
+<script src="../dashboard/static/js/AddEmployee.js"></script>
+<script type="text/javascript" src="../dashboard/static/js/RoleDropDown.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -33,10 +34,21 @@
 	    				<input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address">
 	    			</div>
 	
-	    			<div class="row">
+	    			<div class="row" "dropdown" id = "role_select">
 	    				<div class="col-xs-6 col-sm-6 col-md-6">
 	    					<div class="form-group">
-	    						<input type="Job Field" name="Role" id="Role" class="form-control input-sm" placeholder="Role">
+	    						<select class="btn btn-info btn-block dropdown-toggle" id="Role" type="button" data-toggle="dropdown">Choose Role
+	    						 <span class="caret"></span>
+	    						 </button>
+							    <span class="dropdown-menu" role="menu"  id = "role_select"/>
+							      <!--<option role="presentation"><a role="menuitem" >HTML</a></option>-->
+							      <!--<option role="presentation"><a role="menuitem"  >CSS</a></option>-->
+							      <!--<option role="presentation"><a role="menuitem" >JavaScript</a></option>-->
+							      <!--<option role="presentation"><a role="menuitem" >About Us</a></option>    -->
+							    </select>
+							  </div>
+							</div>
+	    						<!--<input type="Job Field" name="Role" id="Role" class="form-control input-sm" placeholder="Role">-->
 	    					</div>
 	    				</div>
 	    			</div>
