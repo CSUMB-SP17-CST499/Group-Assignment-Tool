@@ -15,7 +15,8 @@ $(document).ready(function(){
         success: function(response) {
             information = JSON.parse(response);
             json = response;
-            tableRows = Object.keys(json).length;
+            tableRows = information["employees"].length;
+            console.log(information["employees"].length);
             loadEmployeeTable(table, tableRows,5);
         },
         error: function(error) {
@@ -68,14 +69,14 @@ $(document).ready(function(){
     function loadEmployeeTable(table, tableRows, columnAmt) {
     var column_amt = columnAmt;
     var inner_table = "";
+    var id, name, email;
     inner_table += "<tbody>"
-    console.log(information);
-    
+
+    console.log(tableRows);
     for (var row = 0; row < tableRows; row++){
-        console.log(information["employees"][row]['id']);
-        var id = information["employees"][row]['id'];
-        var name = information["employees"][row]['first_name'] + " " + information["employees"][row]['last_name'];
-        var email = information["employees"][row]['email'];
+        id = information["employees"][row]["id"];
+        name = information["employees"][row]["first_name"] + ' ' + information["employees"][row]["last_name"];
+        email = information["employees"][row]["email"];
         inner_table += "<tr>";
         inner_table += "<td><input class='checkbox' type='checkbox' id='" + id + "' /></td>";
         inner_table += "<td>"+ name +"</td>";
@@ -87,5 +88,4 @@ $(document).ready(function(){
     inner_table += "</tbody>";
     $(table).append(inner_table);
 }
-    
 });
