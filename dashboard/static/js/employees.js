@@ -85,6 +85,17 @@ $(document).ready(function(){
         inner_table += "</tr>";
     };
     inner_table += "</tbody>";
+    
     $(table).append(inner_table);
+    
+    $('#deleteButton').click(function(){
+        var peopleToDelete = [];
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            peopleToDelete.push($(this).val());
+        });
+        
+        console.log(peopleToDelete);
+    });
 }
 });
