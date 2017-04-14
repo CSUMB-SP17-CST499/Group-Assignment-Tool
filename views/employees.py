@@ -100,6 +100,10 @@ def employee_uri():
         employee = query.get_employee_by_id(empl_id)
         try:
             if employee:
+                email = args.get('email')
+                first_name = args.get('first_name')
+                last_name = args.get('last_name')
+                roles = args.get('roles')
                 is_deleted = query.remove_employee(empl_id)
                 if is_deleted:
                     return (json.dumps({}), 200)

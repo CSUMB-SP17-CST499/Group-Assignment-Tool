@@ -4,7 +4,7 @@ $(document).ready(function(){
     var json = [];
     var table = $('#employees-table')[0]; // Get table from html
     var tableRows = 0;
-    loadTable(table, tableRows,4);
+    loadEmployeeTable(table, tableRows,5);
 
     
     $.ajax({
@@ -14,7 +14,7 @@ $(document).ready(function(){
         success: function(response) {
             json = (JSON.parse(response))['employees'];
             tableRows = Object.keys(json).length;
-            loadTable(table, tableRows,4);
+            loadEmployeeTable(table, tableRows,5);
             displayEmployees(table, json);
         },
         error: function(error) {
@@ -40,7 +40,6 @@ $(document).ready(function(){
                 
                 var role_names = getEmployeeRoles(employee);
                 
-
                 table.rows[index + 1].cells[1].innerHTML = employee['first_name'] + " " + employee['last_name'];//name
                 table.rows[index + 1].cells[2].innerHTML = employee['email'];//email
                 table.rows[index + 1].cells[3].innerHTML = role_names;//Role
