@@ -1,10 +1,11 @@
 $(document).ready(function(){
 
     //Initialize globals
+    var information = [];
     var json = [];
     var table = $('#employees-table')[0]; // Get table from html
     var tableRows = 0;
-    loadEmployeeTable(table, tableRows,5);
+    loadTable(table, tableRows,5);
 
     
     $.ajax({
@@ -12,10 +13,10 @@ $(document).ready(function(){
         method: 'GET',
         contentType: 'json',
         success: function(response) {
-            json = (JSON.parse(response))['employees'];
+            information = JSON.parse(response);
+            json = response;
             tableRows = Object.keys(json).length;
             loadEmployeeTable(table, tableRows,5);
-            displayEmployees(table, json);
         },
         error: function(error) {
             try {
@@ -31,21 +32,7 @@ $(document).ready(function(){
             }
         }
     });
-    
-    function displayEmployees(table, employees) {
-        if (employees) {
-            console.log(Object.keys(employees).length);
-            for (var index = 0; index < employees.length; index++) {
-                var employee = employees[index];
-                
-                var role_names = getEmployeeRoles(employee);
-                
-                table.rows[index + 1].cells[1].innerHTML = employee['first_name'] + " " + employee['last_name'];//name
-                table.rows[index + 1].cells[2].innerHTML = employee['email'];//email
-                table.rows[index + 1].cells[3].innerHTML = role_names;//Role
-            }
-        }
-    }
+
     
     function getEmployeeRoles(employee) {
         var roles = employee["roles"];
@@ -77,4 +64,28 @@ $(document).ready(function(){
          }
         }
     });
+    
+    function loadEmployeeTable(table, tableRows, columnAmt) {
+    var column_amt = columnAmt;
+    var inner_table = "";
+    inner_table += "<tbody>"
+    console.log(information);
+    
+    for (var row = 0; row < tableRows; row++){
+        console.log(information["employees"][row]['id']);
+        var id = information["employees"][row]['id'];
+        var name = information["employees"][row]['first_name'] + " " + information["employees"][row]['last_name'];
+        var email = information["employees"][row]['email'];
+        inner_table += "<tr>";
+        inner_table += "<td><input class='checkbox' type='checkbox' id='" + id + "' /></td>";
+        inner_table += "<td>"+ name +"</td>";
+        inner_table += "<td>"+ email +"</td>";
+        inner_table += "<td></td>";
+        inner_table += "<td></td>";
+        inner_table += "</tr>";
+    };
+    inner_table += "</tbody>";
+    $(table).append(inner_table);
+}
+    
 });
