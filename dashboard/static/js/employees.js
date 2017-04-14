@@ -16,7 +16,6 @@ $(document).ready(function(){
             information = JSON.parse(response);
             json = response;
             tableRows = information["employees"].length;
-            console.log(information["employees"]);
             loadEmployeeTable(table, tableRows,5);
         },
         error: function(error) {
@@ -76,11 +75,23 @@ $(document).ready(function(){
         id = information["employees"][row]["id"];
         name = information["employees"][row]["first_name"] + ' ' + information["employees"][row]["last_name"];
         email = information["employees"][row]["email"];
+        arrayOfRoles = information["employees"][row]["roles"];
+        var rolesString = ""
+        var role;
+            for(var x = 0; x < arrayOfRoles.length; x++){
+                role = arrayOfRoles[x]["name"];
+                if(x > 0){
+                    rolesString += ", " + role
+                }else{
+                    rolesString += role;
+                }
+            }
+        console.log(rolesString);
         inner_table += "<tr>";
         inner_table += "<td><input class='checkbox' type='checkbox' value='" + id + "' id='" + id + "' /></td>";
         inner_table += "<td>"+ name +"</td>";
         inner_table += "<td>"+ email +"</td>";
-        inner_table += "<td></td>";
+        inner_table += "<td>"+ rolesString +"</td>";
         inner_table += "<td></td>";
         inner_table += "</tr>";
     };
@@ -103,7 +114,9 @@ $(document).ready(function(){
             id: peopleToDelete,
             contentType: 'json',
             success: function(response) {
-                loadEmployeeTable(table, tableRows, 5);
+                
+                // Add functionality here
+                
             },
             error: function(error) {
                 try {
