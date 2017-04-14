@@ -98,24 +98,26 @@ def employee_uri():
             
     elif request.method == 'DELETE':
         employee = query.get_employee_by_id(empl_id)
-        try:
-            if employee:
-                email = args.get('email')
-                first_name = args.get('first_name')
-                last_name = args.get('last_name')
-                roles = args.get('roles')
-                is_deleted = query.remove_employee(empl_id)
-                if is_deleted:
-                    return (json.dumps({}), 200)
+        print("XXXXXXX THIS IS A TEST XXXXXXX")
+        print(employee)
+        # try:
+        #     if employee:
+        #         email = args.get('email')
+        #         first_name = args.get('first_name')
+        #         last_name = args.get('last_name')
+        #         roles = args.get('roles')
+        #         is_deleted = query.remove_employee(empl_id)
+        #         if is_deleted:
+        #             return (json.dumps({}), 200)
                 
-                response = create_error('unexpected_error')
-                return (response, 500)
-            else:
-                response = create_error('employee_not_found')
-                return (response, 404)
-        except Exception as e:
-            response = create_error('unexpected_error', e)
-            return (response, 500)
+        #         response = create_error('unexpected_error')
+        #         return (response, 500)
+        #     else:
+        #         response = create_error('employee_not_found')
+        #         return (response, 404)
+        # except Exception as e:
+        #     response = create_error('unexpected_error', e)
+        #     return (response, 500)
     
     
 @employees.route('/api/employees', methods = ['GET'])

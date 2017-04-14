@@ -96,6 +96,29 @@ $(document).ready(function(){
         });
         
         console.log(peopleToDelete);
+        
+        $.ajax({
+            url: 'https://capstone-cst-algorithmike.c9users.io/api/employee?id=?',
+            method: 'DELETE',
+            id: peopleToDelete,
+            contentType: 'json',
+            success: function(response) {
+                loadEmployeeTable(table, tableRows, 5);
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+        });
     });
 }
 });
