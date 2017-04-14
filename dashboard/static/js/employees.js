@@ -16,7 +16,7 @@ $(document).ready(function(){
             information = JSON.parse(response);
             json = response;
             tableRows = information["employees"].length;
-            console.log(information["employees"].length);
+            console.log(information["employees"]);
             loadEmployeeTable(table, tableRows,5);
         },
         error: function(error) {
@@ -72,13 +72,12 @@ $(document).ready(function(){
     var id, name, email;
     inner_table += "<tbody>"
 
-    console.log(tableRows);
     for (var row = 0; row < tableRows; row++){
         id = information["employees"][row]["id"];
         name = information["employees"][row]["first_name"] + ' ' + information["employees"][row]["last_name"];
         email = information["employees"][row]["email"];
         inner_table += "<tr>";
-        inner_table += "<td><input class='checkbox' type='checkbox' id='" + id + "' /></td>";
+        inner_table += "<td><input class='checkbox' type='checkbox' value='" + id + "' id='" + id + "' /></td>";
         inner_table += "<td>"+ name +"</td>";
         inner_table += "<td>"+ email +"</td>";
         inner_table += "<td></td>";
