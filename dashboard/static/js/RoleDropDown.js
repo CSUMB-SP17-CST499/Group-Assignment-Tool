@@ -6,6 +6,7 @@ $(document).ready(function(){
     var json = [];
     var table = $('#role_select')[0]; // Get table from html
     var tableRows = 0;
+    var selectList = document.getElementById('Role');
     loadList(table, tableRows);
     
     $.ajax({
@@ -40,9 +41,11 @@ $(document).ready(function(){
             for (var index = 0; index < roles.length; index++) {
                 
                 var role = roles[index];
-                
+                var option = document.createElement('option');
+                option.value = json[index].role_id;
+                option.text = json[index].name;
+                selectList.appendChild(option);
                 console.log(role["name"]);
-               // table.rows[index + 1].cells[1].innerHTML = role["name"];//name
                 
             }
          
