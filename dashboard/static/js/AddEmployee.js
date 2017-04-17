@@ -29,6 +29,7 @@ $(document).ready( function() {
                  $('#message').html("User was created");
                  $('#alert-message')[0].classList.add('alert-success');
                  $('#alert-message').show();
+                 window.location = '/employees';
                  // refresh the page so that the valeus are not still on the page after the user was created
                  //document.url;
             },

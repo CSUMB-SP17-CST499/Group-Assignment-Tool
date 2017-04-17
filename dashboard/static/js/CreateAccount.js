@@ -11,27 +11,35 @@ $(document).ready( function() {
     });
     
     $('#Create_Account').click(function() {
-    
+        console.log('I clicked a button');
         var firstname = $('#firstname').val();
         var lastname = $('#lastname').val();
         var email = $('#email').val();
         var username = $('#username').val();
         var password = $('#password').val();
+        var isadmin = $('#is_admin').val();
         
         data = {
             'firstname': firstname, 
             'lastname': lastname,
             'email': email, 
             'username': username, 
-            'password': password
-        }
+            'password': password,
+            'isadmin': isadmin
+        };
                 
         $.ajax({
-            url: '/createaccount',
-            method: 'POST',
+            url: '/api/user',
+            method: 'PUT',
             data: JSON.stringify(data),
             contentType: 'application/json',
-            success: function(response) {
+          success: function(response) {
+                 $('#message').html("User was created");
+                 $('#alert-message')[0].classList.add('alert-success');
+                 $('#alert-message').show();
+                 window.location = '/users';
+                 // refresh the page so that the valeus are not still on the page after the user was created
+                 //document.url;
             },
             error: function(error) {
                 try {
