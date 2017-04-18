@@ -129,8 +129,8 @@ def user_uri():
 def users_uri():
     if request.method == 'GET':
         try:
-            user = query.get_all_users()
-            return get_json('users', user)
+            users = query.get_all_users()
+            return get_json('users', users)
             
         except Exception as e:
             print(e)

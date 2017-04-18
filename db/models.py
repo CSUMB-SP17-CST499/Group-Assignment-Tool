@@ -65,8 +65,9 @@ class User(Base, Model):
         return str_format % values
         
         
-    def get_dict(self, excludes):
+    def get_dict(self, excludes = []):
         user_dict = super().get_dict(excludes)
+        return user_dict
 
 
 class Employee(Base, Model):
