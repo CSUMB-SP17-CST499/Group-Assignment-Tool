@@ -26,7 +26,7 @@ class Model():
 
 class User(Base, Model):
     """The model for the user table.
-
+    
     Attributes:
         email: The user's email address. It is the primary key of the table
             and will be used for logging in to the application.
@@ -37,26 +37,26 @@ class User(Base, Model):
         password: The password the user uses to authenticate.
         is_admin: A boolean value that used to identify whether the user is an
             admin within the app.
-
+            
     """
     __tablename__ = 'user'
 
-    email = Column(String(255), primary_key = True)
-    first_name = Column(String(255) )
-    last_name = Column(String(255) )
-    username = Column(String(255) )
-    password = Column(String(255) )
-    is_admin = Column(Integer )
+    email = Column('email', String(255), primary_key = True)
+    first_name = Column('first_name', String(255) )
+    last_name = Column('last_name', String(255) )
+    username = Column('username', String(255) )
+    password = Column('password', String(255) )
+  #  is_admin = Column('is_admin', Integer)
 
     def __init__(self, email: str, first_name: str, last_name: str,
-            username: str , password: str, is_admin: bool = False):
+            username: str , password: str):
 
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
         self.password = password
-        self.is_admin = is_admin
+       # self.is_admin = is_admin, , is_admin: int
 
 
     def __repr__(self):

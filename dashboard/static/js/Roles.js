@@ -53,6 +53,7 @@ $(document).ready(function(){
             
         }
     }
+
     
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
