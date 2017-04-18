@@ -8,7 +8,7 @@ users = Blueprint('user', __name__,
                     template_folder='templates')
                     
 @users.route('/api/user', methods = ['GET', 'PUT', 'DELETE'])
-def employee_uri():
+def user_uri():
     args = request.args
     # print(request.args)
     print(request.get_json())
@@ -28,7 +28,7 @@ def employee_uri():
                 return get_json('user', user, excludes)
 
             else:
-                response = create_error('uesr_not_found')
+                response = create_error('user_not_found')
                 return (response, 404)
                 
         except Exception as e:
@@ -125,12 +125,12 @@ def employee_uri():
             return (response, 500)
     
     
-@users.route('/api/user', methods = ['GET'])
-def employees_uri():
+@users.route('/api/users', methods = ['GET'])
+def users_uri():
     if request.method == 'GET':
         try:
-            users = query.get_all_users()
-            return get_json('user', users)
+            user = query.get_all_users()
+            return get_json('users', user)
             
         except Exception as e:
             print(e)

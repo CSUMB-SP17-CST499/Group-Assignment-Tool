@@ -34,6 +34,7 @@ $(document).ready( function() {
             data: JSON.stringify(data),
             contentType: 'application/json',
           success: function(response) {
+              console.log('woot');
                  $('#message').html("User was created");
                  $('#alert-message')[0].classList.add('alert-success');
                  $('#alert-message').show();
