@@ -1,44 +1,33 @@
 // JavaScript File
-// Todo: Disable button click while processing a request
-// Todo: Make only one alert message visible at a time,
-//      stack the alert messages with a number, 
-//      and display messages as close button is pressed
-
+// JavaScript File
 $(document).ready( function() {
     
     $('.alert .close').on('click', function(e) {
         $(this).parent().hide();
     });
     
-    $('#Create_Account').click(function() {
+    $('#create_role').on('click',function(e) {
         console.log('I clicked a button');
-        var firstname = $('#firstname').val();
-        var lastname = $('#lastname').val();
-        var email = $('#email').val();
-        var username = $('#username').val();
-        var password = $('#password').val();
-        var isadmin = $('#is_admin').val();
+    
+        var roleName = $('#role_name').val();
+        var roleDescription = $('#role_description').val();
+
         
         data = {
-            'firstname': firstname, 
-            'lastname': lastname,
-            'email': email, 
-            'username': username, 
-            'password': password,
-            'isadmin': isadmin
+            'name': roleName, 
+            'description': roleDescription
         };
                 
         $.ajax({
-            url: '/api/user',
+            url: '/api/role',
             method: 'PUT',
             data: JSON.stringify(data),
             contentType: 'application/json',
-          success: function(response) {
-              console.log('woot');
-                 $('#message').html("User was created");
+            success: function(response) {
+                 $('#message').html("Role was created");
                  $('#alert-message')[0].classList.add('alert-success');
                  $('#alert-message').show();
-                 window.location = '/users';
+                  window.location = '/roles';
                  // refresh the page so that the valeus are not still on the page after the user was created
                  //document.url;
             },
@@ -52,7 +41,7 @@ $(document).ready( function() {
                     }
                 }
                 catch (e) {
-                    console.log(e);
+                console.log(e);
                 }
             }
         });
