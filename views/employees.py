@@ -60,8 +60,6 @@ def employee_uri():
                         employee.last_name = last_name
                     if email:
                         employee.email = email
-                    if roles:
-                        pass # Todo: Handle updated roles
 
                     
                     is_updated = query.update_employee(employee)
@@ -97,9 +95,9 @@ def employee_uri():
             return (response, 500)
             
     elif request.method == 'DELETE':
-        for x in empl_id:
-            employee = query.get_employee_by_id(x)
-        print("XXXXXXX THIS IS A TEST XXXXXXX")
+        # for x in empl_id:
+        #     employee = query.get_employee_by_id(x)
+        return("XXXXXXX THIS IS A TEST XXXXXXX")
         # try:
         #     if employee:
         #         email = args.get('email')

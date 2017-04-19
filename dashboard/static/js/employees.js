@@ -33,7 +33,7 @@ $(document).ready(function(){
         }
     });
 
-    
+
     function getEmployeeRoles(employee) {
         var roles = employee["roles"];
         var role_names = [];
@@ -106,15 +106,19 @@ $(document).ready(function(){
             peopleToDelete.push($(this).val());
         });
         
+        data = {
+            'id': peopleToDelete,
+        }
+        
         console.log(peopleToDelete);
         
         $.ajax({
             url: '/api/employee',
             method: 'DELETE',
-            id: peopleToDelete,
-            contentType: 'json',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
             success: function(response) {
-                console.log(peopleToDelete);
+                console.log(response);
             },
             error: function(error) {
                 try {
