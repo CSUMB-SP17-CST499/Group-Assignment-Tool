@@ -109,14 +109,12 @@ $(document).ready(function(){
         console.log(peopleToDelete);
         
         $.ajax({
-            url: 'https://capstone-cst-algorithmike.c9users.io/api/employee?id=?',
+            url: '/api/employee',
             method: 'DELETE',
             id: peopleToDelete,
             contentType: 'json',
             success: function(response) {
-                
-                // Add functionality here
-                
+                console.log(peopleToDelete);
             },
             error: function(error) {
                 try {

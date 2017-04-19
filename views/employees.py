@@ -97,9 +97,9 @@ def employee_uri():
             return (response, 500)
             
     elif request.method == 'DELETE':
-        employee = query.get_employee_by_id(empl_id)
+        for x in empl_id:
+            employee = query.get_employee_by_id(x)
         print("XXXXXXX THIS IS A TEST XXXXXXX")
-        print(employee)
         # try:
         #     if employee:
         #         email = args.get('email')
