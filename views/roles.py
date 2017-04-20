@@ -10,6 +10,10 @@ roles = Blueprint('roles', __name__,
 @roles.route('/api/role', methods = ['GET', 'PUT', 'DELETE'])
 def role_uri():
     args = request.args
+    print(request.get_json())
+    args = request.get_json()
+    
+    
     if args is None:
         response = create_error('missing_argument')
         return (response, 404)

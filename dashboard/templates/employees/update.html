@@ -1,5 +1,64 @@
 {% extends 'layout.html' %}
-{% block title %} Employee Roles {% endblock %}
-{% block content %} 
-    
+{% block title %} Update Employee Roles {% endblock %}
+
+{% block scripts %}
+<script src="../dashboard/static/js/AddEmployee.js"></script>
+<script type="text/javascript" src="../dashboard/static/js/RoleDropDown.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 100px;">
+  <div class="row centered-form">
+  	<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+    	<div class="panel panel-default">
+    		<div class="panel-heading">
+	    		<h3 align = "center" class="panel-title"> Update Employee</h3>
+	    		<p align = "center">Enter the Employee's information</p>
+ 				</div>
+	 			<div class="panel-body">
+	    		<form role="form">
+	    			<div class="row">
+	    				<div class="col-xs-6 col-sm-6 col-md-6">
+	    					<div class="form-group">
+	                <input type="text" name="first_name" id="first_name" class="form-control input-sm" placeholder="First Name">
+	    					</div>
+	    				</div>
+	    				<div class="col-xs-6 col-sm-6 col-md-6">
+	    					<div class="form-group">
+	    						<input type="text" name="last_name" id="last_name" class="form-control input-sm" placeholder="Last Name">
+	    					</div>
+	    				</div>
+	    			</div>
+	
+	    			<div class="form-group">
+	    				<input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address">
+	    			</div>
+	
+	    			<div class="row" "dropdown" id = "role_select">
+	    				<div class="col-xs-6 col-sm-6 col-md-6">
+	    					<div class="form-group">
+	    						<select class="btn btn-info btn-block dropdown-toggle" id="Role" type="button" data-toggle="dropdown">Choose Role
+	    						 <span class="caret"></span>
+	    						 </button>
+							    <span class="dropdown-menu" role="menu"  id = "role_select"/>
+							      <!--<option role="presentation"><a role="menuitem" >HTML</a></option>-->
+							      <!--<option role="presentation"><a role="menuitem"  >CSS</a></option>-->
+							      <!--<option role="presentation"><a role="menuitem" >JavaScript</a></option>-->
+							      <!--<option role="presentation"><a role="menuitem" >About Us</a></option>    -->
+							    </select>
+							  </div>
+							</div>
+	    						<!--<input type="Job Field" name="Role" id="Role" class="form-control input-sm" placeholder="Role">-->
+	    					</div>
+	    				</div>
+	    			</div>
+	    			
+	    			<input type="button" id= "create_user" value="Get Assignments" class="btn btn-info btn-block">
+	    			<input href="/employees" type="submit" value="Cancel" class="btn btn-info btn-block">
+		    	</form>
+		    </div>
+	    </div>
+  	</div>
+	</div>
+</div>
 {% endblock %}

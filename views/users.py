@@ -1,14 +1,14 @@
 from flask import Blueprint, request
 from db.encode import get_json, create_error
-from db import query
-from db.models import Employee
+from db import query, hashPassword
+from db.models import User
 import json
 
-employees = Blueprint('employees', __name__,
+users = Blueprint('user', __name__,
                     template_folder='templates')
                     
-@employees.route('/api/employee', methods = ['GET', 'PUT', 'DELETE'])
-def employee_uri():
+@users.route('/api/user', methods = ['GET', 'PUT', 'DELETE'])
+def user_uri():
     args = request.args
     # print(request.args)
     print(request.get_json())
@@ -18,17 +18,17 @@ def employee_uri():
         response = create_error('missing_argument')
         return (response, 404)
     
-    empl_id = args.get('id')
+    user_email = args.get('email')
     excludes = args.get('excludes', [])
     if request.method == 'GET':
         try:
-            employee = query.get_employee_by_id(empl_id)
+            user = query.get_user_by_email(user_email)
 
-            if employee:
-                return get_json('employee', employee, excludes)
+            if user:
+                return get_json('user', user, excludes)
 
             else:
-                response = create_error('employee_not_found')
+                response = create_error('user_not_found')
                 return (response, 404)
                 
         except Exception as e:
@@ -40,31 +40,41 @@ def employee_uri():
             email = args.get('email')
             first_name = args.get('first_name')
             last_name = args.get('last_name')
-            role_ids = args.get('roles')
+            username = args.get('username')
+            password = args.get('password')
+            isadmin = args.get('is_admin')
             
-            # Update the employee with the provided info
-            if empl_id:
-                employee = query.get_employee_by_id(empl_id)
-                if employee:
-                    if employee.email is None:
+            # Update the user with the provided info
+            if user_email:
+                user = query.get_user_by_email(user_email)
+                if user:
+                    if user.email is None:
                         response = create_error('invalid_email')
                         return (response, 400)
-                    elif employee.email != email and query.does_employee_email_exist(email):
+                    elif user.email != email and query.does_user_email_exist(email):
 
                         response = create_error('email_taken')
                         return (response, 400)
 
                     if first_name:
-                        employee.first_name = first_name
+                        user.first_name = first_name
                     if last_name:
-                        employee.last_name = last_name
+                        user.last_name = last_name
                     if email:
-                        employee.email = email
+                        user.email = email
+                    if username:
+                        user.username = username
+                    if password:
+                         hashpassword = hashPassword(password)
+                    if isadmin:
+                        user.isadmin = isadmin    
+                    # if roles:
+                    #     pass # Todo: Handle updated roles
 
                     
-                    is_updated = query.update_employee(employee)
+                    is_updated = query.update_user(user)
                     if is_updated:
-                        return (get_json('employee', employee), 200)
+                        return (get_json('user', user), 200)
                             
                     response = create_error('unexpected_error', 'Employee was not updated')
                     return (response, 500)
@@ -72,19 +82,22 @@ def employee_uri():
                     response = create_error('employee_not_found')
                     return (response, 404)
 
-            # Insert a new employee if the right conditions are met 
+            # Insert a new user if the right conditions are met 
             else:
                 if query.does_employee_email_exist(email):
                     response = create_error('email_taken')
                     return (response, 400)         
                 elif email:
-                    employee = Employee(None, 
+                    user = User( 
                         email=email,
                         first_name=first_name,
-                        last_name=last_name)
-                    query.add_employee(employee)
+                        last_name=last_name, 
+                        username = username,
+                        password = hashpassword,
+                        isadmin = isadmin)
+                    query.add_user(user)
 
-                    response = get_json('employee', employee, excludes)
+                    response = get_json('user', user, excludes)
                     return (response, 200)
                 else:
                     response = create_error('missing_arguments')
@@ -95,26 +108,29 @@ def employee_uri():
             return (response, 500)
             
     elif request.method == 'DELETE':
+        user = query.get_user_by_email(email)
         try:
-            if empl_id:
-                for x in empl_id:
-                    employee = query.remove_employee_by_id(x)
-                return ("Success", 200)
-            else:
-                response = create_error('unable_to_delete')
-                return(response, 404)
+            if user:
+                is_deleted = query.remove_user_by_id(email)
+                if is_deleted:
+                    return (json.dumps({}), 200)
                 
+                response = create_error('unexpected_error')
+                return (response, 500)
+            else:
+                response = create_error('employee_not_found')
+                return (response, 404)
         except Exception as e:
             response = create_error('unexpected_error', e)
             return (response, 500)
-        
-
-@employees.route('/api/employees', methods = ['GET'])
-def employees_uri():
+    
+    
+@users.route('/api/users', methods = ['GET'])
+def users_uri():
     if request.method == 'GET':
         try:
-            employees = query.get_all_employees()
-            return get_json('employees', employees)
+            users = query.get_all_users()
+            return get_json('users', users)
             
         except Exception as e:
             print(e)

@@ -1,8 +1,14 @@
-{% extends 'base.html' %}
-{% block title %} Login {% endblock %}
+{% extends 'layout.html' %}
+{% block title %} login {% endblock %}
+
+
+{% block scripts %} 
+<script type="text/javascript" src="../dashboard/static/js/CreateAccount.js"></script>
+{% endblock %}
+
 {% block content %}
 <!-- TODO: Need to add loginScreen class to the body of this file -->
-<script src="../static/Login.js"></script>
+
 <div class="container">
     <h1>Login</h1>
     <hr>
@@ -23,7 +29,7 @@
                                     id="login" value="Login" role="button">
                                     
                                 <span class="btn btn-link btn-md" id="create_account">
-                                    <a href="/showcreateaccount">
+                                    <a href="users/add">
                                         Create Account
                                     </a>
                                 </span>

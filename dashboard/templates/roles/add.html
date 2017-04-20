@@ -1,5 +1,40 @@
 {% extends 'layout.html' %}
 {% block title %} Add Role {% endblock %}
-{% block content %} 
-    
+{% block scripts %}
+<script src="../dashboard/static/js/AddRole.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 100px;">
+  <div class="row centered-form">
+  	<div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+    	<div class="panel panel-default">
+    		<div class="panel-heading">
+	    		<h3 align = "center" class="panel-title"> Add Role</h3>
+	    		<p align = "center">Enter the Role's Name and a Description</p>
+ 				</div>
+	 			<div class="panel-body">
+	    		<form role="form">
+	    			<div class="row">
+	    				<div class="col-xs-12 col-sm-12 col-md-12">
+	    					<div class="form-group">
+	                <input type="text" name="role_name" id="role_name" class="form-control input-sm" placeholder="Role">
+	    					</div>
+	    				</div>
+	    				<div class="col-xs-6 col-sm-12 col-md-12">
+	    					<div class="form-group">
+	    						<input type="text" name="role_description" id="role_description" class="form-control input-sm" placeholder="Description">
+	    					</div>
+	    				</div>
+	    			</div>
+	
+	    			
+	    			<input type="button" id= "create_role" value="Create Role" class="btn btn-info btn-block">
+	    			<input href="/roles" type="submit" value="Cancel" class="btn btn-info btn-block">
+		    	</form>
+		    </div>
+	    </div>
+  	</div>
+	</div>
+</div>
 {% endblock %}

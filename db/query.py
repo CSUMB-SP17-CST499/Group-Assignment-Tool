@@ -36,6 +36,48 @@ def add_user(user: User) -> bool:
     return add_instance(user)
     
     
+def update_user(user: User) -> bool:
+    """Updates an user's information in the database.
+
+    Args:
+        user: An object containing an user's information.
+
+    Returns:
+        Returns true if the database transaction succeeded,
+        otherwise returns false.
+    """
+    return update_instance(user)    
+    
+def get_all_users() -> List[User]:
+    """Returns a list of all users.
+
+    Returns:
+        Returns a list of User objects.
+    """
+    return get_all_instances(User)
+    
+def get_user_by_email(email: str) -> User:
+    """Returns an user with the given email.
+
+    Args:
+        email: An user's email.
+
+    Returns:
+        Returns an user if an user has the email, otherwise returns None.
+    """
+    return get_instance_by_field(User, User.email, email)    
+    
+def remove_user_by_id(email: str) -> bool:
+    """Removes an user from the user table.
+
+    Args:
+        email: An user's email.
+
+    Returns:
+        Returns true if an user is removed, otherwise returns false.
+    """
+    return remove_instance_by_field(User, User.email, email)    
+    
 def does_employee_email_exist(email: str) -> bool:
     """Returns whether a user email exists in the database.
     Args:
