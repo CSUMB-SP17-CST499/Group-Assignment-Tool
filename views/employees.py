@@ -9,10 +9,7 @@ employees = Blueprint('employees', __name__,
                     
 @employees.route('/api/employee', methods = ['GET', 'PUT', 'DELETE'])
 def employee_uri():
-    args = request.args
-    # print(request.args)
-    print(request.get_json())
-    # print(request.data)
+
     args = request.get_json()
     if args is None:
         response = create_error('missing_argument')
@@ -60,7 +57,7 @@ def employee_uri():
                         employee.last_name = last_name
                     if email:
                         employee.email = email
-                    if roles:
+                    if role_ids:
                         pass # Todo: Handle updated roles
 
                     
