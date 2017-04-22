@@ -102,7 +102,7 @@ def employee_uri():
         employee = query.get_employee_by_id(empl_id)
         try:
             if employee:
-                is_deleted = query.remove_employee(empl_id)
+                is_deleted = query.remove_employee_by_id(empl_id)
                 if is_deleted:
                     return (json.dumps({}), 200)
                 
