@@ -64,7 +64,7 @@ def role_uri():
             else:
                 # Check for required arguments
                 if name and not query.does_role_name_exist(name):
-                    role = Role(None, name=name, 
+                    role = Role(name=name, 
                                 description=description )
                     query.add_role(role)
                     response = get_json('role', role)
