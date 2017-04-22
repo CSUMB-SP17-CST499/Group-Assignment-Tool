@@ -6,19 +6,16 @@ $(document).ready(function(){
     var json = [];
     var table = $('#role_select')[0]; // Get table from html
     var tableRows = 0;
-    var selectList = document.getElementById('Role');
-    loadList(table, tableRows);
     
     $.ajax({
-        
         url: '/api/roles',
         method: 'GET',
-        contentType: 'json',
+        contentType: 'application/json',
         success: function(response) {
-            json = (JSON.parse(response))['roles'];
-            tableRows = Object.keys(json).length;
-            loadList(table, tableRows);
-            displayRolesByName(table, json);
+            json = JSON.parse(response)
+            roles = json['roles'];
+            displayRolesByName(table, roles);
+            console.log("ROLES");
         },
         error: function(error) {
             try {
@@ -35,33 +32,15 @@ $(document).ready(function(){
         }
     });
     
-            function displayRolesByName(table,roles) {
+    function displayRolesByName(table, roles) {
         if (roles) {
-            
             for (var index = 0; index < roles.length; index++) {
-                
                 var role = roles[index];
-                var option = document.createElement('option');
-                option.value = json[index].role_id;
-                option.text = json[index].name;
-                selectList.appendChild(option);
-                console.log(role["name"]);
-                
+                var option = $('<option></option>');
+                option.val(role.id);
+                option.text(role.name);
+                $('#roles').append(option);
             }
-         
-               
-            
         }
     }
-    
-function loadList(table, tableRows) {
-    var inner_table = "";
-    
-    for (var row = 0; row < tableRows; row++){
-        inner_table += "<option>";
-        inner_table += "</option>";
-    }
-    $(table).append(inner_table);
-}
-
 });
