@@ -46,17 +46,17 @@ class User(Base, Model):
     last_name = Column('last_name', String(255) )
     username = Column('username', String(255) )
     password = Column('password', String(255) )
-  #  is_admin = Column('is_admin', Integer)
+    is_admin = Column('is_admin', Integer)
 
     def __init__(self, email: str, first_name: str, last_name: str,
-            username: str , password: str):
+            username: str , password: str, is_admin: int):
 
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
         self.username = username
         self.password = password
-       # self.is_admin = is_admin, , is_admin: int
+        self.is_admin = is_admin
 
 
     def __repr__(self):
@@ -65,9 +65,8 @@ class User(Base, Model):
         return str_format % values
         
         
-    def get_dict(self, excludes = []):
+    def get_dict(self, excludes):
         user_dict = super().get_dict(excludes)
-        return user_dict
 
 
 class Employee(Base, Model):

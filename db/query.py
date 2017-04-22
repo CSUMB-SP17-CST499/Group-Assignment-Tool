@@ -65,7 +65,18 @@ def get_user_by_email(email: str) -> User:
     Returns:
         Returns an user if an user has the email, otherwise returns None.
     """
-    return get_instance_by_field(User, User.email, email)    
+    return get_instance_by_field(User, User.email, email) 
+    
+def get_user_by_username(username: str) -> User:
+    """Returns an user with the given email.
+
+    Args:
+        email: An user's email.
+
+    Returns:
+        Returns an user if an user has the email, otherwise returns None.
+    """
+    return get_instance_by_field(User, User.username, username) 
     
 def remove_user_by_id(email: str) -> bool:
     """Removes an user from the user table.

@@ -20,15 +20,17 @@ $(document).ready( function() {
         var isadmin = $('#is_admin').val();
         
         data = {
-            'firstname': firstname, 
-            'lastname': lastname,
+            'first_name': firstname, 
+            'last_name': lastname,
             'email': email, 
             'username': username, 
             'password': password,
-            'isadmin': isadmin
+            'is_admin': isadmin
         };
                 
         $.ajax({
+            // ajax call to users.py put method, if it returns true it logs the guest in 
+            //  and redirects the user to the login page
             url: '/api/user',
             method: 'PUT',
             data: JSON.stringify(data),
@@ -39,11 +41,10 @@ $(document).ready( function() {
                  $('#alert-message')[0].classList.add('alert-success');
                  $('#alert-message').show();
                  window.location = '/users';
-                 // refresh the page so that the valeus are not still on the page after the user was created
-                 //document.url;
             },
             error: function(error) {
                 try {
+                    
                     json = JSON.parse(error.responseText);
                     if (json.message) {
                         $('#message').html(json.message);

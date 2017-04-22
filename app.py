@@ -8,7 +8,7 @@ from views.employees import employees
 from views.users import users
 from dashboard.views import dashboard
 from db.database import init_db, Session 
-from db import query, hashPassword, models
+from db import query, models
 from db.models import User
 
 
