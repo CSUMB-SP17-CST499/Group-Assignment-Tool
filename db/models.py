@@ -81,23 +81,23 @@ class Employee(Base, Model):
     """
     __tablename__ = 'employee'
 
-    id = Column('empl_id', Integer)
-    email = Column('email', String(255), primary_key = True)
+    id = Column('employee_id', Integer, primary_key = True)
+    email = Column('email', String(255) )
     first_name = Column('first_name', String(255) )
     last_name = Column('last_name', String(255) )
+    
     roles = association_proxy('employee_roles', 'role')
 
 
-    def __init__(self, id: int ,email: str, first_name: str, last_name: str):
-        self.id = id
+    def __init__(self, email: str, first_name: str, last_name: str):
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
 
 
     def __repr__(self):
-        str_format = '<Employee(id: %d, email: %s, first_name: %s, last_name: %s)>'
-        values = (self.id, self.email, self.first_name, self.last_name)
+        str_format = '<Employee(email: %s, first_name: %s, last_name: %s)>'
+        values = (self.email, self.first_name, self.last_name)
         return str_format % values
     
     
@@ -125,20 +125,21 @@ class App(Base, Model):
     id = Column('app_id', Integer, primary_key = True)
     name = Column('name', String(255) )
 
+    groups = association_proxy('app_groups', 'group')
 
-    def __init__(self, id: int, name: str, token: str = ""):
-        self.id = id
+
+    def __init__(self, name: str, token: str = ""):
         self.name = name
         self.token = token
 
 
     def __repr__(self):
-        str_format = '<App(id: %s, name: %s)>'
-        values = (self.id, self.name)
+        str_format = '<App(name: %s)>'
+        values = (self.name)
         return str_format % values
 
 
-    def get_dict(self, excludes):
+    def get_dict(self, excludes = []):
         excludes.append('token')
         return super().get_dict(excludes)
 
@@ -162,17 +163,26 @@ class Role(Base, Model):
     groups = association_proxy('role_groups', 'group')
 
 
-    def __init__(self, id, name, description):
-        self.id = id
+    def __init__(self, name, description):
         self.name = name
         self.description = description
 
 
     def __repr__(self):
-        str_format = '<Role(id: %s, name: %s, description: %s)>'
-        values = (self.id, self.name, self.description)
+        str_format = '<Role(name: %s, description: %s)>'
+        values = (self.name, self.description)
         return str_format % values
     
+    
+    def get_dict(self, excludes = []):
+        role_dict = super().get_dict(excludes)
+        
+        if 'groups' not in excludes:
+            groups = [group.get_dict() for group in self.groups]
+            role_dict.update([('groups', groups)])
+        
+        return role_dict
+
 
 class Group(Base, Model):
     """The model for the group table.
@@ -191,14 +201,13 @@ class Group(Base, Model):
     app_group_id = Column('app_group_id', String(255) )
     
 
-    def __init__(self, group_id, name, app_group_id):
-        self.id = id
+    def __init__(self, name, app_group_id):
         self.name = name
 
         self.app_group_id = app_group_id
     
     def __repr__(self):
-        str_format = '<Group(id: %s, name: %s)>'
+        str_format = '<Group(name: %s)>'
         values = (self.id, self.name)
         return str_format % values
 
@@ -207,31 +216,31 @@ class EmployeeToRole(Base, Model):
     """The model for the employee_role table.
 
     Attributes:
-        email: (str): Foreign key, from the employee table.
+        empl_id: (str): Foreign key, from the employee table.
         role_id (int): Foreign key, from the roles table.
 
     """
     __tablename__ = 'employee_role'
 
-    email = Column(String(255), ForeignKey('employee.email'), primary_key = True)
-    role_id = Column(Integer, ForeignKey('role.role_id'), primary_key = True)
+    employee_id = Column('employee_id', String(255), ForeignKey('employee.employee_id'), primary_key = True)
+    role_id = Column('role_id', Integer, ForeignKey('role.role_id'), primary_key = True)
 
     employee = relationship(Employee,
                 backref = backref('employee_roles',
                           cascade = 'all, delete-orphan')
                 )
-            
-    role = relationship('Role', lazy='subquery')
-
-
-    def __init__(self, email, role_id):
-        self.email = email
-        self.role_id = role_id
+    
+    role = relationship('Role')
+    
+    
+    def __init__(self, role = None, employee = None):
+        self.employee = employee
+        self.role = role
 
 
     def __repr___(self):
         str_format = '<EmployeeToRole(email: %s, role_id: %d)>'
-        values = (self.email, self.role_id)
+        values = (self.empl_id, self.role_id)
         return str_format % values
 
 
@@ -255,10 +264,9 @@ class RoleToGroup(Base, Model):
     group = relationship('Group')
 
 
-    def __init__(self, group_id, role_id):
-        self.group_id = group_id
-        self.role_id = role_id
-
+    def __init__(self, group = None, role = None):
+        self.role = role
+        self.group = group
 
     def __repr___(self):
         str_format = '<RoleToGroup(group_id: %d, role_id: %d)>'
@@ -279,13 +287,21 @@ class AppToGroup(Base, Model):
     app_id = Column('app_id', Integer, ForeignKey('app.app_id'), primary_key = True)
     group_id = Column('group_id', Integer, ForeignKey('group.group_id'), primary_key = True)
     
+    
+    app = relationship(App, 
+                backref = backref('app_groups', 
+                            cascade = 'all, delete-orphan')
+            )
+            
+    group = relationship('Group')
 
-    def __init__(self, app_id, group_id):
-        self.app_id = app_id
-        self.group_id = group_id
+
+    def __init__(self, group = None, app = None):
+        self.app = app
+        self.group = group
 
 
     def __repr___(self):
-        str_format = '<AppToGroup(group_id: %d, app_id: %d)>'
-        values = (self.group_id, self.app_id)
+        str_format = '<AppToGroup(app_id: %d, group_id: %d)>'
+        values = (self.app_id, self.group_id)
         return str_format % values

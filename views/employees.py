@@ -9,10 +9,7 @@ employees = Blueprint('employees', __name__,
                     
 @employees.route('/api/employee', methods = ['GET', 'PUT', 'DELETE'])
 def employee_uri():
-    args = request.args
-    # print(request.args)
-    print(request.get_json())
-    # print(request.data)
+    
     args = request.get_json()
     if args is None:
         response = create_error('missing_argument')
@@ -60,9 +57,9 @@ def employee_uri():
                         employee.last_name = last_name
                     if email:
                         employee.email = email
-                    if roles:
-                        pass # Todo: Handle updated roles
-
+                    if role_ids:
+                        roles = get_roles_with_ids(role_ids)
+                        employee.roles = roles
                     
                     is_updated = query.update_employee(employee)
                     if is_updated:
@@ -78,16 +75,21 @@ def employee_uri():
             else:
                 if query.does_employee_email_exist(email):
                     response = create_error('email_taken')
-                    return (response, 400)         
+                    return (response, 400)
                 elif email:
-                    employee = Employee(None, 
-                        email=email,
-                        first_name=first_name,
-                        last_name=last_name)
-                    query.add_employee(employee)
+                    roles = get_roles_with_ids(role_ids)
+                    employee = Employee(email=email,
+                            first_name=first_name,
+                            last_name=last_name)
+                    employee.roles = roles
+                    is_added = query.add_employee(employee)
 
-                    response = get_json('employee', employee, excludes)
-                    return (response, 200)
+                    if is_added:
+                        response = get_json('employee', employee, excludes)
+                        return (response, 200)
+                    else:
+                        raise Exception('Database operation failed: %s' % 
+                                        'add into employee table')
                 else:
                     response = create_error('missing_arguments')
                     return (response, 400)
@@ -100,7 +102,7 @@ def employee_uri():
         employee = query.get_employee_by_id(empl_id)
         try:
             if employee:
-                is_deleted = query.remove_employee(empl_id)
+                is_deleted = query.remove_employee_by_id(empl_id)
                 if is_deleted:
                     return (json.dumps({}), 200)
                 
@@ -125,4 +127,20 @@ def employees_uri():
             print(e)
             response = create_error('unexpected_error', e)
             return (response, 500)
-            
+
+
+def get_roles_with_ids(role_ids):
+    """Returns a list of Role objects with the given ids.
+    
+    Args:
+        role_ids: A list of ids belonging to roles in the database.
+        
+    Returns:
+        Returns a list of Role objects if a list of ids is given,
+        otherwise returns an empty list.
+    """ 
+    if role_ids and isinstance(role_ids, list):
+        return [query.get_role_by_id(role_id) \
+                for role_id in role_ids]
+    
+    return []

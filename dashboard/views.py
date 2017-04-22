@@ -8,8 +8,6 @@ dashboard = Blueprint('dashboard', __name__,
                         template_folder='templates', 
                         static_folder='static',)
                         
-print(dashboard.static_folder, dashboard.static_url_path)
-
 @dashboard.route('/<page>')
 def show(page):
     try:
