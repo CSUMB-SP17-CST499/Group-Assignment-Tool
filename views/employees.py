@@ -59,8 +59,7 @@ def employee_uri():
                         employee.email = email
                     if role_ids:
                         roles = get_roles_with_ids(role_ids)
-                        employee.roles = roles
-                    
+                        employee.roles = roles                    
                     is_updated = query.update_employee(employee)
                     if is_updated:
                         return (get_json('employee', employee), 200)
@@ -99,8 +98,11 @@ def employee_uri():
             return (response, 500)
             
     elif request.method == 'DELETE':
-        employee = query.get_employee_by_id(empl_id)
         try:
+            if empl_id:
+                for x in empl_id:
+                    employee = query.remove_employee_by_id(x)
+                return ("Success", 200)
             if employee:
                 is_deleted = query.remove_employee_by_id(empl_id)
                 if is_deleted:
@@ -109,13 +111,14 @@ def employee_uri():
                 response = create_error('unexpected_error')
                 return (response, 500)
             else:
-                response = create_error('employee_not_found')
-                return (response, 404)
+                response = create_error('unable_to_delete')
+                return(response, 404)
+                
         except Exception as e:
             response = create_error('unexpected_error', e)
             return (response, 500)
-    
-    
+        
+
 @employees.route('/api/employees', methods = ['GET'])
 def employees_uri():
     if request.method == 'GET':
