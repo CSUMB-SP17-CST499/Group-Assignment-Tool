@@ -67,6 +67,7 @@ class User(Base, Model):
         
     def get_dict(self, excludes):
         user_dict = super().get_dict(excludes)
+        return user_dict
 
 
 class Employee(Base, Model):
