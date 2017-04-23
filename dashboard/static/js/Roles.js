@@ -45,6 +45,16 @@ $(document).ready(function(){
                 console.log(role["name"])
                 table.rows[index + 1].cells[1].innerHTML = role["name"]//name
                 table.rows[index + 1].cells[2].innerHTML = role['description'];//description
+                
+                groups_amt = role['groups'].length
+                groups = ""
+                for(var index2 = 0; index2 < groups_amt; index2++){
+                    
+                    groups +=  role['groups'][index2].name + ","
+                }
+                
+                table.rows[index + 1].cells[3].innerHTML = groups
+                
             }
          
                
