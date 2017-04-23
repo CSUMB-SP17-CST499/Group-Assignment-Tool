@@ -55,9 +55,8 @@ def get_all_instances(model):
     results = None
     try:
         results = session.query(model).all()
-        session.refresh(results)
     except Exception as e:
-        print(e)
+        session.rollback()
     
     return results
 
@@ -82,8 +81,9 @@ def get_instance_by_field(model, field, value):
     result = None
     try:
         result = session.query(model).filter(field == value).one()
+        session.refresh(result)
     except Exception as e:
-        print(e)
+        session.rollback()
     
     return result
     
@@ -104,7 +104,7 @@ def get_instances_by_field(model, field, value):
     try:
         results = session.query(model).filter(field == value).all()
     except Exception as e:
-        print(e)
+        session.rollback()
     
     return results
 
@@ -142,8 +142,7 @@ def update_instance(instance):
         is_updated = True
     except Exception as e:
         # Todo: Log the error (Find specific errors that can happen)
-        print(e)
-        pass
+        session.rollback()
 
     return is_updated
 
@@ -173,6 +172,6 @@ def remove_instance_by_field(model, field, value):
 
     except:
         # Todo: Add exception cases
-        pass
+        session.rollback()
 
     return is_deleted
