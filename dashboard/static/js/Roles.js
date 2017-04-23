@@ -4,8 +4,7 @@ $(document).ready(function(){
     var json = [];
     var table = $('#roles-table')[0]; // Get table from html
     var tableRows = 0;
-    loadTable(table, tableRows,3);
-    
+
     $.ajax({
         url: '/api/roles',
         method: 'GET',
@@ -13,7 +12,7 @@ $(document).ready(function(){
         success: function(response) {
             json = (JSON.parse(response))['roles'];
             tableRows = Object.keys(json).length;
-            loadTable(table, tableRows,3);
+            loadTable(table, tableRows,4);
             displayRoles(table, json);
         },
         error: function(error) {
@@ -46,7 +45,6 @@ $(document).ready(function(){
                 console.log(role["name"])
                 table.rows[index + 1].cells[1].innerHTML = role["name"]//name
                 table.rows[index + 1].cells[2].innerHTML = role['description'];//description
-                
             }
          
                
