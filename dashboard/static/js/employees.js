@@ -1,10 +1,11 @@
 $(document).ready(function(){
 
     //Initialize globals
+    var information = [];
     var json = [];
     var table = $('#employees-table')[0]; // Get table from html
     var tableRows = 0;
-    loadTable(table, tableRows,4);
+    loadTable(table, tableRows,5);
 
     
     $.ajax({
@@ -12,10 +13,10 @@ $(document).ready(function(){
         method: 'GET',
         contentType: 'json',
         success: function(response) {
-            json = (JSON.parse(response))['employees'];
-            tableRows = Object.keys(json).length;
-            loadTable(table, tableRows,4);
-            displayEmployees(table, json);
+            information = JSON.parse(response);
+            json = response;
+            tableRows = information["employees"].length;
+            loadEmployeeTable(table, tableRows,5);
         },
         error: function(error) {
             try {
@@ -31,23 +32,8 @@ $(document).ready(function(){
             }
         }
     });
-    
-    function displayEmployees(table, employees) {
-        if (employees) {
-            console.log(Object.keys(employees).length);
-            for (var index = 0; index < employees.length; index++) {
-                var employee = employees[index];
-                
-                var role_names = getEmployeeRoles(employee);
-                
 
-                table.rows[index + 1].cells[1].innerHTML = employee['first_name'] + " " + employee['last_name'];//name
-                table.rows[index + 1].cells[2].innerHTML = employee['email'];//email
-                table.rows[index + 1].cells[3].innerHTML = role_names;//Role
-            }
-        }
-    }
-    
+
     function getEmployeeRoles(employee) {
         var roles = employee["roles"];
         var role_names = [];
@@ -78,4 +64,79 @@ $(document).ready(function(){
          }
         }
     });
+    
+    function loadEmployeeTable(table, tableRows, columnAmt) {
+    var column_amt = columnAmt;
+    var inner_table = "";
+    var id, name, email;
+    inner_table += "<tbody>"
+
+    for (var row = 0; row < tableRows; row++){
+        id = information["employees"][row]["id"];
+        name = information["employees"][row]["first_name"] + ' ' + information["employees"][row]["last_name"];
+        email = information["employees"][row]["email"];
+        arrayOfRoles = information["employees"][row]["roles"];
+        var rolesString = ""
+        var role;
+            for(var x = 0; x < arrayOfRoles.length; x++){
+                role = arrayOfRoles[x]["name"];
+                if(x > 0){
+                    rolesString += ", " + role
+                }else{
+                    rolesString += role;
+                }
+            }
+        console.log(rolesString);
+        inner_table += "<tr>";
+        inner_table += "<td><input class='checkbox' type='checkbox' value='" + id + "' id='" + id + "' /></td>";
+        inner_table += "<td>"+ name +"</td>";
+        inner_table += "<td>"+ email +"</td>";
+        inner_table += "<td>"+ rolesString +"</td>";
+        inner_table += "<td></td>";
+        inner_table += "</tr>";
+    };
+    inner_table += "</tbody>";
+    
+    $(table).append(inner_table);
+    
+    $('#deleteButton').click(function(){
+        var peopleToDelete = [];
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            peopleToDelete.push($(this).val());
+        });
+        
+        data = {
+            'id': peopleToDelete,
+        }
+        
+        console.log(peopleToDelete);
+        
+        $.ajax({
+            url: '/api/employee',
+            method: 'DELETE',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(response) {
+                $('#message').html("User(s) deleted");
+                $('#alert-message')[0].classList.add('alert-success');
+                $('#alert-message').show();
+                window.location = "/employees";
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+        });
+    });
+}
 });

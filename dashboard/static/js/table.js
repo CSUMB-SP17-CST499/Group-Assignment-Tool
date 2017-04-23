@@ -12,11 +12,11 @@ function loadTable(table, tableRows, columnAmt) {
     for (var row = 0; row < tableRows; row++){
         inner_table += "<tr>";
         inner_table += "<td><input class='checkbox' type='checkbox' name='' /></td>";
-        for(var col = 1; col < column_amt; col++){
+        for(var col = 1; col < columnAmt; col++){
             inner_table += "<td></td>";
         }
         inner_table += "</tr>";
     }
-    inner_table += "</tbody>"
+    inner_table += "</tbody>";
     $(table).append(inner_table);
 }
