@@ -1,15 +1,17 @@
 from flask import Blueprint, request
 from db.encode import get_json, create_error
-from db import query, hashPassword
+from db import query
+from werkzeug.security import generate_password_hash, \
+     check_password_hash
 from db.models import User
 import json
 
 users = Blueprint('user', __name__,
                     template_folder='templates')
                     
-@users.route('/api/user', methods = ['GET', 'PUT', 'DELETE'])
+@users.route('/api/user', methods = ['POST', 'PUT', 'DELETE'])
 def user_uri():
-    args = request.args
+    #args = request.args
     # print(request.args)
     print(request.get_json())
     # print(request.data)
@@ -19,57 +21,82 @@ def user_uri():
         return (response, 404)
     
     user_email = args.get('email')
-    excludes = args.get('excludes', [])
-    if request.method == 'GET':
-        try:
-            user = query.get_user_by_email(user_email)
+    # password = args.get('password')
+    # if password:
+    #     hashedpw = generate_password_hash(password)
 
+    #Get the post call from login.js and verify that it is correct, does not left user 
+    # login if they entered the wrong things
+    excludes = args.get('excludes', [])
+    if request.method == 'POST':
+        username = args.get('username')
+        password = args.get('password')
+        print(username)
+        try:
+            user = query.get_user_by_username(username)
+            print(user)
             if user:
-                return get_json('user', user, excludes)
+                if (query.is_usermane_correct(user.username)):
+                    print(user.username)
+                    if (check_password_hash(user.password, password)):
+                        #TODO create a session varaible that makes it so the user can acess pages that
+                        #normally would not be allowed to acess such as add, edit or delete any users
+                        return get_json('user', user, excludes)
+                    else:
+                        response = create_error('password is incorrect')
+                        return (response, 404)
+                else:
+                    response = create_error('username is incorrect')
+                    return (response, 404)        
 
             else:
                 response = create_error('user_not_found')
-                return (response, 404)
+                return (response, 403)
                 
         except Exception as e:
             response = create_error('unexpected_error', e)
             return (response, 500)
             
     elif request.method == 'PUT':
+        
         try:
             email = args.get('email')
             first_name = args.get('first_name')
             last_name = args.get('last_name')
             username = args.get('username')
             password = args.get('password')
-            isadmin = args.get('is_admin')
+            if password:
+                hashedpw = generate_password_hash(password)
+            isadmin_checkbox = args.get('is_admin')
+            if isadmin_checkbox in 'on':
+                isadmin = 1
+            else:
+                isadmin = 0
             
-            # Update the user with the provided info
-            if user_email:
-                user = query.get_user_by_email(user_email)
-                if user:
-                    if user.email is None:
-                        response = create_error('invalid_email')
-                        return (response, 400)
-                    elif user.email != email and query.does_user_email_exist(email):
+            #Update the user with the provided info
+            user = query.get_user_by_email(user_email)
+                
+            if user:
+                if user.email is None:
+                    response = create_error('invalid_email')
+                    return (response, 400)
+                elif user.email != email and query.does_user_email_exist(email):
+                        
+                    response = create_error('email_taken')
+                    return (response, 400)
 
-                        response = create_error('email_taken')
-                        return (response, 400)
-
-                    if first_name:
-                        user.first_name = first_name
-                    if last_name:
-                        user.last_name = last_name
-                    if email:
-                        user.email = email
-                    if username:
-                        user.username = username
-                    if password:
-                         hashpassword = hashPassword(password)
-                    if isadmin:
-                        user.isadmin = isadmin    
-                    # if roles:
-                    #     pass # Todo: Handle updated roles
+                if first_name:
+                    user.first_name = first_name
+                if last_name:
+                    user.last_name = last_name
+                if email:
+                    user.email = email
+                if username:
+                    user.username = username
+                if password:
+                     password = password
+                if isadmin:
+                    user.isadmin = isadmin    
 
                     
                     is_updated = query.update_user(user)
@@ -83,18 +110,19 @@ def user_uri():
                     return (response, 404)
 
             # Insert a new user if the right conditions are met 
-            else:
-                if query.does_employee_email_exist(email):
+            if user_email:
+                if query.does_user_email_exist(user_email):
                     response = create_error('email_taken')
                     return (response, 400)         
                 elif email:
+                    #hashpassword = hashPassword(password)
                     user = User( 
                         email=email,
                         first_name=first_name,
                         last_name=last_name, 
                         username = username,
-                        password = hashpassword,
-                        isadmin = isadmin)
+                        password = hashedpw,
+                        is_admin = isadmin)
                     query.add_user(user)
 
                     response = get_json('user', user, excludes)
@@ -104,6 +132,7 @@ def user_uri():
                     return (response, 400)
 
         except Exception as e:
+           
             response = create_error('unexpected_error', e)
             return (response, 500)
             
