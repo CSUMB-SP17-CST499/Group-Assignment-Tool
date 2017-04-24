@@ -1,9 +1,10 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, g
 from db.encode import get_json, create_error
 from db import query
 from werkzeug.security import generate_password_hash, \
      check_password_hash
 from db.models import User
+from flask_login import login_user , logout_user , current_user , login_required
 import json
 
 users = Blueprint('user', __name__,
@@ -39,6 +40,8 @@ def user_uri():
                 if (query.is_usermane_correct(user.username)):
                     print(user.username)
                     if (check_password_hash(user.password, password)):
+                        print(login_user(user))
+                        print(current_user)
                         #TODO create a session varaible that makes it so the user can acess pages that
                         #normally would not be allowed to acess such as add, edit or delete any users
                         return get_json('user', user, excludes)

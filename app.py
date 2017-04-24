@@ -1,8 +1,7 @@
 import flask, os
 
-from flask import render_template, flash, request, json, make_response
+from flask import render_template, flash, request, json, make_response, g
 from hashlib import md5
-
 from views.roles import roles
 from views.employees import employees
 from views.users import users
@@ -10,6 +9,7 @@ from dashboard.views import dashboard
 from db.database import init_db, Session 
 from db import query, models
 from db.models import User
+from flask_login import LoginManager, login_user , logout_user , current_user
 
 
 
@@ -19,8 +19,23 @@ app.register_blueprint(employees)
 app.register_blueprint(dashboard)
 app.register_blueprint(users)
 
+app.config['SECRET_KEY'] = "GroupAssignment_Tool_KEY374657*"
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = '/users'
+
 # Initalize the database
 init_db()
+
+
+@app.before_request
+def before_request():
+    g.user = current_user
+
+@login_manager.user_loader
+def load_user(id):
+    return query.get_user_by_id(id)
 
 @app.route('/')
 def index():

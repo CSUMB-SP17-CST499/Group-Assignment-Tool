@@ -52,9 +52,17 @@
               </ul>
             </li>
           </ul>
+          
+          {% if g.user.is_authenticated %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+          {% endif %}
+          {% if not g.user.is_authenticated%}
           <ul class="nav navbar-nav navbar-right">
             <li><a href="/users">Login</a></li>
           </ul>
+          {% endif %}
         </div><!-- /.navbar-collapse -->
       </div><!-- /.container-fluid -->
     </nav>
