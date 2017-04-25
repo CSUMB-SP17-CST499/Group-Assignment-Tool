@@ -26,7 +26,7 @@ def show(page):
 
 
 @dashboard.route('/<page>/add')
-@login_required
+#@login_required
 
 def add(page):
     user = g.user
@@ -36,8 +36,8 @@ def add(page):
     except TemplateNotFound:
         return render_template("404.html")
 
-
 @dashboard.route('/<page>/update')
+@login_required
 def update(page):
     try:
         return render_template("%s/update.html" % page)

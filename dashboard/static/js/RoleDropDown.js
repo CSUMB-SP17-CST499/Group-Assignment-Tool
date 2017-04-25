@@ -4,7 +4,7 @@ $(document).ready(function(){
 
     //Initialize globals
     var json = [];
-    var table = $('#role_select')[0]; // Get table from html
+    var table = $('#roles')[0]; // Get table from html
     var tableRows = 0;
     
     $.ajax({

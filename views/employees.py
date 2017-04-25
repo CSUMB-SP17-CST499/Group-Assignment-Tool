@@ -105,6 +105,7 @@ def employee_uri():
                 return ("Success", 200)
             if employee:
                 is_deleted = query.remove_employee_by_id(empl_id)
+                role_deleted = query.remove_employee_role_by_id(empl_id)
                 if is_deleted:
                     return (json.dumps({}), 200)
                 
