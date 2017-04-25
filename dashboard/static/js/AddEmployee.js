@@ -24,9 +24,10 @@ $(document).ready( function() {
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function(response) {
-                 $('#message').html("User was created");
+                 $('#message').html("Employee was created");
                  $('#alert-message')[0].classList.add('alert-success');
                  $('#alert-message').show();
+                 window.location = '/employees';
             },
             error: function(response) {
                 try {

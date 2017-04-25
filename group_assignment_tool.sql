@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Apr 07, 2017 at 06:32 AM
+-- Generation Time: Apr 23, 2017 at 12:17 AM
 -- Server version: 5.5.53-0ubuntu0.14.04.1
 -- PHP Version: 5.5.9-1ubuntu4.20
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `app` (
   `name` varchar(255) NOT NULL DEFAULT '',
   `token` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`app_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `app`
@@ -40,8 +40,7 @@ CREATE TABLE IF NOT EXISTS `app` (
 INSERT INTO `app` (`app_id`, `name`, `token`) VALUES
 (1, 'Slack', ''),
 (2, 'Bugzilla', ''),
-(3, 'Smartsheet', ''),
-(10, 'Eleven', '');
+(3, 'TEST', '');
 
 -- --------------------------------------------------------
 
@@ -50,8 +49,9 @@ INSERT INTO `app` (`app_id`, `name`, `token`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `app_group` (
-  `app_id` smallint(6) NOT NULL,
-  `group_id` smallint(5) NOT NULL
+  `app_id` int(11) NOT NULL,
+  `group_id` int(11) NOT NULL,
+  PRIMARY KEY (`app_id`,`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -59,8 +59,8 @@ CREATE TABLE IF NOT EXISTS `app_group` (
 --
 
 INSERT INTO `app_group` (`app_id`, `group_id`) VALUES
-(1, 32767),
-(2, 32767);
+(1, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -69,21 +69,21 @@ INSERT INTO `app_group` (`app_id`, `group_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `employee` (
-  `empl_id` int(11) NOT NULL AUTO_INCREMENT,
+  `employee_id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL DEFAULT '',
   `last_name` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`email`),
-  UNIQUE KEY `empl_id` (`empl_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+  UNIQUE KEY `empl_id` (`employee_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=70 ;
 
 --
 -- Dumping data for table `employee`
 --
 
-INSERT INTO `employee` (`empl_id`, `email`, `first_name`, `last_name`) VALUES
+INSERT INTO `employee` (`employee_id`, `email`, `first_name`, `last_name`) VALUES
 (1, 'elgandara@csumb.edu', 'Eliasar', 'Gandara'),
-(2, 'fakeemail@fake.edu', 'fake', 'person');
+(49, 'email@csumb.edu', 'first', 'last');
 
 -- --------------------------------------------------------
 
@@ -92,18 +92,22 @@ INSERT INTO `employee` (`empl_id`, `email`, `first_name`, `last_name`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `employee_role` (
-  `email` varchar(255) NOT NULL COMMENT 'The email belonging to an employee',
-  `role_id` smallint(6) NOT NULL COMMENT 'The id of a role.',
-  PRIMARY KEY (`email`,`role_id`)
+  `employee_id` smallint(6) NOT NULL,
+  `role_id` smallint(6) NOT NULL,
+  PRIMARY KEY (`employee_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `employee_role`
 --
 
-INSERT INTO `employee_role` (`email`, `role_id`) VALUES
-('elgandara@csumb.edu', 11111),
-('fakeemail@fake.edu', 22222);
+INSERT INTO `employee_role` (`employee_id`, `role_id`) VALUES
+(0, 1),
+(1, 1),
+(1, 2),
+(66, 1),
+(67, 1),
+(68, 1);
 
 -- --------------------------------------------------------
 
@@ -114,16 +118,17 @@ INSERT INTO `employee_role` (`email`, `role_id`) VALUES
 CREATE TABLE IF NOT EXISTS `group` (
   `group_id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `app_group_id` text NOT NULL,
   PRIMARY KEY (`group_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=32769 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `group`
 --
 
-INSERT INTO `group` (`group_id`, `name`) VALUES
-(32767, 'someGroupA'),
-(32768, 'groupingB');
+INSERT INTO `group` (`group_id`, `name`, `app_group_id`) VALUES
+(1, 'someGroupA', ''),
+(2, 'groupingB', '');
 
 -- --------------------------------------------------------
 
@@ -137,15 +142,15 @@ CREATE TABLE IF NOT EXISTS `role` (
   `description` varchar(1000) NOT NULL,
   PRIMARY KEY (`role_id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22223 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `role`
 --
 
 INSERT INTO `role` (`role_id`, `name`, `description`) VALUES
-(11111, 'kunf_fu_master', 'kung fu fighting'),
-(22222, 'gym_teacher', 'teach gym');
+(1, 'kunf_fu_master', 'kung fu fighting'),
+(2, 'gym_teacher', 'teach gym');
 
 -- --------------------------------------------------------
 
@@ -164,8 +169,9 @@ CREATE TABLE IF NOT EXISTS `role_group` (
 --
 
 INSERT INTO `role_group` (`role_id`, `group_id`) VALUES
-(11111, 32767),
-(22222, 32767);
+(1, 1),
+(1, 2),
+(2, 2);
 
 -- --------------------------------------------------------
 
