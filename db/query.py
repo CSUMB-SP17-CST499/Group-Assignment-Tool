@@ -438,9 +438,3 @@ def get_all_apps_with_groups() -> List[AppToGroup]:
     """
     session = Session()
     return session.query(App, Group).filter(Group.id == AppToGroup.group_id).filter(App.id == AppToGroup.app_id).all()
-
-def remove_employee_role_by_id(employee_id: str) -> bool:
-   
-   
-   
-    return remove_instance_by_field(EmployeeToRole, EmployeeToRole.employee_id, employee_id)    
