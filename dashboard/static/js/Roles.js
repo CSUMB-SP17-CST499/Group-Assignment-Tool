@@ -41,15 +41,27 @@ $(document).ready(function(){
                 table.rows[roles_index + 1].cells[1].innerHTML = role["name"]//name
                 table.rows[roles_index + 1].cells[2].innerHTML = role['description'];//description
                 
-                groups_amt = role['groups'].length
-                groups = ""
+                var roles_cell = table.rows[roles_index + 1].cells[3]
+                displayGroups(table, role['groups'], roles_cell)
+            
+            }
+        }
+    }
+    
+    function displayGroups(table, groups, roles_cell) {
+        
+        if (groups) {
+        
+            for (var index = 0; index < groups.length; index++) {
                 
-                for(var groups_index = 0; groups_index < groups_amt; groups_index++){
-                    
-                    groups +=  "<button type='button' class='btn btn-primary btn-xs'>" + role['groups'][groups_index].name + " </button> "
-                }
-                
-                table.rows[roles_index + 1].cells[3].innerHTML = groups
+                var group = groups[index];
+                var item = $('<span></span>');
+         
+                item.text(group.name);
+                item.addClass('btn btn-primary btn-xs');
+                item.css('margin-right','5px');
+    
+                roles_cell.append(item[0]);
             }
         }
     }
