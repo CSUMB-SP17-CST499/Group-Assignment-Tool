@@ -30,40 +30,29 @@ $(document).ready(function(){
         }
     });
     
-    // var roles_json = '{"roles": [{"name": "kunf_fu_master", "description": "kung fu fighting", "id": 11111}, {"name": "gym_teacher", "description": "teach gym", "id": 22222}]}'
-    // var roles = JSON.parse(roles_json)["roles"];
-    
-    // displayRoles(table, roles);
-    
     function displayRoles(table, roles) {
         if (roles) {
             
-            for (var index = 0; index < roles.length; index++) {
+            for (var roles_index = 0; roles_index < roles.length; roles_index++) {
                 
-                var role = roles[index];
+                var role = roles[roles_index];
                 
                 console.log(role["name"])
-                table.rows[index + 1].cells[1].innerHTML = role["name"]//name
-                table.rows[index + 1].cells[2].innerHTML = role['description'];//description
+                table.rows[roles_index + 1].cells[1].innerHTML = role["name"]//name
+                table.rows[roles_index + 1].cells[2].innerHTML = role['description'];//description
                 
                 groups_amt = role['groups'].length
                 groups = ""
-                for(var index2 = 0; index2 < groups_amt; index2++){
+                
+                for(var groups_index = 0; groups_index < groups_amt; groups_index++){
                     
-                    groups +=  "<button type='button' class='btn btn-primary btn-xs'>" + role['groups'][index2].name + " </button> "
+                    groups +=  "<button type='button' class='btn btn-primary btn-xs'>" + role['groups'][groups_index].name + " </button> "
                 }
                 
-               
-                
-                table.rows[index + 1].cells[3].innerHTML = groups
-                
+                table.rows[roles_index + 1].cells[3].innerHTML = groups
             }
-         
-               
-            
         }
     }
-
     
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
