@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 
 INSERT INTO `employee` (`employee_id`, `email`, `first_name`, `last_name`) VALUES
 (1, 'elgandara@csumb.edu', 'Eliasar', 'Gandara'),
-(49, 'email@csumb.edu', 'first', 'last');
+(66, 'email@csumb.edu', 'first', 'last');
 
 -- --------------------------------------------------------
 
@@ -161,7 +161,10 @@ INSERT INTO `role` (`role_id`, `name`, `description`) VALUES
 CREATE TABLE IF NOT EXISTS `role_group` (
   `role_id` smallint(6) unsigned NOT NULL,
   `group_id` smallint(6) NOT NULL,
-  PRIMARY KEY (`role_id`,`group_id`)
+  PRIMARY KEY (`role_id`,`group_id`),
+  FOREIGN KEY (role_id)
+  REFERENCES role(role_id)
+  ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -180,13 +183,14 @@ INSERT INTO `role_group` (`role_id`, `group_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `user` (
+  `user_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`email`),
+  PRIMARY KEY (`user_id`),
   UNIQUE KEY `username` (`username`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
