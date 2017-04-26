@@ -50,8 +50,10 @@ $(document).ready(function(){
                 groups = ""
                 for(var index2 = 0; index2 < groups_amt; index2++){
                     
-                    groups +=  role['groups'][index2].name + ","
+                    groups +=  "<button type='button' class='btn btn-primary btn-xs'>" + role['groups'][index2].name + " </button> "
                 }
+                
+               
                 
                 table.rows[index + 1].cells[3].innerHTML = groups
                 
