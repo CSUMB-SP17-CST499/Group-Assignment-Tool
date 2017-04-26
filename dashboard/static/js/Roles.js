@@ -4,8 +4,7 @@ $(document).ready(function(){
     var json = [];
     var table = $('#roles-table')[0]; // Get table from html
     var tableRows = 0;
-    loadTable(table, tableRows,3);
-    
+
     $.ajax({
         url: '/api/roles',
         method: 'GET',
@@ -13,7 +12,7 @@ $(document).ready(function(){
         success: function(response) {
             json = (JSON.parse(response))['roles'];
             tableRows = Object.keys(json).length;
-            loadTable(table, tableRows,3);
+            loadTable(table, tableRows,4);
             displayRoles(table, json);
         },
         error: function(error) {
@@ -31,29 +30,41 @@ $(document).ready(function(){
         }
     });
     
-    // var roles_json = '{"roles": [{"name": "kunf_fu_master", "description": "kung fu fighting", "id": 11111}, {"name": "gym_teacher", "description": "teach gym", "id": 22222}]}'
-    // var roles = JSON.parse(roles_json)["roles"];
-    
-    // displayRoles(table, roles);
-    
     function displayRoles(table, roles) {
         if (roles) {
             
-            for (var index = 0; index < roles.length; index++) {
+            for (var roles_index = 0; roles_index < roles.length; roles_index++) {
                 
-                var role = roles[index];
+                var role = roles[roles_index];
                 
                 console.log(role["name"])
-                table.rows[index + 1].cells[1].innerHTML = role["name"]//name
-                table.rows[index + 1].cells[2].innerHTML = role['description'];//description
+                table.rows[roles_index + 1].cells[1].innerHTML = role["name"]//name
+                table.rows[roles_index + 1].cells[2].innerHTML = role['description'];//description
                 
-            }
-         
-               
+                var roles_cell = table.rows[roles_index + 1].cells[3]
+                displayGroups(table, role['groups'], roles_cell)
             
+            }
         }
     }
-
+    
+    function displayGroups(table, groups, roles_cell) {
+        
+        if (groups) {
+        
+            for (var index = 0; index < groups.length; index++) {
+                
+                var group = groups[index];
+                var item = $('<span></span>');
+         
+                item.text(group.name);
+                item.addClass('btn btn-primary btn-xs');
+                item.css('margin-right','5px');
+    
+                roles_cell.append(item[0]);
+            }
+        }
+    }
     
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
