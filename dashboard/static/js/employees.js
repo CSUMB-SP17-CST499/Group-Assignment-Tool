@@ -86,7 +86,6 @@ $(document).ready(function(){
                     rolesString += role;
                 }
             }
-        console.log(rolesString);
         inner_table += "<tr>";
         inner_table += "<td><input class='checkbox' type='checkbox' value='" + id + "' id='" + id + "' /></td>";
         inner_table += "<td>"+ name +"</td>";

@@ -35,13 +35,10 @@ def user_uri():
         print(username)
         try:
             user = query.get_user_by_username(username)
-            print(user)
             if user:
                 if (query.is_usermane_correct(user.username)):
-                    print(user.username)
                     if (check_password_hash(user.password, password)):
                         print(login_user(user))
-                        print(current_user)
                         #TODO create a session varaible that makes it so the user can acess pages that
                         #normally would not be allowed to acess such as add, edit or delete any users
                         return get_json('user', user, excludes)

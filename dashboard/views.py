@@ -36,8 +36,8 @@ def add(page):
     except TemplateNotFound:
         return render_template("404.html")
 
-
 @dashboard.route('/<page>/update')
+@login_required
 def update(page):
     try:
         return render_template("%s/update.html" % page)

@@ -9,7 +9,8 @@ $(document).ready( function() {
         var firstname = $('#first_name').val();
         var lastname = $('#last_name').val();
         var email = $('#email').val();
-        var roles = [$('#roles').val()];
+        var roles = $('#roles').val();
+
 
         data = {
             'first_name': firstname, 

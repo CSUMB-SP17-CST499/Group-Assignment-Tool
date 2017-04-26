@@ -105,7 +105,8 @@ def employee_uri():
                 return ("Success", 200)
             if employee:
                 is_deleted = query.remove_employee_by_id(empl_id)
-                if is_deleted:
+                role_deleted = query.remove_employee_role_by_id(empl_id)
+                if is_deleted and role_deleted:
                     return (json.dumps({}), 200)
                 
                 response = create_error('unexpected_error')
