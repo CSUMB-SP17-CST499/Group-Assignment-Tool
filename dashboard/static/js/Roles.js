@@ -50,44 +50,44 @@ $(document).ready(function(){
     
     $(table).append(inner_table);
     
-    $('#deleteButton').click(function(){
-        var peopleToDelete = [];
+    $('#deleteRoleButton').click(function(){
+        var rolesToDelete = [];
         
         $('.checkbox:checkbox:checked').each(function() {
-            peopleToDelete.push($(this).val());
+            rolesToDelete.push($(this).val());
         });
         
         data = {
-            'id': peopleToDelete,
+            'id': rolesToDelete,
         }
         
-        console.log(peopleToDelete);
+        console.log(rolesToDelete);
         
-        $.ajax({
-            url: '/api/employee',
-            method: 'DELETE',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            success: function(response) {
-                $('#message').html("User(s) deleted");
-                $('#alert-message')[0].classList.add('alert-success');
-                $('#alert-message').show();
-                window.location = "/employees";
-            },
-            error: function(error) {
-                try {
-                    json = JSON.parse(error.responseText);
-                    if (json.message) {
-                        $('#message').html(json.message);
-                        $('#alert-message')[0].classList.add('alert-danger');
-                        $('#alert-message').show();
-                    }
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }
-        });
+        // $.ajax({
+        //     url: '/api/employee',
+        //     method: 'DELETE',
+        //     data: JSON.stringify(data),
+        //     contentType: 'application/json',
+        //     success: function(response) {
+        //         $('#message').html("User(s) deleted");
+        //         $('#alert-message')[0].classList.add('alert-success');
+        //         $('#alert-message').show();
+        //         window.location = "/employees";
+        //     },
+        //     error: function(error) {
+        //         try {
+        //             json = JSON.parse(error.responseText);
+        //             if (json.message) {
+        //                 $('#message').html(json.message);
+        //                 $('#alert-message')[0].classList.add('alert-danger');
+        //                 $('#alert-message').show();
+        //             }
+        //         }
+        //         catch (e) {
+        //             console.log(e);
+        //         }
+        //     }
+        // });
     });
 }
     
