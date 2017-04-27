@@ -82,16 +82,13 @@ def role_uri():
             return (response, 500)
     
     elif request.method == 'DELETE':
-        role = query.get_role_by_id(role_id)
-        print(role)
+        # role = query.get_role_by_id(role_id)
+        print(role_id)
         try:
-            if role:
-                is_deleted = query.remove_role(role_id)
-                if is_deleted:
-                    return (json.dumps({}), 200)
-                
-                response = create_error('unexpected_error')
-                return (response, 500)
+            if role_id:
+                for x in role_id:
+                    query.remove_role(x)
+                return ("Success", 200)
             else:
                 response = create_error('role_not_found')
                 return (response, 404)

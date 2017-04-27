@@ -14,7 +14,6 @@ $(document).ready(function(){
             tableRows = Object.keys(json).length;
             loadRolesTable(table, tableRows,4);
             displayRoles(table, json);
-            console.log(json[1]['id']);
         },
         error: function(error) {
             try {
@@ -63,31 +62,31 @@ $(document).ready(function(){
         
         console.log(rolesToDelete);
         
-        // $.ajax({
-        //     url: '/api/employee',
-        //     method: 'DELETE',
-        //     data: JSON.stringify(data),
-        //     contentType: 'application/json',
-        //     success: function(response) {
-        //         $('#message').html("User(s) deleted");
-        //         $('#alert-message')[0].classList.add('alert-success');
-        //         $('#alert-message').show();
-        //         window.location = "/employees";
-        //     },
-        //     error: function(error) {
-        //         try {
-        //             json = JSON.parse(error.responseText);
-        //             if (json.message) {
-        //                 $('#message').html(json.message);
-        //                 $('#alert-message')[0].classList.add('alert-danger');
-        //                 $('#alert-message').show();
-        //             }
-        //         }
-        //         catch (e) {
-        //             console.log(e);
-        //         }
-        //     }
-        // });
+        $.ajax({
+            url: '/api/role',
+            method: 'DELETE',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(response) {
+                $('#message').html("Role(s) deleted");
+                $('#alert-message')[0].classList.add('alert-success');
+                $('#alert-message').show();
+                window.location = "/roles";
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+        });
     });
 }
     
