@@ -88,7 +88,7 @@ def role_uri():
             if role_id:
                 for x in role_id:
                     query.remove_role(x)
-                return ("Success", 200)
+                return (json.dumps({}), 200)
             else:
                 response = create_error('role_not_found')
                 return (response, 404)
