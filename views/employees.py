@@ -141,11 +141,10 @@ def employees_uri():
         try:
             employee_ids = args.get('ids', [])
             if employee_ids:
-                for employee_id in employee_ids:
-                    employee = query.remove_employee_by_id(employee_id)
-                
-                return ("Success", 200)
-                
+                removed_ids = remove_employees(employee_ids)
+                response = json.dumps({'ids': removed_ids})
+                return (response, 200)
+            
         except Exception as e:
             response = create_error('unexpected_error', e)
             return (response, 500)
@@ -169,29 +168,24 @@ def get_roles_with_ids(role_ids):
     
 
 def remove_employees(ids):
-    """Returns a list of the ids that were removed from the database. 
+    """Removes the employees with the given employee ids.
     
     Args:
-        ids: A list of employee ids belonging to employees that need to be removed.
+        ids: A list of employee ids belonging to employees that 
+                need to be removed.
+    
+    Returns:
+        Returns a list of employee_ids belonging to the employees that
+        were removed successfully from the database.
     """
     removed = []
-    try:
-        for employee_id in ids:
-            employee = query.get_employee_by_id(employee_id)
-            
-            if employee:
-                is_removed = remove_employee_from_groups(employee)
-                is_deleted = query.remove_employee_by_id(employee.id)
-            
-                if is_removed and is_deleted:
-                    pass
-                    
-            
-    except Exception as e:
-        response = create_error('unexpected_error', e)
-        return (response, 500)
-            
-def remove_employee_from_groups(employee) -> bool:
-    """Removes an employee from the groups it belongs to.
-    """
-    pass
+    for employee_id in ids:
+        employee = query.get_employee_by_id(employee_id)
+        
+        if employee:
+            is_deleted = query.remove_employee_by_id(employee.id)
+        
+            if is_deleted:
+                removed.append(employee_id)
+        
+    return removed
