@@ -83,7 +83,34 @@ def role_uri():
     
     elif request.method == 'DELETE':
         # role = query.get_role_by_id(role_id)
-        print(role_id)
+        try:
+            if role_id:
+                for x in role_id:
+                    query.remove_role(role_id[0])
+                return (json.dumps({}), 200)
+            else:
+                response = create_error('role_not_found')
+                return (response, 404)
+        except Exception as e:
+            response = create_error('unexpected_error', e)
+            return (response, 500)
+    
+@roles.route('/api/roles', methods = ['GET', 'DELETE'])
+def roles_uri():
+    args = request.get_json()
+    
+    if request.method == 'GET':
+        try:
+            roles = query.get_all_roles()
+            return get_json('roles', roles)
+            
+        except Exception as e:
+            print(e)
+            response = create_error('unexpected_error', e)
+            return (response, 500)
+            
+    elif request.method == 'DELETE':
+        role_id = args.get('id')
         try:
             if role_id:
                 for x in role_id:
@@ -93,19 +120,6 @@ def role_uri():
                 response = create_error('role_not_found')
                 return (response, 404)
         except Exception as e:
-            response = create_error('unexpected_error', e)
-            return (response, 500)
-    
-    
-@roles.route('/api/roles', methods = ['GET'])
-def roles_uri():
-    if request.method == 'GET':
-        try:
-            roles = query.get_all_roles()
-            return get_json('roles', roles)
-            
-        except Exception as e:
-            print(e)
             response = create_error('unexpected_error', e)
             return (response, 500)
             

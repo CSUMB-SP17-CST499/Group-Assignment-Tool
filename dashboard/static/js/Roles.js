@@ -29,41 +29,26 @@ $(document).ready(function(){
             }
         }
     });
-    
-    function loadRolesTable(table, tableRows, columnAmt) {
-    var column_amt = columnAmt;
-    var inner_table = "";
-    var id, name, description;
-    
-    inner_table += "<tbody>"
-
-    for (var row = 0; row < tableRows; row++){
-        id = json[row]["id"];
-        inner_table += "<tr>";
-        inner_table += "<td><input class='checkbox' type='checkbox' value='" + id + "' id='" + id + "' /></td>";
-        inner_table += "<td></td>";
-        inner_table += "<td></td>";
-        inner_table += "<td></td>";
-        inner_table += "</tr>";
-    };
-    inner_table += "</tbody>";
-    
-    $(table).append(inner_table);
-}
 
     $('#deleteRoleButton').click(function(){
         var rolesToDelete = [];
+        var endpoint = '/api/roles';
         
         $('.checkbox:checkbox:checked').each(function() {
             rolesToDelete.push($(this).val());
         });
         
+        if(rolesToDelete.length > 1){
+            endpoint = '/api/roles';
+        }
+        
         data = {
             'id': rolesToDelete,
         }
         
+        
         $.ajax({
-            url: '/api/role',
+            url: endpoint,
             method: 'DELETE',
             data: JSON.stringify(data),
             contentType: 'application/json',
