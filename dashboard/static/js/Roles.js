@@ -12,7 +12,7 @@ $(document).ready(function(){
         success: function(response) {
             json = (JSON.parse(response))['roles'];
             tableRows = Object.keys(json).length;
-            loadRolesTable(table, tableRows,4);
+            loadTable(table, tableRows, "rows", json);
             displayRoles(table, json);
         },
         error: function(error) {
@@ -34,6 +34,7 @@ $(document).ready(function(){
     var column_amt = columnAmt;
     var inner_table = "";
     var id, name, description;
+    
     inner_table += "<tbody>"
 
     for (var row = 0; row < tableRows; row++){
@@ -48,7 +49,8 @@ $(document).ready(function(){
     inner_table += "</tbody>";
     
     $(table).append(inner_table);
-    
+}
+
     $('#deleteRoleButton').click(function(){
         var rolesToDelete = [];
         
@@ -86,7 +88,6 @@ $(document).ready(function(){
             }
         });
     });
-}
     
     function displayRoles(table, roles) {
         if (roles) {
