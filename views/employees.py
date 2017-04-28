@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from db.encode import get_json, create_error
 from db import query
 from db.models import Employee
+from apis import slack
 import json
 
 employees = Blueprint('employees', __name__,
@@ -99,14 +100,11 @@ def employee_uri():
             
     elif request.method == 'DELETE':
         try:
-            if empl_id:
-                for x in empl_id:
-                    employee = query.remove_employee_by_id(x)
-                return ("Success", 200)
+            employee = query.get_employee_by_id(empl_id)
+            
             if employee:
                 is_deleted = query.remove_employee_by_id(empl_id)
-                role_deleted = query.remove_employee_role_by_id(empl_id)
-                if is_deleted and role_deleted:
+                if is_deleted:
                     return (json.dumps({}), 200)
                 
                 response = create_error('unexpected_error')
@@ -120,15 +118,34 @@ def employee_uri():
             return (response, 500)
         
 
-@employees.route('/api/employees', methods = ['GET'])
+@employees.route('/api/employees', methods = ['GET', 'DELETE'])
 def employees_uri():
+    employee_ids = []
+    
+    args = request.get_json()
+    if args is None and request.method == 'POST':
+        response = create_error('missing_argument')
+        return (response, 404)
+    
+    
     if request.method == 'GET':
         try:
             employees = query.get_all_employees()
             return get_json('employees', employees)
             
         except Exception as e:
-            print(e)
+            response = create_error('unexpected_error', e)
+            return (response, 500)
+    
+    elif request.method == 'DELETE':
+        try:
+            employee_ids = args.get('ids', [])
+            if employee_ids:
+                removed_ids = remove_employees(employee_ids)
+                response = json.dumps({'ids': removed_ids})
+                return (response, 200)
+            
+        except Exception as e:
             response = create_error('unexpected_error', e)
             return (response, 500)
 
@@ -148,3 +165,27 @@ def get_roles_with_ids(role_ids):
                 for role_id in role_ids]
     
     return []
+    
+
+def remove_employees(ids):
+    """Removes the employees with the given employee ids.
+    
+    Args:
+        ids: A list of employee ids belonging to employees that 
+                need to be removed.
+    
+    Returns:
+        Returns a list of employee_ids belonging to the employees that
+        were removed successfully from the database.
+    """
+    removed = []
+    for employee_id in ids:
+        employee = query.get_employee_by_id(employee_id)
+        
+        if employee:
+            is_deleted = query.remove_employee_by_id(employee.id)
+        
+            if is_deleted:
+                removed.append(employee_id)
+        
+    return removed
