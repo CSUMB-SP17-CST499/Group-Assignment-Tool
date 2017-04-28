@@ -4,15 +4,24 @@
  *
  */
 
-function loadTable(table, tableRows, columnAmt) {
-    var column_amt = columnAmt;
+function loadTable(table, tableRows, IDtype, json) {
+    var column_amt;
     var inner_table = "";
+    var id, name, description;
+    
+    if (IDtype === "rows"){
+        column_amt = 4;
+    }
+    
     inner_table += "<tbody>"
     
     for (var row = 0; row < tableRows; row++){
+        if (IDtype == "rows"){
+            id = json[row]["id"];
+        }
         inner_table += "<tr>";
-        inner_table += "<td><input class='checkbox' type='checkbox' name='' /></td>";
-        for(var col = 1; col < columnAmt; col++){
+        inner_table += "<td><input class='checkbox' type='checkbox' value='" + id + "' id='" + id + "' /></td>";
+        for(var col = 1; col < column_amt; col++){
             inner_table += "<td></td>";
         }
         inner_table += "</tr>";

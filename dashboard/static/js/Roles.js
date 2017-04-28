@@ -12,7 +12,7 @@ $(document).ready(function(){
         success: function(response) {
             json = (JSON.parse(response))['roles'];
             tableRows = Object.keys(json).length;
-            loadTable(table, tableRows,4);
+            loadTable(table, tableRows, "rows", json);
             displayRoles(table, json);
         },
         error: function(error) {
@@ -29,6 +29,50 @@ $(document).ready(function(){
             }
         }
     });
+
+    $('#deleteRoleButton').click(function(){
+        var rolesToDelete = [];
+        var endpoint = '/api/roles';
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            rolesToDelete.push($(this).val());
+        });
+        
+        if(rolesToDelete.length > 1){
+            endpoint = '/api/roles';
+        }
+        
+        data = {
+            'id': rolesToDelete,
+        }
+        
+        
+        $.ajax({
+            url: endpoint,
+            method: 'DELETE',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(response) {
+                $('#message').html("Role(s) deleted");
+                $('#alert-message')[0].classList.add('alert-success');
+                $('#alert-message').show();
+                window.location = "/roles";
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+        });
+    });
     
     function displayRoles(table, roles) {
         if (roles) {
@@ -36,9 +80,7 @@ $(document).ready(function(){
             for (var roles_index = 0; roles_index < roles.length; roles_index++) {
                 
                 var role = roles[roles_index];
-                
-                console.log(role["name"])
-                table.rows[roles_index + 1].cells[1].innerHTML = role["name"]//name
+                table.rows[roles_index + 1].cells[1].innerHTML = role["name"]; //name
                 table.rows[roles_index + 1].cells[2].innerHTML = role['description'];//description
                 
                 var roles_cell = table.rows[roles_index + 1].cells[3]

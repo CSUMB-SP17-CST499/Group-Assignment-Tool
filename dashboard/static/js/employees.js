@@ -77,7 +77,7 @@ $(document).ready(function(){
         email = information["employees"][row]["email"];
         arrayOfRoles = information["employees"][row]["roles"];
         var rolesString = ""
-        var role;
+        var role = "";
             for(var x = 0; x < arrayOfRoles.length; x++){
                 role = arrayOfRoles[x]["name"];
                 if(x > 0){
