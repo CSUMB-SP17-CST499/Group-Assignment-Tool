@@ -111,6 +111,7 @@ def roles_uri():
             
     elif request.method == 'DELETE':
         role_id = args.get('id')
+        # Need to delete roles from employees
         try:
             if role_id:
                 for x in role_id:
