@@ -80,6 +80,4 @@ def sync_slack_groups():
                         name = group["name"]
                         group_obj = Group(None, name, 1, group["id"])
                         query.update_group(group_obj)
-    
-    
-    
+                        
