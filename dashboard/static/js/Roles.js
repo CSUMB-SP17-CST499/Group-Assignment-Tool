@@ -60,8 +60,6 @@ $(document).ready(function(){
             'id': rolesToDelete,
         }
         
-        console.log(rolesToDelete);
-        
         $.ajax({
             url: '/api/role',
             method: 'DELETE',
@@ -96,8 +94,6 @@ $(document).ready(function(){
             for (var roles_index = 0; roles_index < roles.length; roles_index++) {
                 
                 var role = roles[roles_index];
-                console.log(role);
-                console.log(role["name"]);
                 table.rows[roles_index + 1].cells[1].innerHTML = role["name"]; //name
                 table.rows[roles_index + 1].cells[2].innerHTML = role['description'];//description
                 
