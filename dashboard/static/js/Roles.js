@@ -58,7 +58,7 @@ $(document).ready(function(){
                 var item = $('<span></span>');
          
                 item.text(group.name);
-                item.addClass('btn btn-primary btn-xs');
+                item.addClass();
                 item.css('margin-right','5px');
     
                 roles_cell.append(item[0]);

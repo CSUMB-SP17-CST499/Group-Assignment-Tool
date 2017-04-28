@@ -137,5 +137,45 @@ $(document).ready(function(){
             }
         });
     });
+    
+        $('#editButton').click(function(){
+        var editperson = [];
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            editperson.push($(this).val());
+        });
+        
+        data = {
+            'id': editperson,
+        }
+        
+        console.log(editperson);
+        
+        $.ajax({
+            url: '/api/employee',
+            method: 'SET',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(response) {
+                $('#message').html("User(s) deleted");
+                $('#alert-message')[0].classList.add('alert-success');
+                $('#alert-message').show();
+                window.location = "/employees";
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+        });
+    });
 }
 });
