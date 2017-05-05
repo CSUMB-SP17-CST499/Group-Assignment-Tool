@@ -76,6 +76,14 @@ $(document).ready(function(){
         }
     }
     
+    function clearTable(){
+        
+       var table = $('#roles-table');
+       var header = table[0];
+       table.html("");
+       table.append(header);
+    }
+    
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
         if (this.checked) {
@@ -115,13 +123,15 @@ $(document).ready(function(){
         
         var data = {
             
-            'id': rolesSelected,
+            'role_ids': rolesSelected,
+            'group_ids': groupsSelected
+            
         }
         
         console.log(rolesSelected);
         
         $.ajax({//update data in db and call function to reload table (call this function: get_role_data())
-            url: '/api/role',
+            url: '/api/roles/groups',
             method: 'PUT',
             data: JSON.stringify(data),
             contentType: 'application/json',
@@ -129,8 +139,11 @@ $(document).ready(function(){
                 $('#message').html("Group was added");
                 $('#alert-message')[0].classList.add('alert-success');
                 $('#alert-message').show();
-                window.location = '/roles';
-                get_role_data();
+                
+                // clearTable();
+                 get_role_data();
+                // window.location = '/roles';
+               
             },
             error: function(error) {
                 try {
