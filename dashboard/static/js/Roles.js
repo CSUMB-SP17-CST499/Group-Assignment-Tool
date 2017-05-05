@@ -14,7 +14,7 @@ $(document).ready(function(){
         success: function(response) {
             json = (JSON.parse(response))['roles'];
             tableRows = Object.keys(json).length;
-            loadTable(table, tableRows,4);
+            loadTable(table, tableRows, "rows", json);
             displayRoles(table, json);
             
         },
@@ -32,6 +32,7 @@ $(document).ready(function(){
             }
         }
     });
+
     }
     
     $("#remove_groups").click(function(){
@@ -39,6 +40,7 @@ $(document).ready(function(){
     });
     
   
+
     
     function displayRoles(table, roles) {// call this to reload table
         if (roles) {
@@ -46,9 +48,7 @@ $(document).ready(function(){
             for (var roles_index = 0; roles_index < roles.length; roles_index++) {
                 
                 var role = roles[roles_index];
-                
-                console.log(role["name"])
-                table.rows[roles_index + 1].cells[1].innerHTML = role["name"]//name
+                table.rows[roles_index + 1].cells[1].innerHTML = role["name"]; //name
                 table.rows[roles_index + 1].cells[2].innerHTML = role['description'];//description
                 
                 var roles_cell = table.rows[roles_index + 1].cells[3]

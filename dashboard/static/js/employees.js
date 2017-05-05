@@ -77,7 +77,7 @@ $(document).ready(function(){
         email = information["employees"][row]["email"];
         arrayOfRoles = information["employees"][row]["roles"];
         var rolesString = ""
-        var role;
+        var role = "";
             for(var x = 0; x < arrayOfRoles.length; x++){
                 role = arrayOfRoles[x]["name"];
                 if(x > 0){
@@ -106,21 +106,19 @@ $(document).ready(function(){
         });
         
         data = {
-            'id': peopleToDelete,
+            'ids': peopleToDelete,
         }
-        
-        console.log(peopleToDelete);
-        
+                
         $.ajax({
-            url: '/api/employee',
+            url: '/api/employees',
             method: 'DELETE',
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function(response) {
-                $('#message').html("User(s) deleted");
+                message = (peopleToDelete.length > 1) ? 'Users deleted.' : 'User deleted.'
+                $('#message').html(message);
                 $('#alert-message')[0].classList.add('alert-success');
                 $('#alert-message').show();
-                window.location = "/employees";
             },
             error: function(error) {
                 try {

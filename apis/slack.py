@@ -126,17 +126,20 @@ def get_user_names(user_ids):
     return users_names
     
 def update_employees(user_ids, user_group_id):
-    """Function creates a 'get'request, in order to update the list of user in a user group, by passing the token as a parameter for authentication,
+    """Function creates a 'get' request, in order to update the list of user in a user group, by passing the token as a parameter for authentication,
         a list of userIDs, and the id of the user_group.
 
     Args:
-        param1 (:list:`str`, group)
+        user_ids: A list of user ids to be used to update the 
+            users belonging to a group.
+        user_group_id: The id of the user group the users will
+            be added to.
 
     Returns:
-        Returns a list containing the names of the members in the Slack group specified.
-
+        Returns a list containing the names of the members in the 
+        Slack group specified.
     """
-    
+    data = []
     try:
         request = requests.get('https://slack.com/api/usergroups.users.update', 
                 params = {'token': token.get_slack_token(), 'usergroup': user_group_id, 'users': user_ids},

@@ -265,7 +265,7 @@ def update_employee(employee: Employee) -> bool:
     return update_instance(employee)
 
 
-def remove_employee_by_id(employee_id: str) -> bool:
+def remove_employee_by_id(employee_id: int) -> bool:
     """Removes an employee from the employee table.
 
     Args:
@@ -448,3 +448,13 @@ def get_all_apps_with_groups() -> List[AppToGroup]:
     """
     session = Session()
     return session.query(App, Group).filter(Group.id == AppToGroup.group_id).filter(App.id == AppToGroup.app_id).all()
+
+
+def delete_multiple_employees(ids: List[int]) -> bool:
+    """Removes all employees with a matching id.
+    
+    Args:
+        ids: A list of ids belonging to employees.
+    """
+    pass
+    
