@@ -276,7 +276,17 @@ def remove_employee_by_id(employee_id: str) -> bool:
     """
     return remove_instance_by_field(Employee, Employee.id, employee_id)
 
+def remove_role_by_id(role_id: str) -> bool:
+    """Removes an employee from the employee table.
 
+    Args:
+        email: An employee's email.
+
+    Returns:
+        Returns true if an employee is removed, otherwise returns false.
+    """
+    return remove_instance_by_field(Role, Role.id, role_id)
+    
 def get_all_roles() -> List[Role]:
     """Returns a list of all roles.
 

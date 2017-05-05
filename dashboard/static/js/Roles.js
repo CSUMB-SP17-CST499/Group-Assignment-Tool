@@ -4,8 +4,10 @@ $(document).ready(function(){
     var json = [];
     var table = $('#roles-table')[0]; // Get table from html
     var tableRows = 0;
+    get_role_data();
 
-    $.ajax({
+    function get_role_data(){
+        $.ajax({
         url: '/api/roles',
         method: 'GET',
         contentType: 'json',
@@ -14,6 +16,7 @@ $(document).ready(function(){
             tableRows = Object.keys(json).length;
             loadTable(table, tableRows,4);
             displayRoles(table, json);
+            
         },
         error: function(error) {
             try {
@@ -29,8 +32,15 @@ $(document).ready(function(){
             }
         }
     });
+    }
     
-    function displayRoles(table, roles) {
+    $("#remove_groups").click(function(){
+        $("#action-button").hide();
+    });
+    
+  
+    
+    function displayRoles(table, roles) {// call this to reload table
         if (roles) {
             
             for (var roles_index = 0; roles_index < roles.length; roles_index++) {
@@ -82,5 +92,61 @@ $(document).ready(function(){
                 }
          }
         }
+    });
+    
+    
+  
+    $('#save').click(function(){
+        
+        //groupsSelected
+        //rolesSelected
+        
+        var groupsSelected = $('#groups').val()
+        
+        console.log(groupsSelected)
+        
+        
+        var rolesSelected = [];
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            // rolesSelected.push($(this).val());//purpose: to send api info that needs to change in the db 
+            rolesSelected.push($(this).val());
+        });
+        
+        var data = {
+            
+            'id': rolesSelected,
+        }
+        
+        console.log(rolesSelected);
+        
+        $.ajax({//update data in db and call function to reload table (call this function: get_role_data())
+            url: '/api/role',
+            method: 'PUT',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(response) {
+                $('#message').html("Group was added");
+                $('#alert-message')[0].classList.add('alert-success');
+                $('#alert-message').show();
+                window.location = '/roles';
+                get_role_data();
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                        console.log("error! Sal 2");
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                    console.log("error! Sal");
+                }
+            }
+        });
     });
 });
