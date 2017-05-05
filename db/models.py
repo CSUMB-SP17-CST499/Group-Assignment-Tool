@@ -216,7 +216,6 @@ class Group(Base, Model):
 
     def __init__(self, name, app_group_id):
         self.name = name
-
         self.app_group_id = app_group_id
     
     def __repr__(self):
