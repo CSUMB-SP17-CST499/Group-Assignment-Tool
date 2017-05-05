@@ -125,7 +125,7 @@ def get_user_names(user_ids):
             
     return users_names
     
-def update_employees(user_ids, user_group_id):
+def update_usergroup_users(user_group_id, user_ids):
     """Function creates a 'get' request, in order to update the list of user in a user group, by passing the token as a parameter for authentication,
         a list of userIDs, and the id of the user_group.
 

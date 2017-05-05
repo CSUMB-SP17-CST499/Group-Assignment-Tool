@@ -1,43 +1,31 @@
 from apis import slack
 
 
-def get_slack_api_emails(data):
-    """Function parses all the emails from a dictionary containing all the Slack Team member's information
+def parse_emails_from_slack_users(data):
+    """Parses the the emails from a dictionary with Slack user information.
 
     Args:
         data: a dictionary containing all the information from each user in the Slack team
 
     Returns:
-        Returns a list containing all the emails in the slack Team.
-
-    """
-    data = slack.get_user_list()
-    users_emails = []
-    member_amt = len(data["members"])
-        
-    for i in range(0, member_amt):
-        profile_amt = len(data["members"][i]["profile"])
+        Returns a list containing all  emails from the slack team.
+    """            
+    emails = []
+    for user in data["members"]:
+        if "profile" in user and "email" in user["profile"]:
+            emails.append(user["profile"]["email"])
             
-        profile = (data["members"][i])["profile"]
-        if "email" in profile:
-            users_emails.append(profile["email"])
-            
-    return users_emails
+    return emails
     
     
-def get_slack_api_group_id(data):
-    """Function parses all the group_ids from a dictionary containing all the Slack Team groups's information
+def parse_ids_from_slack_usergroup(data):
+    """Parses the usergroup ids from a dictionary with Slack usergroup data.
 
     Args:
-        data: a dictionary containing all the information from each group in the Slack team
+        data: a dictionary containing information for each group 
+            in the Slack team.
 
     Returns:
         Returns a list containing all the group_ids in the slack Team.
-
     """
-    group_ids = []
-        
-    for group in data["usergroups"]:
-        group_ids.append(group["id"])
-    
-    return group_ids
+    return [usergroup["id"] for usergroup in data["usergroups"]]

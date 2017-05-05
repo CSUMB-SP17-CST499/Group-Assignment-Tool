@@ -1,7 +1,7 @@
 from apis import slack
 from synchronization import utils
 from db import query
-from db.models import Group
+from db.models import Group, Employee
 
 
 def sync_slack_users():
@@ -48,14 +48,13 @@ def sync_slack_users():
     
   
 def sync_slack_groups():
-    """Function adds all the groups from the Slack team that are not in the database to the database
+    """Syncs the groups from the Slack team with the gorups in the database.
 
     Args:
         none
 
     Returns:
         none
-
     """
     data = slack.get_user_groups_list()
     api_ids = utils.get_slack_api_group_id(data)
@@ -78,6 +77,25 @@ def sync_slack_groups():
                 if group["id"] == id:
                     if "name" in group:
                         name = group["name"]
-                        group_obj = Group(None, name, 1, group["id"])
+                        group_obj = Group(name, group["id"])
                         query.update_group(group_obj)
                         
+                        
+def add_to_group(group: Group, employees: Employee) -> bool:
+    """Adds the passed in employee to the passed in group in the appropriate app.
+    
+    Args:
+        group: A group from one of the integrated apps.
+        employee: An employee that may be a user.
+        
+    Returns:
+        Returns true if the employee is successfully added to the gruop, 
+        otherwise, returns false.
+    """
+    pass
+
+
+def remove_from_group(group: Group, employees: Employee) -> bool:
+    """
+    """
+    pass
