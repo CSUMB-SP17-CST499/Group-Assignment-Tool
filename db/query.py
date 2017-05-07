@@ -1,7 +1,7 @@
 from typing import List
 from db.database import Session
 from db.models import User, Employee, App, Role, Group,\
-        EmployeeToRole, RoleToGroup, AppToGroup
+        EmployeeToRole, RoleToGroup
 from db.database import get_all_instances, get_instance_by_field,\
         get_instances_by_field, add_instance, update_instance,\
         remove_instance_by_field
@@ -410,36 +410,6 @@ def get_employee_roles(email: str) -> List[EmployeeToRole]:
     return session.query(EmployeeToRole).filter(EmployeeToRole.email == email).all()
 
 
-def get_all_employees_with_roles() -> List[EmployeeToRole]:
-    """Query to find all the roles each employee has.
-
-    Returns:
-        Returns a list of employee email, and the associated roles.
-    """
-    session = Session()
-    return session.query(Employee, Role).filter(Employee.email == EmployeeToRole.email).filter(Role.id == EmployeeToRole.id).all()
-
-
-def get_all_groups_with_roles() -> List[RoleToGroup]:
-    """Query to find all groups and their assigned roles.
-
-    Returns:
-        Returns a list of groups and their assigned roles.
-    """
-    session = Session()
-    return session.query(Group, Role).filter(Group.id == RoleToGroup.group_id).filter(Role.id == RoleToGroup.role_id).all()
-
-
-def get_all_apps_with_groups() -> List[AppToGroup]:
-    """Query to find all groups and which apps they use.
-
-    Returns:
-        Returns a list of groups and which apps they use.
-    """
-    session = Session()
-    return session.query(App, Group).filter(Group.id == AppToGroup.group_id).filter(App.id == AppToGroup.app_id).all()
-
-
 def delete_multiple_employees(ids: List[int]) -> bool:
     """Removes all employees with a matching id.
     
@@ -448,3 +418,18 @@ def delete_multiple_employees(ids: List[int]) -> bool:
     """
     pass
     
+
+def get_slack_groups() -> List[Group]:
+    """Returns a list of groups that belong to Slack.
+    
+    Returns:
+        Returns a list containing all the groups from Slack.
+    """
+    groups = None
+    session = Session()
+    try:
+        groups = session.query(Group).filter(Group.app_id == 1).all()
+    except Exception as e:
+        print(e)
+        
+    return groups
