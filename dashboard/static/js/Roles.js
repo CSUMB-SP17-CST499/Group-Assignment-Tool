@@ -46,7 +46,6 @@ $(document).ready(function(){
             'id': rolesToDelete,
         }
         
-        
         $.ajax({
             url: endpoint,
             method: 'DELETE',
