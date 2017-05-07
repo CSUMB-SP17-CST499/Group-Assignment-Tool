@@ -2,100 +2,118 @@ from apis import slack
 from synchronization import utils
 from db import query
 from db.models import Group, Employee
+from typing import List
 
 
 def sync_slack_users():
-    """Function adds all the users from the Slack team that are not in the database to the database
-
-    Args:
-        none
-
-    Returns:
-        none
-
+    """Adds users from Slack into the database if they do not already exist.
+    
+    When a user with a specific email already exists, but they do not have a 
+    Slack user id, then the user's Slack id will be added if it exists.
     """
     
     data = slack.get_user_list()
-    api_emails = utils.get_slack_api_emails(data)
-    db_emails = []
-    missing_users = []
+    users = query.get_all_employees()
+    missing_ids = utils.get_missing_user_ids(data, users)
     
-    for db_user in query.get_all_employees():
-        db_emails.append(db_user.email)
-        
-    for api_user in api_emails:
-        if api_user not in db_emails:
-            missing_users.append(api_user)
-    
-    users_emails = []
-    member_amt = len(data["members"])
-    
-    for i in range(0, member_amt):
-        first_name = ""
-        last_name = ""
-        profile_amt = len(data["members"][i]["profile"])
-        profile = (data["members"][i])["profile"]
-        
-        for email in missing_users:
-            if "email" in profile:
-                if email == profile["email"]:
-                    if "first_name" in profile and "last_name" in profile:
-                        first_name = profile["first_name"]
-                        last_name = profile["last_name"]
-                        users_emails.append(profile["last_name"])
-                        employee = query.Employee(email, first_name, last_name)
-                        query.add_employee(employee)
-    
+    for member in data.get("members"):
+        if member.get("id") in missing_ids:
+            slack_id = member.get("id")
+            profile = member.get("profile")
+            employee = query.get_employee_by_email(profile.get("email"))
+            
+            if employee:
+                employee.slack_id = slack_id
+            else:
+                employee = create_employee_from_slack_profile(profile)
+                employee.slack_id = slack_id
+                
+            query.update_employee(employee)
+            
   
 def sync_slack_groups():
-    """Syncs the groups from the Slack team with the gorups in the database.
-
-    Args:
-        none
-
-    Returns:
-        none
+    """Adds groups from Slack into the database, if they do not already exist.
     """
     data = slack.get_user_groups_list()
-    api_ids = utils.get_slack_api_group_id(data)
-    db_ids = []
-    missing_ids = []
+    groups = query.get_slack_groups()
+    missing_ids = utils.get_missing_group_ids(data, groups)
     
-    
-    for db_id in query.get_all_groups():
-        db_ids.append(db_id.app_group_id)
-        
-    for api_id in api_ids:
-        if api_id not in db_ids:
-            missing_ids.append(api_id)
-    group_ids = []
-    
-    for group in data["usergroups"]:
-        name = ""
-        for id in missing_ids:
-            if "id" in group:
-                if group["id"] == id:
-                    if "name" in group:
-                        name = group["name"]
-                        group_obj = Group(name, group["id"])
-                        query.update_group(group_obj)
+    for usergroup in data["usergroups"]:
+        if usergroup.get("id") in missing_ids:
+            name = usergroup.get("name")
+            slack_group_id = usergroup.get("id")
+            
+            if name and slack_group_id:
+                group = Group(name, slack_group_id, 1)
+                query.add_group(group)
+                
                         
-                        
-def add_to_group(group: Group, employees: Employee) -> bool:
+def add_to_slack_group(group: Group, employees: List[Employee]) -> List[str]:
     """Adds the passed in employee to the passed in group in the appropriate app.
     
     Args:
         group: A group from one of the integrated apps.
-        employee: An employee that may be a user.
+        employees: A list of employees that represent users 
+            in Slack or Bugzilla.
         
     Returns:
-        Returns true if the employee is successfully added to the gruop, 
-        otherwise, returns false.
+        Returns a set of ids of the employees added to the group. An empty
+        list is retured if no employees are added.
     """
-    pass
+    group_id = group.app_group_id
+    user_ids = set(slack.get_usergroup_users_list(group_id))
+    employee_ids = {employee.slack_id for employee in employees 
+            if employee.slack_id and employee.slack_id}
+    new_ids = employee_ids - user_ids
+    encoded_ids = ','.join(user_ids.union(new_ids))
+
+    data = slack.update_usergroup_users(group_id, encoded_ids)
+    updated_ids = {}
+    if data and data.get('ok'):
+        user_ids = set(utils.parse_user_ids_from_slack_usergroup(data))
+        updated_ids = user_ids.intersection(new_ids)
+    
+    return updated_ids
 
 
-def remove_from_group(group: Group, employees: Employee) -> bool:
+def remove_from_slack_group(group: Group, employees: List[Employee]) -> List[str]:
+    """Removes the passed in employees from the passed in Slack group.
+                                                
+    Args:
+        group: A group from one of the slack app.
+        employees: A list of employees that represent users 
+            in Slack or Bugzilla.
+        
+    Returns:
+        Returns a set of ids of the employees removed to the group. An empty
+        list is retured if no employees are removed.
     """
+    group_id = group.app_group_id
+    user_ids = set(slack.get_usergroup_users_list(group_id))
+    employee_ids = {employee.slack_id for employee in employees 
+            if employee.slack_id and employee.slack_id}
+
+    encoded_ids = ','.join(user_ids - employee_ids)
+    data = slack.update_usergroup_users(group_id, encoded_ids)
+    updated_ids = {}
+    if data and data.get('ok'):
+        user_ids = set(utils.parse_user_ids_from_slack_usergroup(data))
+        updated_ids = employee_ids - user_ids
+    
+    return updated_ids
+
+
+def create_employee_from_slack_profile(profile) -> Employee:
+    """Returns an instance of Employee with the information from a Slack profile.
+    
+    Args:
+        profile: A dictionary that contains Slack profile info for a user.
+        
+    Returns:
+        Returns an Employee with the profile info.
     """
-    pass
+    return Employee(profile.get("email"), 
+            profile.get("first_name"), 
+            profile.get("last_name")
+        )
+        
