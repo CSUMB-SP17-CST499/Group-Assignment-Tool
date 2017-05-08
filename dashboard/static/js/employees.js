@@ -68,35 +68,6 @@ $(document).ready(function(){
             }
         });
     });
-<<<<<<< HEAD
-    
-        $('#editButton').click(function(){
-            console.log("Hello")
-        var editperson = [];
-        
-        $('.checkbox:checkbox:checked').each(function() {
-            editperson.push($(this).val());
-        });
-        
-        data = {
-            'id': editperson,
-        }
-        
-        console.log(editperson);
-        
-        $.ajax({
-            url: '/api/employee',
-            method: 'GET',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            success: function(response) {
-                    print(data);
-                // window.location = "/employees";
-            },
-            error: function(error) {
-                try {
-                    json = JSON.parse(error.responseText);
-=======
         
         
     function createEmployeeRow(employee) {
@@ -146,7 +117,6 @@ $(document).ready(function(){
             error: function(response) {
                 try {
                     var json = JSON.parse(response.responseText);
->>>>>>> a5346c1bf007898fd85e816b40b896ed38976d53
                     if (json.message) {
                         $('#message').html(json.message);
                         $('#alert-message')[0].classList.add('alert-danger');
@@ -158,10 +128,5 @@ $(document).ready(function(){
                 }
             }
         });
-<<<<<<< HEAD
-    });
-}
-=======
     }
->>>>>>> a5346c1bf007898fd85e816b40b896ed38976d53
 });
