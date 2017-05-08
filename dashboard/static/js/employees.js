@@ -1,26 +1,35 @@
 $(document).ready(function(){
 
     //Initialize globals
-    var information = [];
-    var json = [];
-    var table = $('#employees-table')[0]; // Get table from html
-    var tableRows = 0;
-    loadTable(table, tableRows,5);
+    // var information = [];
+    // var json = [];
+    // var table = $('#employees-table')[0]; // Get table from html
+    // var tableRows = 0;
+    // loadTable(table, tableRows,5);
 
     
     $.ajax({
         url: '/api/employees',
         method: 'GET',
-        contentType: 'json',
         success: function(response) {
-            information = JSON.parse(response);
-            json = response;
-            tableRows = information["employees"].length;
-            loadEmployeeTable(table, tableRows,5);
-        },
-        error: function(error) {
+            // information = JSON.parse(response);
+            // json = response;
+            // tableRows = information["employees"].length;
+            // loadEmployeeTable(table, tableRows,5);
+            
             try {
-                json = JSON.parse(error.responseText);
+                json = JSON.parse(response);
+                employees = json.employees;
+                table = $('#employees-table')[0];
+                loadTableBody(table, employees, createEmployeeRow);
+            }
+            catch(e) {
+                console.log(e);
+            }
+        },
+        error: function(response) {
+            try {
+                json = JSON.parse(response.responseText);
                 if (json.message) {
                     $('#message').html(json.message);
                     $('#alert-message')[0].classList.add('alert-danger');
@@ -32,20 +41,7 @@ $(document).ready(function(){
             }
         }
     });
-
-
-    function getEmployeeRoles(employee) {
-        var roles = employee["roles"];
-        var role_names = [];
-        
-        for(var index = 0;  index < roles.length; index++){
-            
-        role_names.push(roles[index]["name"])
-            
-        }
-        return role_names
     
-    }
     
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
@@ -65,75 +61,78 @@ $(document).ready(function(){
         }
     });
     
-    function loadEmployeeTable(table, tableRows, columnAmt) {
-    var column_amt = columnAmt;
-    var inner_table = "";
-    var id, name, email;
-    inner_table += "<tbody>"
-
-    for (var row = 0; row < tableRows; row++){
-        id = information["employees"][row]["id"];
-        name = information["employees"][row]["first_name"] + ' ' + information["employees"][row]["last_name"];
-        email = information["employees"][row]["email"];
-        arrayOfRoles = information["employees"][row]["roles"];
-        var rolesString = ""
-        var role = "";
-            for(var x = 0; x < arrayOfRoles.length; x++){
-                role = arrayOfRoles[x]["name"];
-                if(x > 0){
-                    rolesString += ", " + role
-                }else{
-                    rolesString += role;
-                }
+    
+    $('#deleteButton').click(function() {
+            var peopleToDelete = [];
+            
+            $('.checkbox:checkbox:checked').each(function() {
+                peopleToDelete.push($(this).val());
+            });
+            
+            data = {
+                'ids': peopleToDelete,
             }
-        inner_table += "<tr>";
-        inner_table += "<td><input class='checkbox' type='checkbox' value='" + id + "' id='" + id + "' /></td>";
-        inner_table += "<td>"+ name +"</td>";
-        inner_table += "<td>"+ email +"</td>";
-        inner_table += "<td>"+ rolesString +"</td>";
-        inner_table += "<td></td>";
-        inner_table += "</tr>";
-    };
-    inner_table += "</tbody>";
-    
-    $(table).append(inner_table);
-    
-    $('#deleteButton').click(function(){
-        var peopleToDelete = [];
-        
-        $('.checkbox:checkbox:checked').each(function() {
-            peopleToDelete.push($(this).val());
-        });
-        
-        data = {
-            'ids': peopleToDelete,
-        }
-                
-        $.ajax({
-            url: '/api/employees',
-            method: 'DELETE',
-            data: JSON.stringify(data),
-            contentType: 'application/json',
-            success: function(response) {
-                message = (peopleToDelete.length > 1) ? 'Users deleted.' : 'User deleted.'
-                $('#message').html(message);
-                $('#alert-message')[0].classList.add('alert-success');
-                $('#alert-message').show();
-            },
-            error: function(error) {
-                try {
-                    json = JSON.parse(error.responseText);
-                    if (json.message) {
-                        $('#message').html(json.message);
-                        $('#alert-message')[0].classList.add('alert-danger');
-                        $('#alert-message').show();
+                    
+            $.ajax({
+                url: '/api/employees',
+                method: 'DELETE',
+                data: JSON.stringify(data),
+                contentType: 'application/json',
+                success: function(response) {
+                    message = (peopleToDelete.length > 1) ? 'Users deleted.' : 'User deleted.'
+                    $('#message').html(message);
+                    $('#alert-message')[0].classList.add('alert-success');
+                    $('#alert-message').show();
+                },
+                error: function(error) {
+                    try {
+                        json = JSON.parse(error.responseText);
+                        if (json.message) {
+                            $('#message').html(json.message);
+                            $('#alert-message')[0].classList.add('alert-danger');
+                            $('#alert-message').show();
+                        }
+                    }
+                    catch (e) {
+                        console.log(e);
                     }
                 }
-                catch (e) {
-                    console.log(e);
-                }
-            }
+            });
         });
-    });
-}
+        
+    function createEmployeeRow(employee) {
+        var tblRow = $('<tr>');
+        
+        var tblData = $('<td>');
+        var checkbox = $('<input>');
+        checkbox.addClass('checkbox');
+        checkbox.attr('type', 'checkbox');
+        checkbox.val(employee.id);
+        tblData.append(checkbox);
+        tblRow.append(tblData);
+        
+        tblData = $('<td>');
+        tblData.text(employee.first_name + ' ' + employee.last_name);
+        tblRow.append(tblData);
+        
+        tblData = $('<td>');
+        tblData.text(employee.email);
+        tblRow.append(tblData);
+        
+        tblData = $('<td>');
+        var roleLabels = createRoleLabels(employee.roles);
+        tblData.append(roleLabels);
+        tblRow.append(tblData);
+        
+        return tblRow;
+    }
+    
+    function createRoleLabels(roles) {
+        var labels = [];
+        for (var index = 0; index < roles.length; index++) {
+            var label = createLabel(roles[index].name);
+            labels.push(label);
+        }
+        return labels;
+    }
 });
