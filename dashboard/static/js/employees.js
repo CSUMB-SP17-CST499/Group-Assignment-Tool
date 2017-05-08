@@ -5,8 +5,6 @@ $(document).ready(function(){
     var json = [];
     var table = $('#employees-table')[0]; // Get table from html
     var tableRows = 0;
-    loadTable(table, tableRows,5);
-
     
     $.ajax({
         url: '/api/employees',
@@ -16,7 +14,7 @@ $(document).ready(function(){
             information = JSON.parse(response);
             json = response;
             tableRows = information["employees"].length;
-            loadEmployeeTable(table, tableRows,5);
+            loadEmployeeTable(table, tableRows, 4);
         },
         error: function(error) {
             try {
