@@ -40,8 +40,6 @@ $(document).ready(function(){
     });
     
   
-
-    
     function displayRoles(table, roles) {// call this to reload table
         if (roles) {
             
@@ -79,24 +77,10 @@ $(document).ready(function(){
     }
     
     function clearTable(response){
-        
-    //  for (var roles_index = 0; roles_index < json.length; roles_index++) {
-                
-    //             var role = json[roles_index];
-    //             table.rows[roles_index + 1].cells[1].innerHTML = "sal"; //name
-    //             table.rows[roles_index + 1].cells[2].innerHTML = "sal";//description
-                
-    //             var roles_cell = table.rows[roles_index + 1].cells[3]
-                
-    //             roles_cell.innerHTML = "sal"
-                
-    //         }
+    
         $('#roles-table').find("tbody").remove();
         get_role_data()
-    
-    
-    
-   
+
     }
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
@@ -117,11 +101,8 @@ $(document).ready(function(){
     });
     
     
-  
     $('#save').click(function(){
         
-        //groupsSelected
-        //rolesSelected
         
         var groupsSelected = $('#groups').val()
         
@@ -131,7 +112,6 @@ $(document).ready(function(){
         var rolesSelected = [];
         
         $('.checkbox:checkbox:checked').each(function() {
-            // rolesSelected.push($(this).val());//purpose: to send api info that needs to change in the db 
             rolesSelected.push($(this).val());
         });
         
@@ -144,7 +124,7 @@ $(document).ready(function(){
         
         console.log(rolesSelected);
         
-        $.ajax({//update data in db and call function to reload table (call this function: get_role_data())
+        $.ajax({
             url: '/api/roles/groups',
             method: 'PUT',
             data: JSON.stringify(data),
@@ -154,11 +134,7 @@ $(document).ready(function(){
                 $('#alert-message')[0].classList.add('alert-success');
                 $('#alert-message').show();
                 
-                
                 clearTable(response);
-                
-                //get_role_data();
-                // window.location = '/roles';
                
             },
             error: function(error) {

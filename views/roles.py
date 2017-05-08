@@ -147,7 +147,7 @@ def add_groups_to_roles():
                     group = query.get_group_by_id(group_id)
                     if group:
                         role.groups.append(group)
-                is_updated = query.update_role(role)
+                        is_updated = query.update_role(role)
                 if is_updated:
                     updated_roles.append(role_id)
                     
@@ -170,15 +170,4 @@ def add_groups_to_roles():
             
             
             
-    #  try:
-    #         group_name = args.get('name')
-    #         group_id = args.get('id')
-            
-            
-    #         if group_name and group_id:
-    #             group = Group(name = group_name, app_group_id= group_id)
-    #             query.add_group(group)
-    # except Exception as e:
-    #         print(e)
-    #         response = create_error('unexpected_error', e)
-    #         return (response, 500)
+  
