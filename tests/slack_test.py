@@ -37,7 +37,7 @@ class testSlackFunctions(unittest.TestCase):
         self.assertIsNotNone(userNames)
             
             
-    def test_update_employees(self):
+    def test_update_usergroup_users(self):
         group_names = slack.get_user_groups()
         first_group_name = group_names[0]
         group_ids = slack.get_user_group_ids()
@@ -66,7 +66,7 @@ class testSlackFunctions(unittest.TestCase):
         
         # Call the function to update the userlist
         comma_separated_user_ids = ",".join(user_ids)
-        slack.update_employees(comma_separated_user_ids, first_group_id)
+        slack.update_usergroup_users(comma_separated_user_ids, first_group_id)
         
         updated_user_list = slack.get_users(first_group_name)
         print("Testing slack list: after remove:")
@@ -74,7 +74,7 @@ class testSlackFunctions(unittest.TestCase):
         
         user_ids.append(first_user_id)
         comma_separated_user_ids = ",".join(user_ids)
-        slack.update_employees(comma_separated_user_ids, first_group_id)
+        slack.update_usergroup_users(comma_separated_user_ids, first_group_id)
         
         updated_user_list = slack.get_users(first_group_name)
         print("Testing slack list: after adding user back:")
