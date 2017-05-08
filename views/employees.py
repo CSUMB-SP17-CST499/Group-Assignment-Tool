@@ -17,10 +17,12 @@ def employee_uri():
         return (response, 404)
     
     empl_id = args.get('id')
+    print(empl_id)
     excludes = args.get('excludes', [])
     if request.method == 'GET':
         try:
             employee = query.get_employee_by_id(empl_id)
+            
 
             if employee:
                 return get_json('employee', employee, excludes)

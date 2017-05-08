@@ -137,6 +137,7 @@ $(document).ready(function(){
     });
     
         $('#editButton').click(function(){
+            console.log("Hello")
         var editperson = [];
         
         $('.checkbox:checkbox:checked').each(function() {
@@ -151,14 +152,12 @@ $(document).ready(function(){
         
         $.ajax({
             url: '/api/employee',
-            method: 'SET',
+            method: 'GET',
             data: JSON.stringify(data),
             contentType: 'application/json',
             success: function(response) {
-                $('#message').html("User(s) deleted");
-                $('#alert-message')[0].classList.add('alert-success');
-                $('#alert-message').show();
-                window.location = "/employees";
+                    print(data);
+                // window.location = "/employees";
             },
             error: function(error) {
                 try {
