@@ -24,6 +24,7 @@ class Model():
         """
         return filter_dictionary(dict(self.__dict__), excludes )
 
+
 class User(Base, Model):
     """The model for the user table.
     
@@ -98,14 +99,17 @@ class Employee(Base, Model):
     email = Column('email', String(255) )
     first_name = Column('first_name', String(255) )
     last_name = Column('last_name', String(255) )
+    slack_id = Column('slack_user_id', String(255) )
     
     roles = association_proxy('employee_roles', 'role')
 
 
-    def __init__(self, email: str, first_name: str, last_name: str):
+    def __init__(self, email: str, first_name: str, last_name: str, 
+                slack_id: str = ""):
         self.email = email
         self.first_name = first_name
         self.last_name = last_name
+        self.slack_id = slack_id
 
 
     def __repr__(self):
@@ -137,9 +141,7 @@ class App(Base, Model):
 
     id = Column('app_id', Integer, primary_key = True)
     name = Column('name', String(255) )
-
-    groups = association_proxy('app_groups', 'group')
-
+    
 
     def __init__(self, name: str, token: str = ""):
         self.name = name
@@ -212,12 +214,13 @@ class Group(Base, Model):
     id = Column('group_id', Integer, primary_key = True)
     name = Column('name', String(255) )
     app_group_id = Column('app_group_id', String(255) )
+    app_id = Column('app_id', String(255), ForeignKey('app.app_id') )
     
-
-    def __init__(self, name, app_group_id):
+    
+    def __init__(self, name, app_group_id, app_id):
         self.name = name
-
         self.app_group_id = app_group_id
+        self.app_id = app_id
     
     def __repr__(self):
         str_format = '<Group(name: %s)>'
@@ -242,7 +245,6 @@ class EmployeeToRole(Base, Model):
                 backref = backref('employee_roles',
                           cascade = 'all, delete-orphan')
                 )
-    
     role = relationship('Role')
     
     
@@ -273,7 +275,6 @@ class RoleToGroup(Base, Model):
                 backref = backref('role_groups',
                           cascade = 'all, delete-orphan')
             )
-
     group = relationship('Group')
 
 
@@ -281,40 +282,9 @@ class RoleToGroup(Base, Model):
         self.role = role
         self.group = group
 
+
     def __repr___(self):
         str_format = '<RoleToGroup(group_id: %d, role_id: %d)>'
         values = (self.group_id, self.role_id)
         return str_format % values
-
-
-class AppToGroup(Base, Model):
-    """The model for the app_group table.
-
-    Attributes:
-        app_id: (str): Foreign key, from the app table.
-        group_id (int): Foreign key, from the group table.
-
-    """
-    __tablename__ = 'app_group'
-
-    app_id = Column('app_id', Integer, ForeignKey('app.app_id'), primary_key = True)
-    group_id = Column('group_id', Integer, ForeignKey('group.group_id'), primary_key = True)
-    
-    
-    app = relationship(App, 
-                backref = backref('app_groups', 
-                            cascade = 'all, delete-orphan')
-            )
-            
-    group = relationship('Group')
-
-
-    def __init__(self, group = None, app = None):
-        self.app = app
-        self.group = group
-
-
-    def __repr___(self):
-        str_format = '<AppToGroup(app_id: %d, group_id: %d)>'
-        values = (self.app_id, self.group_id)
-        return str_format % values
+        

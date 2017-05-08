@@ -1,4 +1,4 @@
-from db.models import Model, User, Employee, App, Role, Group, EmployeeToRole, RoleToGroup, AppToGroup
+from db.models import Model, User, Employee, App, Role, Group, EmployeeToRole, RoleToGroup
 from db import query
 import json
 
