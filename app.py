@@ -3,6 +3,7 @@ import flask, os
 from flask import render_template, flash, request, json, make_response, g
 from hashlib import md5
 from views.roles import roles
+from views.groups import groups
 from views.employees import employees
 from views.users import users
 from dashboard.views import dashboard
@@ -15,6 +16,7 @@ from flask_login import LoginManager, login_user , logout_user , current_user
 
 app = flask.Flask(__name__)
 app.register_blueprint(roles)
+app.register_blueprint(groups)
 app.register_blueprint(employees)
 app.register_blueprint(dashboard)
 app.register_blueprint(users)

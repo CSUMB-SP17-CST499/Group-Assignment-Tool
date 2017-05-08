@@ -6,10 +6,9 @@
     global createTableDataCheckbox
     global createTableDataLabels
 */
-$(document).ready(function(){
-    
+$(document).ready(function(){    
     loadEmployeeTable();
-    
+  
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
         if (this.checked) {

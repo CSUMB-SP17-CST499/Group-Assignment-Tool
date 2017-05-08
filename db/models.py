@@ -221,7 +221,7 @@ class Group(Base, Model):
     
     def __repr__(self):
         str_format = '<Group(name: %s)>'
-        values = (self.id, self.name)
+        values = (self.name)
         return str_format % values
 
 
