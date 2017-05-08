@@ -58,7 +58,6 @@ def get_all_instances(model):
     except Exception as e:
         session.rollback()
     
-    session.close()
     return results
 
 
@@ -86,7 +85,6 @@ def get_instance_by_field(model, field, value):
     except Exception as e:
         session.rollback()
     
-    session.close()
     return result
     
 def get_instances_by_field(model, field, value):
@@ -108,7 +106,6 @@ def get_instances_by_field(model, field, value):
     except Exception as e:
         session.rollback()
     
-    session.close()
     return results
 
 
@@ -147,7 +144,6 @@ def update_instance(instance):
         # Todo: Log the error (Find specific errors that can happen)
         session.rollback()
 
-    session.close()
     return is_updated
 
 
@@ -178,5 +174,4 @@ def remove_instance_by_field(model, field, value):
         # Todo: Add exception cases
         session.rollback()
         
-    session.close()
     return is_deleted
