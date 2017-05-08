@@ -16,6 +16,7 @@ $(document).ready(function(){
             tableRows = Object.keys(json).length;
             loadTable(table, tableRows, "rows", json);
             displayRoles(table, json);
+           
             
         },
         error: function(error) {
@@ -29,10 +30,9 @@ $(document).ready(function(){
             }
             catch (e) {
                 console.log(e);
+                }
             }
-        }
-    });
-
+        });
     }
     
     $("#remove_groups").click(function(){
@@ -45,14 +45,16 @@ $(document).ready(function(){
     function displayRoles(table, roles) {// call this to reload table
         if (roles) {
             
+            console.log(roles)
             for (var roles_index = 0; roles_index < roles.length; roles_index++) {
                 
                 var role = roles[roles_index];
+                console.log(table);
                 table.rows[roles_index + 1].cells[1].innerHTML = role["name"]; //name
                 table.rows[roles_index + 1].cells[2].innerHTML = role['description'];//description
                 
-                var roles_cell = table.rows[roles_index + 1].cells[3]
-                displayGroups(table, role['groups'], roles_cell)
+                var roles_cell = table.rows[roles_index + 1].cells[3];
+                displayGroups(table, role['groups'], roles_cell);
             
             }
         }
@@ -76,14 +78,26 @@ $(document).ready(function(){
         }
     }
     
-    function clearTable(){
+    function clearTable(response){
         
-       var table = $('#roles-table');
-       var header = table[0];
-       table.html("");
-       table.append(header);
-    }
+    //  for (var roles_index = 0; roles_index < json.length; roles_index++) {
+                
+    //             var role = json[roles_index];
+    //             table.rows[roles_index + 1].cells[1].innerHTML = "sal"; //name
+    //             table.rows[roles_index + 1].cells[2].innerHTML = "sal";//description
+                
+    //             var roles_cell = table.rows[roles_index + 1].cells[3]
+                
+    //             roles_cell.innerHTML = "sal"
+                
+    //         }
+        $('#roles-table').find("tbody").remove();
+        get_role_data()
     
+    
+    
+   
+    }
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
         if (this.checked) {
@@ -140,8 +154,10 @@ $(document).ready(function(){
                 $('#alert-message')[0].classList.add('alert-success');
                 $('#alert-message').show();
                 
-                // clearTable();
-                 get_role_data();
+                
+                clearTable(response);
+                
+                //get_role_data();
                 // window.location = '/roles';
                
             },
