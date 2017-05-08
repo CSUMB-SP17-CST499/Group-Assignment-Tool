@@ -5,8 +5,6 @@ $(document).ready(function(){
     var json = [];
     var table = $('#employees-table')[0]; // Get table from html
     var tableRows = 0;
-    loadTable(table, tableRows,5);
-
     
     $.ajax({
         url: '/api/employees',
@@ -16,7 +14,7 @@ $(document).ready(function(){
             information = JSON.parse(response);
             json = response;
             tableRows = information["employees"].length;
-            loadEmployeeTable(table, tableRows,5);
+            loadEmployeeTable(table, tableRows, 4);
         },
         error: function(error) {
             try {
@@ -77,7 +75,7 @@ $(document).ready(function(){
         email = information["employees"][row]["email"];
         arrayOfRoles = information["employees"][row]["roles"];
         var rolesString = ""
-        var role;
+        var role = "";
             for(var x = 0; x < arrayOfRoles.length; x++){
                 role = arrayOfRoles[x]["name"];
                 if(x > 0){

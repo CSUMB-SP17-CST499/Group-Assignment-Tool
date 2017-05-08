@@ -1,7 +1,7 @@
 from flask import Blueprint, request
 from db.encode import get_json, create_error
 from db import query
-from db.models import Role
+from db.models import Role,Group
 import json
 
 roles = Blueprint('roles', __name__,
@@ -82,26 +82,25 @@ def role_uri():
             return (response, 500)
     
     elif request.method == 'DELETE':
-        role = query.get_role_by_id(role_id)
-        print(role)
+        # role = query.get_role_by_id(role_id)
         try:
-            if role:
-                is_deleted = query.remove_role(role_id)
-                if is_deleted:
-                    return (json.dumps({}), 200)
-                
-                response = create_error('unexpected_error')
-                return (response, 500)
+            if role_id:
+                for x in role_id:
+                    query.remove_role(role_id[0])
+                return (json.dumps({}), 200)
             else:
                 response = create_error('role_not_found')
                 return (response, 404)
         except Exception as e:
             response = create_error('unexpected_error', e)
             return (response, 500)
-    
-    
-@roles.route('/api/roles', methods = ['GET'])
+            
+            
+
+@roles.route('/api/roles', methods = ['GET', 'DELETE'])
 def roles_uri():
+    args = request.get_json()
+    
     if request.method == 'GET':
         try:
             roles = query.get_all_roles()
@@ -112,3 +111,63 @@ def roles_uri():
             response = create_error('unexpected_error', e)
             return (response, 500)
             
+    elif request.method == 'DELETE':
+
+        role_ids = args.get('ids')
+        try:
+            if role_ids:
+                for x in role_ids:
+
+                    query.remove_role(x)
+                return (json.dumps({}), 200)
+            else:
+                response = create_error('role_not_found')
+                return (response, 404)
+        except Exception as e:
+            response = create_error('unexpected_error', e)
+            return (response, 500)
+
+            
+@roles.route('/api/roles/groups', methods = ['PUT'])
+def add_groups_to_roles():
+    
+    args = request.get_json()
+    
+    if args is None:
+        response = create_error('missing_argument')
+        return (response, 404)
+       
+    updated_roles = []
+    
+    try:
+        for role_id in args["role_ids"]:
+            role = query.get_role_by_id(role_id)
+            if role:
+                for group_id in args["group_ids"]:
+                    group = query.get_group_by_id(group_id)
+                    if group:
+                        role.groups.append(group)
+                        is_updated = query.update_role(role)
+                if is_updated:
+                    updated_roles.append(role_id)
+                    
+        return (json.dumps({"ok": True, "roles": updated_roles}), 200)
+        
+    except Exception as e:
+        response = create_error('unexpected_error', e)
+        return (response, 500)
+        
+ 
+        
+        
+        
+         
+            
+            
+
+        
+            
+            
+            
+            
+  
