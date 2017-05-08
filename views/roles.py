@@ -99,7 +99,7 @@ def role_uri():
 
 @roles.route('/api/roles', methods = ['GET', 'DELETE'])
 def roles_uri():
-    args = request.get_json()
+    args = request.get_json(silent = True)
     
     if request.method == 'GET':
         try:
