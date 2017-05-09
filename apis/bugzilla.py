@@ -54,7 +54,7 @@ def get_all_bugzilla_group_info():
         )
     return(request.json())
     
-def add_user_to_bugzilla_group(user):
+def remove_user_to_bugzilla_group(user):
     """Function used to obtain bugzilla user info
 
     Args:
@@ -74,10 +74,10 @@ def add_user_to_bugzilla_group(user):
     
     
     print(wrapData)
-    # request = requests.put('http://www.fruitfuldevelopment.com:8081/bugzilla/rest.cgi/user/' + user,
-    #     params = {'Bugzilla_login': os.getenv("Bugzilla_login"),
-    #     'Bugzilla_password': os.getenv('Bugzilla_password'), 
-    #     'groups': data}
-    #     )
-    # return(request.json())
+    request = requests.put('http://www.fruitfuldevelopment.com:8081/bugzilla/rest.cgi/user/' + user,
+        params = {'Bugzilla_login': os.getenv("Bugzilla_login"),
+        'Bugzilla_password': os.getenv('Bugzilla_password'), 
+        'groups': wrapData}
+        )
+    return(request.json())
  
