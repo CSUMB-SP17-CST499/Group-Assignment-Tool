@@ -144,12 +144,10 @@ $(document).ready(function(){
                         $('#message').html(json.message);
                         $('#alert-message')[0].classList.add('alert-danger');
                         $('#alert-message').show();
-                        console.log("error! Sal 2");
                     }
                 }
                 catch (e) {
                     console.log(e);
-                    console.log("error! Sal");
                 }
             }
         });
