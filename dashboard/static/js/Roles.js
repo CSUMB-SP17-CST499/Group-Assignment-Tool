@@ -30,10 +30,52 @@ $(document).ready(function(){
             }
             catch (e) {
                 console.log(e);
+            }
+        }});
+    }
+
+    $('#deleteRoleButton').click(function(){
+        var rolesToDelete = [];
+        var endpoint = '/api/roles';
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            rolesToDelete.push($(this).val());
+        });
+        
+        if(rolesToDelete.length > 1){
+            endpoint = '/api/roles';
+        }
+        
+        data = {
+            'id': rolesToDelete,
+        }
+        
+        $.ajax({
+            url: endpoint,
+            method: 'DELETE',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(response) {
+                $('#message').html("Role(s) deleted");
+                $('#alert-message')[0].classList.add('alert-success');
+                $('#alert-message').show();
+                window.location = "/roles";
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                    }
+                }
+                catch (e) {
+                    console.log(e);
                 }
             }
         });
-    }
+    });
     
     $("#remove_groups").click(function(){
         $("#action-button").hide();
