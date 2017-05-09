@@ -26,7 +26,7 @@ def show(page):
 
 
 @dashboard.route('/<page>/add')
-@login_required
+# @login_required
 
 def add(page):
     user = g.user

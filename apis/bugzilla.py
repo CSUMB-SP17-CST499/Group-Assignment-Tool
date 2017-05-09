@@ -68,7 +68,7 @@ def add_user_to_bugzilla_group(user):
     """
     
     data = {}
-    data['set'] = ['test']
+    data['remove'] = ['test']
     wrapData = {}
     wrapData['groups'] = data
     

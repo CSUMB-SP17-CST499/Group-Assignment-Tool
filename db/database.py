@@ -173,5 +173,5 @@ def remove_instance_by_field(model, field, value):
     except:
         # Todo: Add exception cases
         session.rollback()
-
+        
     return is_deleted
