@@ -31,8 +31,8 @@ $(document).ready(function(){
             catch (e) {
                 console.log(e);
             }
-        }
-    });
+        }});
+    }
 
     $('#deleteRoleButton').click(function(){
         var rolesToDelete = [];
