@@ -30,7 +30,7 @@
        </button>
        <ul class = "dropdown-menu">
           <li data-toggle="collapse" data-target="#add_roles"><a href = "#" id = "add_group_dd">Add Roles</a></li>
-          <li><a href = "#" id = "remove_groups">Remove Roles</a></li>
+          <li data-toggle="collapse" data-target="#remove_roles"><a href = "#" id = "remove_groups">Remove Roles</a></li>
           <li><a href = "#">Quick Edit</a></li>
        </ul>
     </div>
@@ -54,6 +54,8 @@
 			</div>
 		</div>
 		
+		
+		
     </script>
       
         <div class = "px-2">
@@ -62,6 +64,30 @@
                <button class = "btn  btn-primary" data-toggle="collapse" data-target="#add_roles">Cancel</button> 
             </p>
         </div>
+  </div>
+  <div>
+    <div id="remove_roles" class="collapse">
+       <p> Select Roles to Remove:</p>
+        <div class="row" "dropdown" id = "role_select">
+	        <div class="col-xs-6 col-sm-6 col-md-6">
+	    		<div class="form-group">
+	    			<select class = "selectpicker" id="roles" multiple >
+					</select>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+    </script>
+      
+        <div class = "px-2">
+            <p>
+               <button class = "btn  btn-primary" data-toggle="collapse" data-target="#remove_roles" id = "remove">Remove</button>
+               <button class = "btn  btn-primary" data-toggle="collapse" data-target="#remove_roles">Cancel</button> 
+            </p>
+        </div>
+  </div>
   </div>
   </div>
  

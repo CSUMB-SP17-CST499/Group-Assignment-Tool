@@ -15,7 +15,6 @@ $(document).ready(function(){
             json = JSON.parse(response)
             roles = json['roles'];
             displayRolesByName(table, roles);
-            console.log("ROLES");
         },
         error: function(error) {
             try {

@@ -10,7 +10,6 @@ roles = Blueprint('roles', __name__,
 @roles.route('/api/role', methods = ['GET', 'PUT', 'DELETE'])
 def role_uri():
     args = request.args
-    print(request.get_json())
     args = request.get_json()
     
     
@@ -64,7 +63,7 @@ def role_uri():
             else:
                 # Check for required arguments
                 if name and not query.does_role_name_exist(name):
-                    role = Role(None, name=name, 
+                    role = Role(name=name, 
                                 description=description )
                     query.add_role(role)
                     response = get_json('role', role)
@@ -83,6 +82,7 @@ def role_uri():
     
     elif request.method == 'DELETE':
         # role = query.get_role_by_id(role_id)
+        print(role_id)
         try:
             if role_id:
                 for x in role_id:

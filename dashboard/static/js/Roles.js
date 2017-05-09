@@ -36,7 +36,7 @@ $(document).ready(function(){
 
     $('#deleteRoleButton').click(function(){
         var rolesToDelete = [];
-        var endpoint = '/api/roles';
+        var endpoint = '/api/role';
         
         $('.checkbox:checkbox:checked').each(function() {
             rolesToDelete.push($(this).val());
