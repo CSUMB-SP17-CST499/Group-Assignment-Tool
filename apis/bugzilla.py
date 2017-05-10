@@ -38,13 +38,13 @@ def get_bugzilla_group_info(group):
 
 
 def get_all_bugzilla_group_info():
-    """Function used to obtain bugzilla user info
+    """Function used to obtain info of all bugzilla groups
 
     Args:
         str: either a buzilla group name or id
 
     Returns:
-        Returns id, name, real_name, email, can_login, and groups of user
+        Returns group details
 
     """
     
@@ -54,21 +54,48 @@ def get_all_bugzilla_group_info():
         )
     return(request.json())
     
-def remove_user_to_bugzilla_group(user):
-    """Function used to obtain bugzilla user info
+def add_user_to_bugzilla_group(user, group):
+    """Function used add user to a list of group(s)
 
     Args:
-        param1 (str): either a buzilla user's login name/email or id
-        param2 (list: str) an array of either group names or ids
+        user (str): either a buzilla user's login name/email or id
+        group (list: str) an array of either group names or ids
         
 
     Returns:
-        Returns id, name, real_name, email, can_login, and groups of user
+        Returns changes made
 
     """
     
     data = {}
-    data['remove'] = ['test']
+    data['add'] = group
+    wrapData = {}
+    wrapData[{'groups'}] = data
+    
+    
+    print(wrapData)
+    request = requests.put('http://www.fruitfuldevelopment.com:8081/bugzilla/rest.cgi/user/' + user,
+        params = {'Bugzilla_login': os.getenv("Bugzilla_login"),
+        'Bugzilla_password': os.getenv('Bugzilla_password'), 
+        'groups': wrapData}
+        )
+    return(request.json())
+    
+def remove_user_from_bugzilla_group(user, group):
+    """Function used remove user from a list of group(s)
+
+    Args:
+        user (str): either a buzilla user's login name/email or id
+        group (list: str) an array of either group names or ids
+        
+
+    Returns:
+        Returns changes made
+
+    """
+    
+    data = {}
+    data['remove'] = group
     wrapData = {}
     wrapData['groups'] = data
     
