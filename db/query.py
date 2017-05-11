@@ -418,7 +418,20 @@ def get_employee_roles(email: str) -> List[EmployeeToRole]:
     """
     session = Session()
     return session.query(EmployeeToRole).filter(EmployeeToRole.email == email).all()
+    
+def get_roles_groups(role_id: str) -> List[RoleToGroup]:
+    """Returns a list of groups with the given role.
 
+    Args:
+        role_id: An role's role_id.
+
+    Returns:
+        Returns a list of groups if an role has the role_id, otherwise returns None.
+    """
+    session = Session()
+    session.query(RoleToGroup).filter(RoleToGroup.role_id == role_id).all()
+    groups = session.query(Group).filter(RoleToGroup.group_id == Group.id).all()
+    return groups
 
 def delete_multiple_employees(ids: List[int]) -> bool:
     """Removes all employees with a matching id.

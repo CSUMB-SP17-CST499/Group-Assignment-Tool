@@ -212,10 +212,14 @@ def add_roles_to_employees():
             if employee:
                 for role_id in args["role_ids"]:
                     role = query.get_role_by_id(role_id)
+                    group = query.get_roles_groups(role_id)
+                    print(group)
                     print(role)
                     if role:
-                        employee.roles.append(role)
+                        #employee.roles.append(role)
                         is_updated = query.update_role(role)
+                        # add the sync line of code
+                        # sync.add_to_slack_group
                 if is_updated:
                     updated_employees.append(employees_id)
                     
