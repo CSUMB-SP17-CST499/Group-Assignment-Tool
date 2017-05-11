@@ -37,6 +37,7 @@ def role_uri():
         try:
             name = args.get('name')
             description = args.get('description')
+            group_ids = args.get('groups')
             
             # Update the role with the provided info
             if role_id:
@@ -50,7 +51,11 @@ def role_uri():
                         role.name = name
                     if description:
                         role.description = description
-                    
+                        
+                    if group_ids:
+                        groups = get_groups_with_ids(group_ids)
+                        role.groups = groups
+                       
                     is_updated = query.update_role(role)
                     if is_updated:
                         return (get_json('role', role), 200)
@@ -63,15 +68,22 @@ def role_uri():
             # Insert the new role, when it doesn't exist
             else:
                 # Check for required arguments
-                if name and not query.does_role_name_exist(name):
-                    role = Role(None, name=name, 
-                                description=description )
-                    query.add_role(role)
-                    response = get_json('role', role)
-                    return (response, 200)
-                elif name:
-                    response = create_error('name_taken')
+                if query.does_role_name_exist(name):
+                    response = create_error('email_taken')
                     return (response, 400)
+                elif name:
+                    groups = get_groups_with_ids(group_ids)
+                    role = Role(name=name, 
+                                description=description )
+                    role.groups = groups
+                    is_added = query.add_role(role)
+                    if is_added:
+                        response = get_json('role', role)
+                        return (response, 200)
+                    else:
+                        raise Exception('Database operation failed: %s' % 
+                                        'add into employee table')
+                
                 else:
                     response = create_error('missing_argument')
                     return (response, 400)
@@ -158,7 +170,22 @@ def add_groups_to_roles():
         return (response, 500)
         
  
+def get_groups_with_ids(group_ids):
+    """Returns a list of Group objects with the given ids.
+    
+    Args:
+        group_ids: A list of ids belonging to groups in the database.
         
+    Returns:
+        Returns a list of Group objects if a list of ids is given,
+        otherwise returns an empty list.
+    """ 
+    print("test1")
+    if group_ids and isinstance(group_ids, list):
+        return [query.get_group_by_id(group_id)
+                for group_id in group_ids]
+    
+    return []
         
         
          
