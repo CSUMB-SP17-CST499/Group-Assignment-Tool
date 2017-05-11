@@ -4,7 +4,7 @@ $(document).ready(function(){
 
     //Initialize globals
     var json = [];
-    var table = $('#roles')[0]; // Get table from html
+    var table = $('#remove_roles')[0]; // Get table from html
     var tableRows = 0;
     
     $.ajax({
@@ -38,7 +38,7 @@ $(document).ready(function(){
                 var option = $('<option></option>');
                 option.val(role.id);
                 option.text(role.name);
-                $('#roles').append(option);
+                $('#remove_roles').append(option);
             }
         }
     }

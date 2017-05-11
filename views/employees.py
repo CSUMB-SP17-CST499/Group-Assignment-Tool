@@ -18,10 +18,12 @@ def employee_uri():
         return (response, 404)
     
     empl_id = args.get('id')
+    print(empl_id)
     excludes = args.get('excludes', [])
     if request.method == 'GET':
         try:
             employee = query.get_employee_by_id(empl_id)
+            
 
             if employee:
                 return get_json('employee', employee, excludes)
@@ -192,3 +194,33 @@ def remove_employees(ids):
                 removed.append(employee_id)
         
     return removed
+
+@employees.route('/api/employee/roles', methods = ['PUT'])
+def add_roles_to_employees():
+    
+    args = request.get_json()
+    
+    if args is None:
+        response = create_error('missing_argument')
+        return (response, 404)
+       
+    updated_employees = []
+    
+    try:
+        for employees_id in args["employee_ids"]:
+            employee = query.get_employee_by_id(employees_id)
+            if employee:
+                for role_id in args["role_ids"]:
+                    role = query.get_role_by_id(role_id)
+                    print(role)
+                    if role:
+                        employee.roles.append(role)
+                        is_updated = query.update_role(role)
+                if is_updated:
+                    updated_employees.append(employees_id)
+                    
+        return (json.dumps({"ok": True, "roles": updated_employees}), 200)
+        
+    except Exception as e:
+        response = create_error('unexpected_error', e)
+        return (response, 500)    

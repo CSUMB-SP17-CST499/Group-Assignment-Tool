@@ -17,7 +17,6 @@ def before_request():
 @dashboard.route('/<page>')
 def show(page):
     user = g.user
-    print(current_user)
     try:
         return render_template("%s/view.html" % page,
                            user=user)
@@ -26,7 +25,7 @@ def show(page):
 
 
 @dashboard.route('/<page>/add')
-# @login_required
+@login_required
 
 def add(page):
     user = g.user

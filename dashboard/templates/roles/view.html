@@ -21,8 +21,8 @@
   <div  class = "px-2">
     <a href="roles/add" class="btn btn-default">Add</a>
     <a href="roles/update" class="btn btn-default">Edit</a>
-    <a href="#" class="btn btn-default" id = "deleteButton">Delete</a>
-    
+    <a  class="btn btn-default" id = "deleteRoleButton">Delete</a>
+    {% if g.user.is_authenticated %}
     <div class = "dropdown">
        <button class = "btn  btn-primary dropdown-toggle" type = "button" data-toggle= "dropdown" id = "action-button">
          Action 
@@ -34,7 +34,7 @@
           <li><a href = "#">Quick Edit</a></li>
        </ul>
     </div>
-    
+    {% endif %}
 </div>
 
   <div class="container" style="padding-right:40px; border-left: 2px solid #ccc;">
