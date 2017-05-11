@@ -2,6 +2,7 @@ from flask import Blueprint, request
 from db.encode import get_json, create_error
 from db import query
 from db.models import Role,Group
+from synchronization import sync
 import json
 
 roles = Blueprint('roles', __name__,
@@ -160,6 +161,8 @@ def add_groups_to_roles():
                     if group:
                         role.groups.append(group)
                         is_updated = query.update_role(role)
+                        employees = query.get_employees_by_role(role)
+                        sync.add_to_slack_group(group, employees)
                 if is_updated:
                     updated_roles.append(role_id)
                     
