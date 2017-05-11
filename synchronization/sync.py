@@ -61,18 +61,16 @@ def add_to_slack_group(group: Group, employees: List[Employee]) -> List[str]:
         Returns a set of ids of the employees added to the group. An empty
         list is retured if no employees are added.
     """
+    client = slack.SlackClient(token.get_slack_token())
     group_id = group.app_group_id
-    user_ids = set(slack.get_usergroup_users_list(group_id))
+    user_ids = set(client.get_usergroups_users(group_id))
     employee_ids = {employee.slack_id for employee in employees 
             if employee.slack_id and employee.slack_id}
     new_ids = employee_ids - user_ids
     encoded_ids = ','.join(user_ids.union(new_ids))
 
-    data = slack.update_usergroup_users(group_id, encoded_ids)
-    updated_ids = {}
-    if data and data.get('ok'):
-        user_ids = set(utils.parse_user_ids_from_slack_usergroup(data))
-        updated_ids = user_ids.intersection(new_ids)
+    user_ids = set(client.update_usergroup_users(group_id, encoded_ids))
+    updated_ids = user_ids.intersection(new_ids)
     
     return updated_ids
 
@@ -104,9 +102,9 @@ def remove_from_slack_group(group: Group, employees: List[Employee]) -> List[str
     return updated_ids
         
         
-def remove_employee_from_roles(employee):
+def remove_employee_from_roles(employees):
     pass
 
 
 def add_employee_to_roles(employee):
-    pass
+    passs
