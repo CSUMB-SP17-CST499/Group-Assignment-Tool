@@ -2,6 +2,7 @@
 {% block title %} Add Role {% endblock %}
 {% block scripts %}
 <script src="../dashboard/static/js/AddRole.js"></script>
+<script type="text/javascript" src="../dashboard/static/js/GroupDropDown.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -28,7 +29,15 @@
 	    				</div>
 	    			</div>
 	
-	    			
+	    			<div class="row" "dropdown" id = "group_select">
+	    				<div class="col-xs-6 col-sm-6 col-md-6">
+	    					<div class="form-role">
+	    						<select class = "selectpicker" id="groups" multiple >
+							    </select>
+								</div>
+							</div>
+					</div>
+						
 	    			<input type="button" id= "create_role" value="Create Role" class="btn btn-info btn-block">
 	    			<input href="/roles" type="submit" value="Cancel" class="btn btn-info btn-block">
 		    	</form>
