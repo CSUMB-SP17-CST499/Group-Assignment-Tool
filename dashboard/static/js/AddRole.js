@@ -11,13 +11,17 @@ $(document).ready( function() {
     
         var roleName = $('#role_name').val();
         var roleDescription = $('#role_description').val();
+        var groups = $('#groups').val();
 
-        
-        data = {
+        //console.log("Name", roleName);
+        var data = {
             'name': roleName, 
-            'description': roleDescription
+            'description': roleDescription,
+            'groups': groups
         };
-                
+    
+        console.log(groups)
+        
         $.ajax({
             url: '/api/role',
             method: 'PUT',
@@ -28,8 +32,7 @@ $(document).ready( function() {
                  $('#alert-message')[0].classList.add('alert-success');
                  $('#alert-message').show();
                   window.location = '/roles';
-                 // refresh the page so that the valeus are not still on the page after the user was created
-                 //document.url;
+                
             },
             error: function(error) {
                 try {
