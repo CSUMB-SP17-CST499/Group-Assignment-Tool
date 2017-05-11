@@ -1,4 +1,5 @@
 from apis import slack
+from apis import token
 from synchronization import utils
 from db import query
 from db.models import Group, Employee
@@ -11,37 +12,37 @@ def sync_slack_users():
     When a user with a specific email already exists, but they do not have a 
     Slack user id, then the user's Slack id will be added if it exists.
     """
-    
-    data = slack.get_user_list()
+    client = slack.SlackClient(token.get_slack_token())
+    slack_users = client.get_users_list()
     users = query.get_all_employees()
-    missing_ids = utils.get_missing_user_ids(data, users)
+    missing_ids = utils.get_missing_user_ids(slack_users, users)
     
-    for member in data.get("members"):
-        if member.get("id") in missing_ids:
-            slack_id = member.get("id")
-            profile = member.get("profile")
-            employee = query.get_employee_by_email(profile.get("email"))
+    for user in slack_users:
+        if user.slack_id in missing_ids:
+            employee = query.get_employee_by_email(user.email)
             
             if employee:
-                employee.slack_id = slack_id
+                employee.slack_id = user.slack_id
             else:
-                employee = create_employee_from_slack_profile(profile)
-                employee.slack_id = slack_id
-                
+                employee = Employee(first_name = user.first_name, 
+                        last_name = user.last_name,
+                        email = user.email,
+                        slack_id = user.slack_id)
             query.update_employee(employee)
             
   
 def sync_slack_groups():
     """Adds groups from Slack into the database, if they do not already exist.
     """
-    data = slack.get_user_groups_list()
+    client = slack.SlackClient(token.get_slack_token())
+    slack_usergroups = client.get_usergroups_list()
     groups = query.get_slack_groups()
-    missing_ids = utils.get_missing_group_ids(data, groups)
+    missing_ids = utils.get_missing_group_ids(slack_usergroups, groups)
     
-    for usergroup in data["usergroups"]:
-        if usergroup.get("id") in missing_ids:
-            name = usergroup.get("name")
-            slack_group_id = usergroup.get("id")
+    for usergroup in slack_usergroups:
+        if usergroup.slack_id in missing_ids:
+            name = usergroup.name
+            slack_group_id = usergroup.slack_id
             
             if name and slack_group_id:
                 group = Group(name, slack_group_id, 1)
