@@ -31,7 +31,6 @@ $(document).ready(function(){
     $('#deleteButton').click(function() {
     
         var rolesToDelete = [];
-        var endpoint = '/api/role';
         
         $('.checkbox:checkbox:checked').each(function() {
             rolesToDelete.push($(this).val());
@@ -70,49 +69,6 @@ $(document).ready(function(){
         });
     });
         
-<<<<<<< HEAD
-            for (var index = 0; index < groups.length; index++) {
-                
-                var group = groups[index];
-                var item = $('<span></span>');
-         
-                item.text(group.name);
-                item.addClass();
-                item.css('margin-right','5px');
-    
-                roles_cell.append(item[0]);
-            }
-        }
-    }
-    
-    function clearTable(response){
-    
-        $('#roles-table').find("tbody").remove();
-        get_role_data()
-
-    }
-    $('#all-checkbox').on('click', function(e) {
-        var checkboxes = $('.checkbox');
-        if (this.checked) {
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].type == 'checkbox') {
-                    checkboxes[i].checked = true;
-                }
-         }
-        }
-        else {
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].type == 'checkbox') {
-                    checkboxes[i].checked = false;
-                }
-         }
-        }
-    });
-    
-    
-    $('#save').click(function(){
-=======
->>>>>>> 3f62744daebf2f3f5199e38d75cecd3cb616fe8f
         
     function createRoleRow(role) {
         var tblRow = $('<tr>');

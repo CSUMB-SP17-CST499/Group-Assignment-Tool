@@ -67,7 +67,6 @@ def role_uri():
             # Insert the new role, when it doesn't exist
             else:
                 # Check for required arguments
-<<<<<<< HEAD
                 if name and not query.does_role_name_exist(name):
                     role = Role(name=name, 
                                 description=description )
@@ -76,10 +75,8 @@ def role_uri():
                     return (response, 200)
                 elif name:
                     response = create_error('name_taken')
-=======
                 if query.does_role_name_exist(name):
                     response = create_error('email_taken')
->>>>>>> 3f62744daebf2f3f5199e38d75cecd3cb616fe8f
                     return (response, 400)
                 elif name:
                     groups = get_groups_with_ids(group_ids)
