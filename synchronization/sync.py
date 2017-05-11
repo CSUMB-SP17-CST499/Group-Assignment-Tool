@@ -100,9 +100,15 @@ def remove_from_slack_group(group: Group, employees: List[Employee]) -> List[str
     return updated_ids
         
         
-def remove_employee_from_roles(employees):
+def remove_employee_from_roles(employees, roles):
     pass
 
 
-def add_employee_to_roles(employee):
+def add_employee_to_roles(employees, roles):
     pass
+
+    # for each role 
+    #     for each group 
+    #         add employees to group 
+            
+    
