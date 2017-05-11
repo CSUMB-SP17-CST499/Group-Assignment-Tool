@@ -3,6 +3,7 @@ from db.encode import get_json, create_error
 from db import query
 from db.models import Employee
 from apis import slack
+from synchronization import sync
 import json
 
 employees = Blueprint('employees', __name__,
@@ -60,7 +61,9 @@ def employee_uri():
                         employee.email = email
                     if role_ids:
                         roles = get_roles_with_ids(role_ids)
-                        employee.roles = roles                    
+                        sync.remove_employee_from_roles(employee)
+                        employee.roles = roles
+                        sync.add_employee_to_roles(employee)
                     is_updated = query.update_employee(employee)
                     if is_updated:
                         return (get_json('employee', employee), 200)

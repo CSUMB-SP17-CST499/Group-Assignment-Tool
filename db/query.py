@@ -443,3 +443,23 @@ def get_slack_groups() -> List[Group]:
         print(e)
         
     return groups
+    
+
+def get_employees_by_role(role: Role) -> List[Employee]:
+    """Returns a list of employees with the given role.
+    
+    Args:
+        role: An instance of Role. 
+        
+    Returns: 
+        Returns a list of employees.
+    """
+    employees = []
+    session = Session()
+    try:
+        employees = session.query(Employee).filter(Role.id == role.id).all()
+    
+    except Exception as e:
+        print(e)
+        
+    return employees

@@ -102,19 +102,11 @@ def remove_from_slack_group(group: Group, employees: List[Employee]) -> List[str
         updated_ids = employee_ids - user_ids
     
     return updated_ids
+        
+        
+def remove_employee_from_roles(employee):
+    pass
 
 
-def create_employee_from_slack_profile(profile) -> Employee:
-    """Returns an instance of Employee with the information from a Slack profile.
-    
-    Args:
-        profile: A dictionary that contains Slack profile info for a user.
-        
-    Returns:
-        Returns an Employee with the profile info.
-    """
-    return Employee(profile.get("email"), 
-            profile.get("first_name"), 
-            profile.get("last_name")
-        )
-        
+def add_employee_to_roles(employee):
+    pass
