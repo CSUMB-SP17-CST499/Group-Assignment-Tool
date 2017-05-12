@@ -199,35 +199,39 @@ def remove_employees(ids):
 def add_roles_to_employees():
     
     args = request.get_json()
-    
     if args is None:
-        response = create_error('missing_argument')
-        return (response, 404)
-       
-    updated_employees = []
-    groups_to_update = []
+        response = create_error('no_args')
+        return (response, 400)
+      
+    if args.get("role_ids") is None:
+        response = create_error('missing_argument', 'role_ids argument is missing')
+        return(response, 400)
+        
+    if args.get("employee_ids") is None:
+        response = create_error('missing_argument', 'employee_ids argument is missing')
+        return(response, 400)
     
     try:
-        for employees_id in args["employee_ids"]:
-            employee = query.get_employee_by_id(employees_id)
-            if employee:
-                for role_id in args["role_ids"]:
-                    print(role_id)
-                    role = query.get_role_by_id(role_id)
-                    groups_to_update = query.get_roles_groups(role_id)
-                    print(role)
-                    if role:
-                        #employee.roles.append(role)
-                        is_updated = query.update_role(role)
-                        employee = [employee]
-                        #add the sync line of code
-                        for group in groups_to_update:
-                            print(group)
-                            sync.add_to_slack_group(group, employee)
-                if is_updated:
-                    updated_employees.append(employees_id)
-                    
-        return (json.dumps({"ok": True, "roles": updated_employees}), 200)
+        roles = query.get_roles_with_ids(args.get("role_ids", []))
+        employees = query.get_employees_with_ids(args.get("employee_ids", []))
+        for role in roles:
+            updated_ids = set()
+            groups = query.get_role_groups(role.id)
+            for group in groups:
+                ids = sync.add_to_slack_group(group, employees)
+                updated_ids = updated_ids.union(ids)
+               
+            # Add the role to the employee when at least one of the groups was
+            # added to them
+            for employee in employees:
+                if employee.id in updated_ids:
+                    employee.roles.append(role)
+                
+        # TODO: Come up with the type of output we should give the client
+        for updated_id in updated_ids:
+            pass
+
+        return (json.dumps({"ok": True}), 200)
         
     except Exception as e:
         response = create_error('unexpected_error', e)
