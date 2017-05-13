@@ -58,8 +58,7 @@ def add_to_slack_group(group: Group, employees: List[Employee]) -> List[str]:
             in Slack or Bugzilla.
         
     Returns:
-        Returns a set of ids of the employees added to the group. An empty
-        list is retured if no employees are added.
+        Returns a set of ids of the employees in the group.
     """
     client = slack.SlackClient(token.get_slack_token())
     group_id = group.app_group_id
@@ -70,9 +69,8 @@ def add_to_slack_group(group: Group, employees: List[Employee]) -> List[str]:
     encoded_ids = ','.join(user_ids.union(new_ids))
 
     user_ids = set(client.update_usergroup_users(group_id, encoded_ids))
-    updated_ids = user_ids.intersection(new_ids)
     
-    return updated_ids
+    return user_ids
 
 
 def remove_from_slack_group(group: Group, employees: List[Employee]) -> List[str]:
@@ -84,8 +82,7 @@ def remove_from_slack_group(group: Group, employees: List[Employee]) -> List[str
             in Slack or Bugzilla.
         
     Returns:
-        Returns a set of ids of the employees removed to the group. An empty
-        list is retured if no employees are removed.
+        Returns a set of ids of the employees in the group.
     """
     client = slack.SlackClient(token.get_slack_token())
     group_id = group.app_group_id
@@ -95,9 +92,8 @@ def remove_from_slack_group(group: Group, employees: List[Employee]) -> List[str
 
     encoded_ids = ','.join(user_ids - employee_ids)
     user_ids = set(client.update_usergroup_users(group_id, encoded_ids))
-    updated_ids = employee_ids - user_ids
     
-    return updated_ids
+    return user_ids
         
         
 def remove_employee_from_roles(employees, roles):

@@ -215,6 +215,7 @@ def add_roles_to_employees():
         roles = query.get_roles_with_ids(args.get("role_ids", []))
         employees = query.get_employees_with_ids(args.get("employee_ids", []))
         for role in roles:
+<<<<<<< HEAD
             updated_ids = set()
             groups = query.get_role_groups(role.id)
             for group in groups:
@@ -229,6 +230,26 @@ def add_roles_to_employees():
                 
         # TODO: Come up with the type of output we should give the client
         for updated_id in updated_ids:
+=======
+            matching_ids = set()
+            groups = query.get_role_groups(role.id)
+            for group in groups:
+                ids = sync.add_to_slack_group(group, employees)
+                if matching_ids:
+                    matching_ids.intersection(ids)
+                else:
+                    matching_ids = ids
+            
+            # Add the role to the employee when at least one of the groups was
+            # added to them
+            for employee in employees:
+                if employee.slack_id in matching_ids:
+                    employee.roles.append(role)
+                    query.update_employee(employee)
+                
+        # TODO: Come up with the type of output we should give the client
+        for matching_id in matching_ids:
+>>>>>>> 584db2db877fbe320f03e16db694f36c344f4f8f
             pass
 
         return (json.dumps({"ok": True}), 200)
