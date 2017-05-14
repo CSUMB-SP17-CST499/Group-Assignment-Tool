@@ -26,7 +26,25 @@ $(document).ready(function(){
          }
         }
     });
-    
+    $('#remove_roles').click(function() {
+        
+        var employeesSelectedToRemoveRoles = [];
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            employeesSelectedToRemoveRoles.push($(this).val());
+        });
+        if(employeesSelectedToRemoveRoles.length > 0){
+            console.log(employeesSelectedToRemoveRoles)
+        }
+        else
+        {
+            
+        console.log("No employees selected");
+        }
+        console.log("Remove roles");
+        $('#add_roles_dd').collapse();
+        
+    });
     
     $('#deleteButton').click(function() {
     

@@ -5,7 +5,6 @@
 <script type="text/javascript" src="../dashboard/static/js/table.js"></script>
 <script type="text/javascript" src="../dashboard/static/js/employees.js"></script>
 <script type="text/javascript" src="../dashboard/static/js/RoleDropDown.js"></script>
-<script type="text/javascript" src="../dashboard/static/js/RemoveRoleDropDown.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -20,7 +19,6 @@
 <div class="btn-group" role="group" aria-label="Basic example">
   <div  class = "px-2">
     <a href="employees/add" class="btn btn-default">Add</a>
-    <a href="employees/update" class="btn btn-default">Edit</a>
     <a href="#" id="deleteButton" class="btn btn-default">Delete</a>
     {% if g.user.is_authenticated %}
           
@@ -30,8 +28,8 @@
          <span class = "caret"></span>
        </button>
        <ul class = "dropdown-menu">
-          <li data-toggle="collapse" data-target="#add_roles" data-parent="#myGroup"><a href = "#" id = "add_group_dd">Add Roles</a></li>
-          <li data-toggle="collapse" data-target="#add_roles" data-parent="#myGroup"><a href = "#" id = "remove_groups">Remove Roles</a></li>
+          <li data-toggle="collapse" data-target="#add_roles" data-parent="#myGroup"><a href = "#" id = "add_roles_dd">Add Roles</a></li>
+          <li data-toggle="collapse" data-target="#remove_roles" data-parent="#myGroup"><a href = "#" id = "remove_roles">Remove Roles</a></li>
           <li><a href = "#">Quick Edit</a></li>
        </ul>
     </div>
@@ -66,6 +64,32 @@
             </p>
         </div>
   </div>
+  
+  <div id="remove_roles" class="collapse">
+       <p> Select Roles to Add:</p>
+        <div class="row" "dropdown" id = "group_select">
+	        <div class="col-xs-6 col-sm-6 col-md-6">
+	    		<div class="form-group">
+	    			<select class = "selectpicker" id="roles" multiple >
+					</select>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+    </script>
+      
+        <div class = "px-2">
+            <p>
+               <button class = "btn  btn-primary" data-toggle="collapse" data-target="#add_roles" id = "save">Save</button>
+               <button class = "btn  btn-primary" data-toggle="collapse" data-target="#add_roles">Cancel</button> 
+            </p>
+        </div>
+  </div>
+  
+  
+  
   </div>
       
       <div class="col-sm-6" >
