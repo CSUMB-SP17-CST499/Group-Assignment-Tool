@@ -36,10 +36,11 @@ $(document).ready(function(){
             rolesToDelete.push($(this).val());
         });
         
+        print(rolesToDelete)
         var data = {
             'ids': rolesToDelete,
         }
-                
+        
         $.ajax({
             url: '/api/roles',
             method: 'DELETE',
@@ -129,4 +130,56 @@ $(document).ready(function(){
             }
         });
     }
+    
+     $('#save').click(function(){
+        
+        
+        var groupsSelected = $('#groups').val()
+        
+        console.log(groupsSelected)
+        
+        
+        var rolesSelected = [];
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            rolesSelected.push($(this).val());
+        });
+        
+        var data = {
+            
+            'role_ids': rolesSelected,
+            'group_ids': groupsSelected
+            
+        }
+        console.log(rolesSelected)
+        console.log(data)
+        $.ajax({
+            url: '/api/roles/groups',
+            method: 'PUT',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(response) {
+                $('#message').html("Group was added");
+                $('#alert-message')[0].classList.add('alert-success');
+                $('#alert-message').show();
+               console.log("success") 
+               
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                        console.log("error!1");
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                    console.log("error!2");
+                }
+            }
+        });
+    });
 });

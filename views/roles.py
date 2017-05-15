@@ -178,6 +178,7 @@ def add_groups_to_roles():
         
     except Exception as e:
         response = create_error('unexpected_error', e)
+        print("Right here Sal!")
         return (response, 500)
         
  
