@@ -20,7 +20,7 @@ $(document).ready( function() {
             'groups': groups
         };
     
-        console.log(groups)
+        console.log(data)
         
         $.ajax({
             url: '/api/role',
@@ -31,7 +31,7 @@ $(document).ready( function() {
                  $('#message').html("Role was created");
                  $('#alert-message')[0].classList.add('alert-success');
                  $('#alert-message').show();
-                  window.location = '/roles';
+                 window.location = '/roles';
                 
             },
             error: function(error) {
