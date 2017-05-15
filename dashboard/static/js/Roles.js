@@ -28,7 +28,7 @@ $(document).ready(function(){
     });
     
     
-    $('#deleteButton').click(function() {
+    $('#deleteRoleButton').click(function() {
     
         var rolesToDelete = [];
         
@@ -40,7 +40,7 @@ $(document).ready(function(){
         var data = {
             'ids': rolesToDelete,
         }
-        
+        console.log(data);
         $.ajax({
             url: '/api/roles',
             method: 'DELETE',

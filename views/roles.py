@@ -126,7 +126,8 @@ def roles_uri():
             return (response, 500)
             
     elif request.method == 'DELETE':
-
+        
+        print("ahhhh")
         role_ids = args.get('ids')
         try:
             if role_ids:
