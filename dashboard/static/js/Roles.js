@@ -91,6 +91,57 @@ $(document).ready(function(){
         return tblRow;
     }
     
+    $('#save').click(function(){
+        
+        
+        var groupsSelected = $('#groups').val()
+        
+        console.log(groupsSelected)
+        
+        
+        var rolesSelected = [];
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            rolesSelected.push($(this).val());
+        });
+        
+        var data = {
+            
+            'role_ids': rolesSelected,
+            'group_ids': groupsSelected
+            
+        }
+        
+        console.log(rolesSelected);
+        
+        $.ajax({
+            url: '/api/roles/groups',
+            method: 'PUT',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(response) {
+                $('#message').html("Group was added");
+                $('#alert-message')[0].classList.add('alert-success');
+                $('#alert-message').show();
+                
+                clearTable(response);
+               
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+        });
+    });
     
     function getGroupNames(groups) {
         var names = groups.map(function(group) {

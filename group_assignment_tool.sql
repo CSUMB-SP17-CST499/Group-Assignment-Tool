@@ -126,9 +126,12 @@ CREATE TABLE IF NOT EXISTS `role` (
 -- Dumping data for table `role`
 --
 
+
 INSERT INTO `role` (`role_id`, `name`, `description`) VALUES
 (3, 'Marketing', 'Manages communication with the customers.'),
-(4, 'Developer', 'A general developer.');
+(4, 'Developer', 'A general developer.'),
+(8, 'Test', ''),
+(9, 'Role Name', 'This is a description.');
 
 -- --------------------------------------------------------
 
@@ -143,6 +146,13 @@ CREATE TABLE IF NOT EXISTS `role_group` (
   KEY `role_group_ibfk_2` (`group_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+
+INSERT INTO `role_group` (`role_id`, `group_id`) VALUES
+(8, 10),
+(9, 10),
+(8, 11),
+(9, 11);
 -- --------------------------------------------------------
 
 --

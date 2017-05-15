@@ -418,7 +418,18 @@ def get_employee_roles(email: str) -> List[EmployeeToRole]:
     """
     session = Session()
     return session.query(EmployeeToRole).filter(EmployeeToRole.email == email).all()
+    
+def get_role_groups(role_id: int) -> List[Group]:
+    """Returns a list of groups with the given role.
 
+    Args:
+        role_id: An role's role_id.
+
+    Returns:
+        Returns a list of groups if an role has the role_id, otherwise returns None.
+    """
+    session = Session()
+    return session.query(Group).join(RoleToGroup).filter(RoleToGroup.role_id == role_id).all()
 
 def delete_multiple_employees(ids: List[int]) -> bool:
     """Removes all employees with a matching id.
@@ -459,6 +470,46 @@ def get_employees_by_role(role: Role) -> List[Employee]:
     try:
         employees = session.query(Employee).filter(Role.id == role.id).all()
     
+    except Exception as e:
+        print(e)
+        
+    return employees
+    
+    
+def get_roles_with_ids(ids: List[int]) -> List[Role]:
+    """Returns a list of roles that match the specified ids.
+    
+    Args:
+        ids: The ids being used to query roles.
+        
+    Returns: 
+        Returns a list of roles.
+    """
+    session = Session()
+    roles = []
+    try:
+        roles = session.query(Role).filter(Role.id.in_(ids) ).all()
+        
+    except Exception as e:
+        print(e)
+        
+    return roles
+    
+    
+def get_employees_with_ids(ids: List[int]) -> List[Employee]:
+    """Returns a list of employees that match the specified ids.
+    
+    Args:
+        ids: The ids being used to query employees.
+        
+    Returns: 
+        Returns a list of employess.
+    """
+    session = Session()
+    employees = []
+    try:
+        employees = session.query(Employee).filter(Employee.id.in_(ids) ).all()
+        
     except Exception as e:
         print(e)
         
