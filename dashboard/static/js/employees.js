@@ -133,7 +133,7 @@ $(document).ready(function(){
     $('#remove').click(function(){
         
         
-        var rolesSelected = $('#roles').val()
+        var rolesSelected = $('#roles1').val()
         
         console.log(rolesSelected)
         

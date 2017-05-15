@@ -419,9 +419,12 @@ def get_employee_roles(email: str) -> List[EmployeeToRole]:
     session = Session()
     return session.query(EmployeeToRole).filter(EmployeeToRole.email == email).all()
     
-def delete_employee_roles(email: str, role_id: int) -> bool:   
+def delete_employee_roles(employee_id: int, role_id: int) -> bool:   
     session = Session()
-    return session.query(Employee).join(EmployeeToRole).filter(EmployeeToRole.email == email).filter(EmployeeToRole.role_id == role_id).delete()
+    result = session.query(EmployeeToRole).filter(EmployeeToRole.employee_id == employee_id).filter(EmployeeToRole.role_id == role_id).delete()
+    if result == 1:
+        session.commit()
+    return result
     
 def get_role_groups(role_id: int) -> List[Group]:
     """Returns a list of groups with the given role.
