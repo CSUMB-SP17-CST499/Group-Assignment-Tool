@@ -5,6 +5,7 @@
 <script type="text/javascript" src="../dashboard/static/js/table.js"></script>
 <script type="text/javascript" src="../dashboard/static/js/employees.js"></script>
 <script type="text/javascript" src="../dashboard/static/js/RoleDropDown.js"></script>
+<script type="text/javascript" src="../dashboard/static/js/RemoveRoleDropdown.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -27,9 +28,9 @@
          Action 
          <span class = "caret"></span>
        </button>
-       <ul class = "dropdown-menu">
+       <ul class = "dropdown-menu" id = "myGroup">
           <li data-toggle="collapse" data-target="#add_roles" data-parent="#myGroup"><a href = "#" id = "add_roles_dd">Add Roles</a></li>
-          <li data-toggle="collapse" data-target="#remove_roles" data-parent="#myGroup"><a href = "#" id = "remove_roles">Remove Roles</a></li>
+          <li data-toggle="collapse" data-target="#remove_roles" data-parent="#myGroup"><a href = "#" id = "remove_roles_dd">Remove Roles</a></li>
           <li><a href = "#">Quick Edit</a></li>
        </ul>
     </div>
@@ -66,11 +67,11 @@
   </div>
   
   <div id="remove_roles" class="collapse">
-       <p> Select Roles to Add:</p>
+       <p> Select Roles to Remove:</p>
         <div class="row" "dropdown" id = "group_select">
 	        <div class="col-xs-6 col-sm-6 col-md-6">
 	    		<div class="form-group">
-	    			<select class = "selectpicker" id="roles" multiple >
+	    			<select class = "selectpicker" id="roles1" multiple >
 					</select>
 				</div>
 			</div>
@@ -82,8 +83,8 @@
       
         <div class = "px-2">
             <p>
-               <button class = "btn  btn-primary" data-toggle="collapse" data-target="#add_roles" id = "save">Save</button>
-               <button class = "btn  btn-primary" data-toggle="collapse" data-target="#add_roles">Cancel</button> 
+               <button class = "btn  btn-primary" data-toggle="collapse" data-target="#remove_roles" id = "remove">Remove</button>
+               <button class = "btn  btn-primary" data-toggle="collapse" data-target="#remove_roles">Cancel</button> 
             </p>
         </div>
   </div>

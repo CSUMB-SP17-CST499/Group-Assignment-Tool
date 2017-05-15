@@ -7,7 +7,6 @@ $(document).ready( function() {
     });
     
     $('#create_role').on('click',function(e) {
-        console.log('I clicked a button');
     
         var roleName = $('#role_name').val();
         var roleDescription = $('#role_description').val();
