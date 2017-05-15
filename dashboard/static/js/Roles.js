@@ -36,7 +36,7 @@ $(document).ready(function(){
             rolesToDelete.push($(this).val());
         });
         
-        print(rolesToDelete)
+        
         var data = {
             'ids': rolesToDelete,
         }
