@@ -468,7 +468,7 @@ def get_employees_by_role(role: Role) -> List[Employee]:
     employees = []
     session = Session()
     try:
-        employees = session.query(Employee).filter(Role.id == role.id).all()
+        employees = session.query(Employee).join(EmployeeToRole).filter(EmployeeToRole.role_id == role.id).all()
     
     except Exception as e:
         print(e)
