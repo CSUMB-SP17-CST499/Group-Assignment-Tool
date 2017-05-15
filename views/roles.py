@@ -68,14 +68,7 @@ def role_uri():
             # Insert the new role, when it doesn't exist
             else:
                 # Check for required arguments
-                if name and not query.does_role_name_exist(name):
-                    role = Role(name=name, 
-                                description=description )
-                    query.add_role(role)
-                    response = get_json('role', role)
-                    return (response, 200)
-                elif name:
-                    response = create_error('name_taken')
+
                 if query.does_role_name_exist(name):
                     response = create_error('email_taken')
                     return (response, 400)
@@ -133,7 +126,8 @@ def roles_uri():
             return (response, 500)
             
     elif request.method == 'DELETE':
-
+        
+        print("ahhhh")
         role_ids = args.get('ids')
         try:
             if role_ids:
@@ -178,6 +172,7 @@ def add_groups_to_roles():
         
     except Exception as e:
         response = create_error('unexpected_error', e)
+        print("Right here Sal!")
         return (response, 500)
         
  
