@@ -1,4 +1,4 @@
-import os, requests
+import os
 
 def get_slack_token():
     """Function used to obtain the Slack token
