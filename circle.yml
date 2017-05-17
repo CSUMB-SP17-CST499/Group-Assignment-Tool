@@ -3,3 +3,6 @@ machine:
         version: 3.4.3
 
         
+test:
+    override:
+        - python -m tests.slack_test
