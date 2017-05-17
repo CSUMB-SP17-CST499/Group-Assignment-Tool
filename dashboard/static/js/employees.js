@@ -110,6 +110,7 @@ $(document).ready(function(){
                 $('#message').html("Role was added");
                 $('#alert-message')[0].classList.add('alert-success');
                 $('#alert-message').show();
+                loadEmployeeTable();
                
             },
             error: function(error) {
@@ -161,6 +162,7 @@ $(document).ready(function(){
                 $('#message').html("Role was deleted");
                 $('#alert-message')[0].classList.add('alert-success');
                 $('#alert-message').show();
+                loadEmployeeTable();
                
             },
             error: function(error) {
