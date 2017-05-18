@@ -202,15 +202,15 @@ def add_roles_to_employees():
     if args is None:
         response = create_error('no_args')
         return (response, 400)
-      
+
+    if args.get("employee_ids") is None:
+        response = create_error('missing_argument', 'employee_ids argument is missing')
+        return(response, 400)    
+    
     if args.get("role_ids") is None:
         response = create_error('missing_argument', 'role_ids argument is missing')
         return(response, 400)
-        
-    if args.get("employee_ids") is None:
-        response = create_error('missing_argument', 'employee_ids argument is missing')
-        return(response, 400)
-    
+
     try:
         roles = query.get_roles_with_ids(args.get("role_ids", []))
         employees = query.get_employees_with_ids(args.get("employee_ids", []))
@@ -230,13 +230,65 @@ def add_roles_to_employees():
                 if employee.slack_id in matching_ids:
                     employee.roles.append(role)
                     query.update_employee(employee)
-                
+            
         # TODO: Come up with the type of output we should give the client
         for matching_id in matching_ids:
             pass
 
         return (json.dumps({"ok": True}), 200)
-        
+    
     except Exception as e:
         response = create_error('unexpected_error', e)
-        return (response, 500)    
+        return (response, 500)
+
+@employees.route('/api/employee/roles', methods = ['DELETE'])
+def get_roles_to_delete_from_employees(): 
+    
+        
+    args = request.get_json()
+    if args is None:
+        response = create_error('no_args')
+        return (response, 400)
+
+    if args.get("employee_ids") is None:
+        response = create_error('missing_argument', 'employee_ids argument is missing')
+        return(response, 400)    
+    
+    if args.get("role_ids") is None:
+        response = create_error('missing_argument', 'role_ids argument is missing')
+        return(response, 400)
+
+    try:
+        roles = query.get_roles_with_ids(args.get("role_ids", []))
+        employees = query.get_employees_with_ids(args.get("employee_ids", []))
+        for role in roles:
+            matching_ids = set()
+            groups = query.get_role_groups(role.id)
+            for group in groups:
+                pass
+                ids = sync.remove_from_slack_group(group, employees)
+                if matching_ids:
+                    matching_ids.intersection(ids)
+                    
+                else:
+                    matching_ids = ids
+            slack_ids = {employee.slack_id for employee in employees}
+            removed_ids = slack_ids - matching_ids
+            # Add the role to the employee when at least one of the groups was
+            # added to them
+            for employee in employees:
+                if employee.slack_id in removed_ids:
+                    employee.roles.remove(role)
+                    query.update_employee(employee)
+                    # deleted =  query.delete_employee_roles(employee.id, role.id)
+            
+                
+        # TODO: Come up with the type of output we should give the client
+        for removed_id in removed_ids:
+            pass
+
+        return (json.dumps({"ok": True}), 200)
+    
+    except Exception as e:
+        response = create_error('unexpected_error', e)
+        return (response, 500)

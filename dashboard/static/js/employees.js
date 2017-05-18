@@ -28,6 +28,16 @@ $(document).ready(function(){
     });
     
     
+    
+    $('#remove_roles_dd').click(function() {
+        $('.collapse').collapse('hide');
+    });
+    
+    $('#add_roles_dd').click(function() {
+        $('.collapse').collapse('hide');
+    });
+
+    
     $('#deleteButton').click(function() {
     
         var peopleToDelete = [];
@@ -83,6 +93,7 @@ $(document).ready(function(){
             employeesSelected.push($(this).val());
         });
         
+        
         var data = {
             
             'employee_ids': employeesSelected,
@@ -99,6 +110,7 @@ $(document).ready(function(){
                 $('#message').html("Role was added");
                 $('#alert-message')[0].classList.add('alert-success');
                 $('#alert-message').show();
+                loadEmployeeTable();
                
             },
             error: function(error) {
@@ -108,7 +120,6 @@ $(document).ready(function(){
                         $('#message').html(json.message);
                         $('#alert-message')[0].classList.add('alert-danger');
                         $('#alert-message').show();
-                        console.log("error!");
                     }
                 }
                 catch (e) {
@@ -118,7 +129,58 @@ $(document).ready(function(){
             }
         });
     });
+       
+       
+    $('#remove').click(function(){
         
+        
+        var rolesSelected = $('#roles1').val()
+        
+        console.log(rolesSelected)
+        
+        
+        var employeesSelected = [];
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            employeesSelected.push($(this).val());
+        });
+        
+        
+        var data = {
+            
+            'employee_ids': employeesSelected,
+            'role_ids': rolesSelected
+            
+        }
+        console.log(employeesSelected)
+        $.ajax({
+            url: '/api/employee/roles',
+            method: 'DELETE',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(response) {
+                $('#message').html("Role was deleted");
+                $('#alert-message')[0].classList.add('alert-success');
+                $('#alert-message').show();
+                loadEmployeeTable();
+               
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                    console.log("error!");
+                }
+            }
+        });
+    });    
         
     function createEmployeeRow(employee) {
         var tblRow = $('<tr>');
