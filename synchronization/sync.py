@@ -91,9 +91,10 @@ def remove_from_slack_group(group: Group, employees: List[Employee]) -> List[str
             if employee.slack_id and employee.slack_id}
 
     encoded_ids = ','.join(user_ids - employee_ids)
-    user_ids = set(client.update_usergroup_users(group_id, encoded_ids))
+    current_ids = set(client.update_usergroup_users(group_id, encoded_ids))
+    removed_ids = user_ids - current_ids
     
-    return user_ids
+    return removed_ids
         
         
 def remove_employee_from_roles(employees, roles):

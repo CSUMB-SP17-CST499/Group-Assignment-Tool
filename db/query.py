@@ -521,3 +521,42 @@ def get_employees_with_ids(ids: List[int]) -> List[Employee]:
         print(e)
         
     return employees
+    
+def get_employees_with_ids(ids: List[int]) -> List[Employee]:
+    """Returns a list of employees that match the specified ids.
+    
+    Args:
+        ids: The ids being used to query employees.
+        
+    Returns: 
+        Returns a list of employess.
+    """
+    session = Session()
+    employees = []
+    try:
+        employees = session.query(Employee).filter(Employee.id.in_(ids) ).all()
+        
+    except Exception as e:
+        print(e)
+        
+    return employees
+    
+    
+def get_groups_with_ids(ids: List[int]) -> List[Group]:
+    """ Returns a list of groups that match the specified ids.
+    
+    Args:
+        ids: The ids being used to query groups.
+    
+    Returns:
+        Retuns a list of groups
+    """
+    session = Session()
+    groups = []
+    try:
+        groups = session.query(Group).filter(Group.id.in_(ids) ).all()
+        
+    except Exception as e:
+        print(e)
+        
+    return groups
