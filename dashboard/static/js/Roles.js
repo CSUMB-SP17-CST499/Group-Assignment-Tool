@@ -27,6 +27,14 @@ $(document).ready(function(){
         }
     });
     
+    $('#remove_groups_dd').click(function() {
+        $('.collapse').collapse('hide');
+    });
+    
+     $('#add_groups_dd').click(function() {
+        $('.collapse').collapse('hide');
+    });
+
     
     $('#deleteRoleButton').click(function() {
     
@@ -69,70 +77,8 @@ $(document).ready(function(){
             }
         });
     });
-        
-        
-    function createRoleRow(role) {
-        var tblRow = $('<tr>');
-        
-        var tblData = createTableDataCheckbox(role.id)
-        tblRow.append(tblData);
-        
-        var roleName = role.name;
-        tblData = createTableDataText(roleName);
-        tblRow.append(tblData);
-        
-        tblData = createTableDataText(role.description)
-        tblRow.append(tblData);
-        
-        var groupNames = getGroupNames(role.groups);
-        tblData = createTableDataLabels(groupNames);
-        tblRow.append(tblData);
-        
-        return tblRow;
-    }
     
-  
-    
-    function getGroupNames(groups) {
-        var names = groups.map(function(group) {
-            return group.name;
-        });
-        return names;
-    }
-    
-    function loadRoleTable() {////
-        $.ajax({
-            url: '/api/roles',
-            method: 'GET',
-            success: function(response) {
-                
-                try {
-                    var json = JSON.parse(response);
-                    var roles = json.roles;
-                    var table = $('#roles-table')[0];
-                    loadTableBody(table, roles, createRoleRow);
-                }
-                catch(e) {
-                    console.log(e);
-                }
-            },
-            error: function(response) {
-                try {
-                    var json = JSON.parse(response.responseText);
-                    if (json.message) {
-                        $('#message').html(json.message);
-                        $('#alert-message')[0].classList.add('alert-danger');
-                        $('#alert-message').show();
-                    }
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }
-        });
-    }
-    
-     $('#save').click(function(){
+        $('#save').click(function(){
         
         
         var groupsSelected = $('#groups').val()
@@ -185,4 +131,121 @@ $(document).ready(function(){
             }
         });
     });
+    
+    
+    $('#remove').click(function(){
+        
+        
+        var groupsSelected = $('#groups1').val()
+        
+        console.log(groupsSelected)
+        
+        
+        var rolesSelected = [];
+        
+        $('.checkbox:checkbox:checked').each(function() {
+            rolesSelected.push($(this).val());
+        });
+        
+        
+        var data = {
+            
+            'group_ids': groupsSelected,
+            'role_ids': rolesSelected
+            
+        }
+        console.log(rolesSelected)
+        $.ajax({
+            url: '/api/roles/groups',
+            method: 'DELETE',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function(response) {
+                $('#message').html("Role was deleted");
+                $('#alert-message')[0].classList.add('alert-success');
+                $('#alert-message').show();
+                loadRoleTable();
+               
+            },
+            error: function(error) {
+                try {
+                    json = JSON.parse(error.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                    console.log("error!");
+                }
+            }
+        });
+    });    
+    
+     
+    function createRoleRow(role) {
+        var tblRow = $('<tr>');
+        
+        var tblData = createTableDataCheckbox(role.id)
+        tblRow.append(tblData);
+        
+        var roleName = role.name;
+        tblData = createTableDataText(roleName);
+        tblRow.append(tblData);
+        
+        tblData = createTableDataText(role.description)
+        tblRow.append(tblData);
+        
+        var groupNames = getGroupNames(role.groups);
+        tblData = createTableDataLabels(groupNames);
+        tblRow.append(tblData);
+        
+        return tblRow;
+    }
+    
+  
+    
+    function getGroupNames(groups) {
+        var names = groups.map(function(group) {
+            return group.name;
+        });
+        return names;
+    }
+    
+    
+    function loadRoleTable() {////
+        $.ajax({
+            url: '/api/roles',
+            method: 'GET',
+            success: function(response) {
+                
+                try {
+                    var json = JSON.parse(response);
+                    var roles = json.roles;
+                    var table = $('#roles-table')[0];
+                    loadTableBody(table, roles, createRoleRow);
+                }
+                catch(e) {
+                    console.log(e);
+                }
+            },
+            error: function(response) {
+                try {
+                    var json = JSON.parse(response.responseText);
+                    if (json.message) {
+                        $('#message').html(json.message);
+                        $('#alert-message')[0].classList.add('alert-danger');
+                        $('#alert-message').show();
+                    }
+                }
+                catch (e) {
+                    console.log(e);
+                }
+            }
+        });
+    }
+    
+    
 });

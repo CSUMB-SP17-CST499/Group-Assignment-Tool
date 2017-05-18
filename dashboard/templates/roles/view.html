@@ -5,6 +5,7 @@
 <script type="text/javascript" src="../dashboard/static/js/table.js"></script>
 <script type="text/javascript" src="../dashboard/static/js/Roles.js"></script>
 <script type="text/javascript" src="../dashboard/static/js/GroupDropDown.js"></script>
+<script type="text/javascript" src="../dashboard/static/js/RemoveGroupDropdown.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -28,9 +29,9 @@
          Action 
          <span class = "caret"></span>
        </button>
-       <ul class = "dropdown-menu">
-          <li data-toggle="collapse" data-target="#add_groups"><a href = "#" id = "add_group_dd">Add Groups</a></li>
-          <li><a href = "#" id = "remove_groups">Remove Groups</a></li>
+       <ul class = "dropdown-menu" id = "myRole">
+          <li data-toggle="collapse" data-target="#add_groups" data-parent="#myRole"><a href = "#" id = "add_group_dd">Add Groups</a></li>
+          <li data-toggle="collapse" data-target="#remove_groups" data-parent="#myRole"><a href = "#" id = "remove_groups_dd">Remove Groups</a></li>
           <li><a href = "#">Quick Edit</a></li>
        </ul>
     </div>
@@ -62,7 +63,34 @@
             </p>
         </div>
   </div>
+  
+  <!--remove groups dropdonw-->
+  <div id="remove_groups" class="collapse">
+       <p> Select Roles to Remove:</p>
+        <div class="row" "dropdown" id = "group_select">
+	        <div class="col-xs-6 col-sm-6 col-md-6">
+	    		<div class="form-group">
+	    			<select class = "selectpicker" id="groups1" multiple >
+					</select>
+				</div>
+			</div>
+		</div>
+		
+		
+		
+    </script>
+      
+        <div class = "px-2">
+            <p>
+               <button class = "btn  btn-primary" data-toggle="collapse" data-target="#remove_groups" id = "remove">Remove</button>
+               <button class = "btn  btn-primary" data-toggle="collapse" data-target="#remove_groups">Cancel</button> 
+            </p>
+        </div>
   </div>
+  </div>
+  
+  
+  
   <div class="col-sm-6" >
   <div id="imaginary_container">
       <div class="input-group stylish-input-group">

@@ -192,8 +192,44 @@ def get_groups_with_ids(group_ids):
                 for group_id in group_ids]
     
     return []
+
+
+
+
+@roles.route('/api/roles/groups', methods = ['DELETE'])
+def get_groups_to_delete_from_roles(): 
+    
         
+    args = request.get_json()
+    if args is None:
+        response = create_error('no_args')
+        return (response, 400)
+
+    if args.get("role_ids") is None:
+        response = create_error('missing_argument', 'role_ids argument is missing')
+        return(response, 400)    
         
+    if args.get("group_ids") is None:
+        response = create_error('missing_argument', 'role_ids argument is missing')
+        return(response, 400)    
+ 
+
+    try:
+        roles = query.get_roles_with_ids(args.get("role_ids", []))
+        groups = query.get_groups_with_ids(args.get("group_ids", []))
+        
+        for role in roles:
+            employees = query.get_employees_by_role(role)
+            for group in groups:
+                removed_ids = sync.remove_from_slack_group(group, employees)
+                if removed_ids or (len(removed_ids == 0) and len(employees == 0)):
+                    role.groups.remove(group)
+    
+        return (json.dumps({"ok": True}), 200)
+    
+    except Exception as e:
+        response = create_error('unexpected_error', e)
+        return (response, 500)
          
             
             
