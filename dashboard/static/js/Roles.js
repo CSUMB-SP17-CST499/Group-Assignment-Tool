@@ -8,6 +8,10 @@
 */
 $(document).ready(function(){    
     loadRoleTable();
+    
+    $('#sync').on('click', function(e) {
+        syncGroups();
+    });
   
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
@@ -215,7 +219,7 @@ $(document).ready(function(){
     }
     
     
-    function loadRoleTable() {////
+    function loadRoleTable() {
         $.ajax({
             url: '/api/roles',
             method: 'GET',
@@ -247,5 +251,21 @@ $(document).ready(function(){
         });
     }
     
-    
+    function syncGroups() {
+        $.ajax({
+            url: '/api/sync/groups',
+            method: 'GET',
+            success: function(response) {
+                try {
+                    loadRoleTable();
+                }
+                catch(e) {
+                    console.log(e);
+                }
+            },
+            error: function(response) {
+                
+            }
+        });
+    }
 });

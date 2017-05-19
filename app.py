@@ -2,10 +2,7 @@ import flask, os
 
 from flask import render_template, flash, request, json, make_response, g
 from hashlib import md5
-from views.roles import roles
-from views.groups import groups
-from views.employees import employees
-from views.users import users
+from views import employees, groups, roles, users, synced
 from dashboard.views import dashboard
 from db.database import init_db, Session 
 from db import query, models
@@ -13,13 +10,14 @@ from db.models import User
 from flask_login import LoginManager, login_user , logout_user , current_user
 
 
-
 app = flask.Flask(__name__)
-app.register_blueprint(roles)
-app.register_blueprint(groups)
-app.register_blueprint(employees)
+app.register_blueprint(roles.roles)
+app.register_blueprint(groups.groups)
+app.register_blueprint(employees.employees)
+app.register_blueprint(users.users)
+app.register_blueprint(synced.synced)
 app.register_blueprint(dashboard)
-app.register_blueprint(users)
+
 
 app.config['SECRET_KEY'] = "GroupAssignment_Tool_KEY374657*"
 
@@ -43,10 +41,6 @@ def load_user(id):
 def index():
     # If there is no userName, then route to loginScreen. Else, route to the main page.
     return flask.render_template("index.html")
-    
-@app.route('/edits')
-def edits():
-    return flask.render_template("edits.html")
 
 
 @app.teardown_appcontext

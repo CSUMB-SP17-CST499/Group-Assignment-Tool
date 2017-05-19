@@ -12,10 +12,6 @@ users = Blueprint('user', __name__,
                     
 @users.route('/api/user', methods = ['POST', 'PUT', 'DELETE'])
 def user_uri():
-    #args = request.args
-    # print(request.args)
-    print(request.get_json())
-    # print(request.data)
     args = request.get_json()
     if args is None:
         response = create_error('missing_argument')

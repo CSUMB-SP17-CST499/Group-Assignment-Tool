@@ -27,7 +27,9 @@
        <ul class = "dropdown-menu" id = "myGroup">
           <li data-toggle="collapse" data-target="#add_roles" data-parent="#myGroup"><a href = "#" id = "add_roles_dd">Add Roles</a></li>
           <li data-toggle="collapse" data-target="#remove_roles" data-parent="#myGroup"><a href = "#" id = "remove_roles_dd">Remove Roles</a></li>
-          <li><a id="deleteButton" >Delete Employee</a></li>
+          <li data-toggle="collapse" data-target="#deleteButton" data-parent="#myGroup"><a href="#" id="deleteButton" >Delete Employee</a></li>
+          <li role="separator" class="divider"></li>
+          <li data-toggle="collapse" data-target="#sync" data-parent="#myGroup"><a href="#" id="sync">Sync Employees</a></li>
        </ul>
     </div>
     {% endif %}

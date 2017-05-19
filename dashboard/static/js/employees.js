@@ -8,6 +8,13 @@
 */
 $(document).ready(function(){    
     loadEmployeeTable();
+    
+    
+    $('#sync').on('click', function(e) {
+        console.log("SYNC");
+        syncEmployees();
+    });
+    
   
     $('#all-checkbox').on('click', function(e) {
         var checkboxes = $('.checkbox');
@@ -238,6 +245,20 @@ $(document).ready(function(){
                 catch (e) {
                     console.log(e);
                 }
+            }
+        });
+    }
+    
+    function syncEmployees() {
+        $.ajax({
+            url: '/api/sync/users',
+            method: 'GET',
+            success: function(response) {
+                console.log("COMPLETE");
+                loadEmployeeTable();
+            },
+            error: function(response) {
+                
             }
         });
     }
