@@ -10,28 +10,24 @@
 
 {% block content %}
 <div class = "col-sm-1" style=" padding-top:80px;">
-  <div class="btn-group-vertical">
-   <a href="#" class = "selected" class="btn-link">Employees</a>
-   <a href="#" class="btn-link">Roles</a>
-  </div>
+  
 </div>
  
 <!-- button group-->
 <div class="btn-group" role="group" aria-label="Basic example">
   <div  class = "px-2">
     <a href="employees/add" class="btn btn-default">Add</a>
-    <a href="#" id="deleteButton" class="btn btn-default">Delete</a>
     {% if g.user.is_authenticated %}
           
  <div class = "dropdown">
-       <button class = "btn btn-default dropdown-toggle" type = "button" data-toggle= "dropdown" id = "action-button">
+       <button class = "btn btn-primary dropdown-toggle" type = "button" data-toggle= "dropdown" id = "action-button">
          Action 
          <span class = "caret"></span>
        </button>
        <ul class = "dropdown-menu" id = "myGroup">
           <li data-toggle="collapse" data-target="#add_roles" data-parent="#myGroup"><a href = "#" id = "add_roles_dd">Add Roles</a></li>
           <li data-toggle="collapse" data-target="#remove_roles" data-parent="#myGroup"><a href = "#" id = "remove_roles_dd">Remove Roles</a></li>
-          <li><a href = "#">Quick Edit</a></li>
+          <li><a id="deleteButton" >Delete Employee</a></li>
        </ul>
     </div>
     {% endif %}
@@ -93,18 +89,6 @@
   
   </div>
       
-      <div class="col-sm-6" >
-        <div id="imaginary_container">
-          <div class="input-group stylish-input-group">
-            <input type="text" class="form-control"  placeholder="Search" >
-            <span class="input-group-addon">
-              <button type="submit">
-                <span class="glyphicon glyphicon-search"></span>
-              </button>
-            </span>
-          </div>
-        </div> <!-- closing div imaginary_container -->
-      </div> <!-- closing div column -->
     </div> <!-- closing div row -->
   
     

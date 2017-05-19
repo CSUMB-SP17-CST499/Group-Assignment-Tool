@@ -194,8 +194,6 @@ def get_groups_with_ids(group_ids):
     return []
 
 
-
-
 @roles.route('/api/roles/groups', methods = ['DELETE'])
 def get_groups_to_delete_from_roles(): 
     
