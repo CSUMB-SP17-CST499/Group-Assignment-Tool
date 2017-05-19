@@ -68,7 +68,9 @@ def add_to_slack_group(group: Group, employees: List[Employee]) -> List[str]:
     new_ids = employee_ids - user_ids
     encoded_ids = ','.join(user_ids.union(new_ids))
 
-    user_ids = set(client.update_usergroup_users(group_id, encoded_ids))
+    user_ids = client.update_usergroup_users(group_id, encoded_ids)
+    if user_ids:
+        user_ids = set(user_ids)
     
     return user_ids
 
@@ -91,8 +93,11 @@ def remove_from_slack_group(group: Group, employees: List[Employee]) -> List[str
             if employee.slack_id and employee.slack_id}
 
     encoded_ids = ','.join(user_ids - employee_ids)
-    current_ids = set(client.update_usergroup_users(group_id, encoded_ids))
-    removed_ids = user_ids - current_ids
+    current_ids = client.update_usergroup_users(group_id, encoded_ids)
+    removed_ids = None
+    if current_ids:
+        current_ids = set(current_ids)
+        removed_ids = user_ids - current_ids
     
     return removed_ids
         

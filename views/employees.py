@@ -262,30 +262,16 @@ def get_roles_to_delete_from_employees():
         roles = query.get_roles_with_ids(args.get("role_ids", []))
         employees = query.get_employees_with_ids(args.get("employee_ids", []))
         for role in roles:
-            matching_ids = set()
             groups = query.get_role_groups(role.id)
+            removed_ids = set()
             for group in groups:
-                pass
                 ids = sync.remove_from_slack_group(group, employees)
-                if matching_ids:
-                    matching_ids.intersection(ids)
-                    
-                else:
-                    matching_ids = ids
-            slack_ids = {employee.slack_id for employee in employees}
-            removed_ids = slack_ids - matching_ids
-            # Add the role to the employee when at least one of the groups was
-            # added to them
+                if ids:
+                    removed_ids = removed_ids.union(ids)
+
             for employee in employees:
-                if employee.slack_id in removed_ids:
-                    employee.roles.remove(role)
-                    query.update_employee(employee)
-                    # deleted =  query.delete_employee_roles(employee.id, role.id)
-            
-                
-        # TODO: Come up with the type of output we should give the client
-        for removed_id in removed_ids:
-            pass
+                employee.roles.remove(role)
+                query.update_employee(employee)
 
         return (json.dumps({"ok": True}), 200)
     

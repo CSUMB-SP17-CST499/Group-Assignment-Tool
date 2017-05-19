@@ -50,7 +50,10 @@ class SlackClient():
         params['usergroup'] = usergroup_id
         params['users'] = users
         usergroup = self.request(method, params, self._parse_usergroup)
-        return usergroup.users
+        if usergroup:
+            return usergroup.users
+        
+        return None
         
         
     def _parse_usergroup(self, data):

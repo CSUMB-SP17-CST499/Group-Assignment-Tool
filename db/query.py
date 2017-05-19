@@ -560,3 +560,38 @@ def get_groups_with_ids(ids: List[int]) -> List[Group]:
         print(e)
         
     return groups
+    
+    
+def get_repeated_employee_role_groups(employee_id: int) -> List[Group]:
+    """Returns a list of repeated groups from the employee's roles. 
+    
+    Args:
+        employee_id: The id of an employee.
+        
+    Returns:
+        Returns a list of groups that show up in more that one of the
+        employee's roles.
+    """
+    session = Session()
+    group_cnt = {}
+    repeated_groups = []
+    try:
+        employee = get_employee_by_id(employee_id)
+        for role in employee.roles:
+            for group in role.groups:
+                if group.id in group_cnt:
+                    group_cnt[group.id] += 1
+                else:
+                    group_cnt[group.id] = 1
+                    
+        for key in group_cnt:
+            if group_cnt[key] > 1:
+                group = get_group_by_id(key)
+                group_app_id = group.app_group_id
+                repeated_groups.append(group_app_id)
+                
+    except Exception as e:
+        print(e)
+        
+    return repeated_groups
+        

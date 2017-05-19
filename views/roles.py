@@ -222,8 +222,8 @@ def get_groups_to_delete_from_roles():
             employees = query.get_employees_by_role(role)
             for group in groups:
                 removed_ids = sync.remove_from_slack_group(group, employees)
-                if removed_ids or (len(removed_ids == 0) and len(employees == 0)):
-                    role.groups.remove(group)
+                role.groups.remove(group)
+                query.update_role(role)
     
         return (json.dumps({"ok": True}), 200)
     
